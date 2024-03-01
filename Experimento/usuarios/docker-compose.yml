@@ -1,0 +1,40 @@
+version: '3.6'
+
+networks:
+  usuarios_net:
+services:
+  usuarios-db1:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "usuarios-db"
+      POSTGRES_USER: "postgres"
+    ports:
+    - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - usuarios_net
+  usuarios-service:
+    environment:
+      PYTHONUNBUFFERED: 1  
+      DB_HOST : "34.102.39.218"
+      DB_PORT : "5432"
+      DB_NAME: "usuarios-db"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+    build: 
+      context: .
+      dockerfile: ../usuarios/Dockerfile
+    depends_on:
+      usuarios-db1:
+        condition: service_healthy  
+    ports:
+    - "3001:3001"
+    networks:
+      - usuarios_net
+
+      
