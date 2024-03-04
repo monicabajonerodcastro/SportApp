@@ -1,0 +1,17 @@
+version: '3.6'
+
+networks:
+  alertas_net:
+services:
+  alertas-service:
+    environment:
+      PYTHONUNBUFFERED: 1 
+    build: 
+      context: .
+      dockerfile: ../alertas/Dockerfile
+    ports:
+    - "3002:3002"
+    networks:
+      - alertas_net
+
+      
