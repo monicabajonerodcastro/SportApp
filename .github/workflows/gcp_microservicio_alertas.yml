@@ -1,17 +1,17 @@
 ---
-name: Construir y subir a Artifact Registry las imagenes de docker para el microservicio de usuarios
+name: Despliegue del microservicio alertas
 on: 
     push:
         branches: [main]
         paths: 
-          - backend/usuarios/**
+          - backend/alertas/**
           - .github/**
 jobs:
-    build-push-usuarios-gcr:
-        name: 'Imagen usuarios'
+    deploy-alertas-gcr:
+        name: 'Microservicio alertas'
         runs-on: ubuntu-latest
         env:
-            IMAGE_NAME: usuarios
+            IMAGE_NAME: alertas
             PROJECT_ID: sportapp-grupo2
             LOCATION: us-east1
             REPOSITORY: sport-app
@@ -28,7 +28,7 @@ jobs:
           with:
             project_id: ${{env.PROJECT_ID}}
         - name: Construir la imagen de docker
-          run: docker build -f backend/usuarios/Dockerfile -t $IMAGE_NAME:latest .
+          run: docker build -f backend/alertas/Dockerfile -t $IMAGE_NAME:latest .
         - name: Tag automatico de releases
           id: increment-git-tag
           run: |
@@ -43,12 +43,12 @@ jobs:
             docker tag $IMAGE_NAME:latest $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
             docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:latest
             docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
-        - name: Desplegar servicio usuarios en Cloud Run
+        - name: Desplegar servicio alertas en Cloud Run
           id: deploy
           run: |-
-            gcloud run deploy usuarios \
+            gcloud run deploy alertas \
             --image=${{env.LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.REPOSITORY}}/${{env.IMAGE_NAME}}:latest \
             --allow-unauthenticated \
-            --port=5001 \
+            --port=5002 \
             --region=${{env.LOCATION}} \
             --project=${{env.PROJECT_ID}}
