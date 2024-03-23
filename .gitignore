@@ -1,2 +1,4 @@
 Experimento/alertas/venv/*
-*Pipfile.lock
+Experimento/alertas/src/config/gcp-key.json
+venv
+.terraform
