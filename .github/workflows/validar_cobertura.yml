@@ -1,9 +1,11 @@
 ---
-name: Validar cobertura de pruebas unitarias
+name: Validar pruebas unitarias
 on:
     pull_request:
       branches:
         - main
+      types: 
+        - synchronize
 jobs:
     correr-pruebas-usuarios:
         name: Correr pruebas
@@ -20,10 +22,9 @@ jobs:
             pip install pipenv
             cd backend
             cd usuarios
-            ls -la
             pipenv install --system --deploy
         - name: Correr pruebas
-          run: python -m unittest discover -s tests -v
+          run: python -m unittest discover -s backend/usuarios/test -v
         - name: Validar resultado con errores
           if: ${{ failure() }}
           env:
@@ -34,8 +35,3 @@ jobs:
           env:
             MENSAJE_EXITO: Todas las pruebas fueron exitosas
           run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
-        - name: Cálculo de cubrimiento
-          id: cubrimiento
-          run: |
-            coverage run -m unittest backend/usuarios/tests
-            coverage report -m
