@@ -1,8 +1,11 @@
 ---
-name: Construir y subir a Artifact Registry las imagenes de docker
+name: Construir y subir a Artifact Registry las imagenes de docker para el microservicio de usuarios
 on: 
     push:
         branches: [main]
+        paths: 
+          - backend/usuarios/**
+          - .github/**
 jobs:
     build-push-usuarios-gcr:
         name: 'Imagen usuarios'
@@ -40,3 +43,12 @@ jobs:
             docker tag $IMAGE_NAME:latest $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
             docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:latest
             docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
+        - name: Desplegar servicio usuarios en Cloud Run
+          id: deploy
+          run: |-
+            gcloud run deploy usuarios \
+            --image=${{env.LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.REPOSITORY}}/${{env.IMAGE_NAME}}:latest \
+            --allow-unauthenticated \
+            --port=5001 \
+            --region=${{env.LOCATION}} \
+            --project=${{env.PROJECT_ID}}
