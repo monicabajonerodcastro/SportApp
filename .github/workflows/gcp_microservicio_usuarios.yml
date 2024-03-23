@@ -5,7 +5,7 @@ on:
         branches: [main]
         paths: 
           - backend/usuarios/**
-          - .github/**
+          - .github/workflows/gcp_microservicio_usuarios.yml
 jobs:
     deploy-usuarios-gcr:
         name: 'Microservicio usuarios'
