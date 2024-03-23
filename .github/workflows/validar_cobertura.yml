@@ -1,0 +1,41 @@
+---
+name: Validar cobertura de pruebas unitarias
+on:
+    pull_request:
+      branches:
+        - main
+jobs:
+    correr-pruebas-usuarios:
+        name: Correr pruebas
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout del repositorio
+          uses: actions/checkout@v2
+        - name: Configuración de entorno python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.7'
+        - name: Instalación de liberías y dependencias
+          run: |
+            pip install pipenv
+            cd backend
+            cd usuarios
+            ls -la
+            pipenv install --system --deploy
+        - name: Correr pruebas
+          run: python -m unittest discover -s tests -v
+        - name: Validar resultado con errores
+          if: ${{ failure() }}
+          env:
+            MENSAJE_ERROR: Una o varias pruebas fallaron
+          run: echo "::set-output name=respuesta::${MENSAJE_ERROR}"
+        - name: Validar resultado sin errores
+          if: ${{ success() }}
+          env:
+            MENSAJE_EXITO: Todas las pruebas fueron exitosas
+          run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+        - name: Cálculo de cubrimiento
+          id: cubrimiento
+          run: |
+            coverage run -m unittest backend/usuarios/tests
+            coverage report -m
