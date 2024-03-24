@@ -2,3 +2,4 @@ Experimento/alertas/venv/*
 Experimento/alertas/src/config/gcp-key.json
 venv
 .terraform
+**.coverage

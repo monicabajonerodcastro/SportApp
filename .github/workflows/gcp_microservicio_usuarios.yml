@@ -7,7 +7,7 @@ on:
           - backend/usuarios/**
           - .github/workflows/gcp_microservicio_usuarios.yml
 jobs:
-    deploy-usuarios-gcr:
+    desplegar-microservicio-usuarios-acr:
         name: 'Microservicio usuarios'
         runs-on: ubuntu-latest
         env:
