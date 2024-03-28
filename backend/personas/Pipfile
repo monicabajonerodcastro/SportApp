@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "personas"
+
+[packages]
+wheel = "*"
+flask = "*"
+marshmallow = "*"
+python-abc = "*"
+python-dotenv = "*"
+sqlalchemy = "*"
+psycopg2-binary = "*"
+pytz = "*"
+faker = "*"
+flask-sqlalchemy = "*"
+gunicorn = "*"
+requests= "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-env = "*"
+

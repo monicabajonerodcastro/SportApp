@@ -1,0 +1,40 @@
+version: '3.6'
+
+networks:
+  personas_net:
+services:
+  personas-db1:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "personas-db"
+      POSTGRES_USER: "postgres"
+    ports:
+    - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - personas_net
+  personas-service:
+    #environment:
+    #  PYTHONUNBUFFERED: 1  
+    #  DB_HOST : "34.102.39.218"
+    #  DB_PORT : "5432"
+    #  DB_NAME: "personas-db"
+    #  DB_USER: "postgres"
+    #  DB_PASSWORD: "postgres"
+    build: 
+      context: .
+      dockerfile: ../personas/Dockerfile
+    depends_on:
+      personas-db1:
+        condition: service_healthy  
+    ports:
+    - "3001:3001"
+    networks:
+      - personas_net
+
+      
