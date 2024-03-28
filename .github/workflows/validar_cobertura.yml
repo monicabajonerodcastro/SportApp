@@ -16,14 +16,14 @@ jobs:
         - name: Configuración de entorno python
           uses: actions/setup-python@v2
           with:
-            python-version: '3.9'
+            python-version: '3.11'
         - name: Instalación de liberías y dependencias
           run: |
             pip install pipenv
             cd personas
             pipenv install --system --deploy
         - name: Correr pruebas
-          run: python -m unittest discover -s personas/test -v
+          run: pytest personas/test -v
         - name: Validar resultado con errores
           if: ${{ failure() }}
           env:
@@ -43,7 +43,7 @@ jobs:
       - name: Configuración de entorno python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.11'
       - name: Instalación de liberías y dependencias
         run: |
           pip install pipenv
@@ -51,7 +51,7 @@ jobs:
           ls -la
           pipenv install --system --deploy
       - name: Correr pruebas
-        run: python -m unittest discover -s administracion/test -v
+        run: pytest administracion/test -v
       - name: Validar resultado con errores
         if: ${{ failure() }}
         env:
