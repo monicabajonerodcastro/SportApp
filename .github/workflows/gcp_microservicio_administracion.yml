@@ -1,0 +1,54 @@
+---
+name: Despliegue del microservicio administración
+on: 
+    push:
+        branches: [main]
+        paths: 
+          - administracion/**
+          - .github/workflows/gcp_microservicio_administracion.yml
+jobs:
+    desplegar-microservicio-administracion-acr:
+        name: 'Microservicio administracion'
+        runs-on: ubuntu-latest
+        env:
+            IMAGE_NAME: administracion
+            PROJECT_ID: sportapp-grupo2
+            LOCATION: us-east1
+            REPOSITORY: sport-app
+        steps:
+        - name: Checkout Repo
+          uses: actions/checkout@v2
+        - name: Autenticación de Google
+          id: auth
+          uses: google-github-actions/auth@v2
+          with:
+            credentials_json: '${{ secrets.GCP_SA_STORAGE_KEY }}'
+        - name: 'Configurar Cloud SDK'
+          uses: 'google-github-actions/setup-gcloud@v2'
+          with:
+            project_id: ${{env.PROJECT_ID}}
+        - name: Construir la imagen de docker
+          run: docker build -f administracion/Dockerfile -t $IMAGE_NAME:latest .
+        - name: Tag automatico de releases
+          id: increment-git-tag
+          run: |
+            bash ./scripts/git_update.sh -v patch
+        - name: Hacer push de la imagen de docker hacia Artifact Registry
+          env:
+            GIT_TAG: ${{steps.increment-git-tag.outputs.git-tag}}
+          run: |-
+            gcloud auth configure-docker
+            gcloud auth configure-docker $LOCATION-docker.pkg.dev
+            docker tag $IMAGE_NAME:latest $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:latest
+            docker tag $IMAGE_NAME:latest $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
+            docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:latest
+            docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:$GIT_TAG
+        - name: Desplegar servicio administracion en Cloud Run
+          id: deploy
+          run: |-
+            gcloud run deploy administracion \
+            --image=${{env.LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.REPOSITORY}}/${{env.IMAGE_NAME}}:latest \
+            --allow-unauthenticated \
+            --port=5002 \
+            --region=${{env.LOCATION}} \
+            --project=${{env.PROJECT_ID}}

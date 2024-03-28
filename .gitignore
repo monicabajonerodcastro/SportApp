@@ -3,3 +3,6 @@ Experimento/alertas/src/config/gcp-key.json
 venv
 .terraform
 **.coverage
+*.pytest_cache
+*__pycache__
+.venv
