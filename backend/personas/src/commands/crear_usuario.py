@@ -1,21 +1,21 @@
 from src.models.usuario import Usuario
 from src.commands.base_command import BaseCommannd
-from src.errors.errors import MissingRequiredField, MissingRequiredToken,InvalidFormatField
-import uuid, re
+from src.errors.errors import MissingRequiredField,InvalidFormatField
+import re
 
 
 class CrearUsuario(BaseCommannd):
-    def __init__(self, session, json_request, headers) -> None:
+    def __init__(self, session, json_request) -> None:
         
 
-        if ( "email" not in json_request.keys() or 
-                "nombre" not in json_request.keys() or 
-                "apellido" not in json_request.keys() or 
-                    "tipo_identificacion" not in json_request.keys() or 
-                        "numero_identificacion" not in json_request.keys() or 
-                            "username" not in json_request.keys() or 
-                                "password" not in json_request.keys() or 
-                                    "suscripcion" not in json_request.keys()):  
+        if ( "email" not in json_request.keys() or json_request["email"] =="" or
+                "nombre" not in json_request.keys()  or   json_request["nombre"] =="" or
+                "apellido" not in json_request.keys() or json_request["apellido"] =="" or
+                    "tipo_identificacion" not in json_request.keys() or  json_request["tipo_identificacion"] =="" or
+                        "numero_identificacion" not in json_request.keys() or  json_request["numero_identificacion"] =="" or
+                            "username" not in json_request.keys() or json_request["username"] =="" or
+                                "password" not in json_request.keys() or json_request["password"] =="" or
+                                    "suscripcion" not in json_request.keys() or json_request["suscripcion"] =="" ) :  
                                     raise MissingRequiredField()
 
 

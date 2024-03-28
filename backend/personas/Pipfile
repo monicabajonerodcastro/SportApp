@@ -1,7 +1,7 @@
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "blacklist"
+name = "personas"
 
 [packages]
 wheel = "*"
@@ -16,3 +16,8 @@ faker = "*"
 flask-sqlalchemy = "*"
 gunicorn = "*"
 requests= "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-env = "*"
+
