@@ -7,7 +7,7 @@ on:
       types: 
         - synchronize
 jobs:
-    correr-pruebas-usuarios:
+    correr-pruebas-personas:
         name: Correr pruebas
         runs-on: ubuntu-latest
         steps:
@@ -20,11 +20,10 @@ jobs:
         - name: Instalación de liberías y dependencias
           run: |
             pip install pipenv
-            cd backend
-            cd usuarios
+            cd personas
             pipenv install --system --deploy
         - name: Correr pruebas
-          run: python -m unittest discover -s backend/usuarios/test -v
+          run: python -m unittest discover -s personas/test -v
         - name: Validar resultado con errores
           if: ${{ failure() }}
           env:

@@ -2,12 +2,12 @@
 
 ## Ejecutar ambiente local
 Se deben subir todos los microservicios para probar el ambiente completo. Estas instrucciones se deben ejecutar desde el directorio raíz del proyecto
-# Microservicio Usuarios
+# Microservicio Personas
 1. Construir la imagen de Docker
 ```
-docker image build -f backend/usuarios/Dockerfile -t usuarios:1.0 .
+docker image build -f personas/Dockerfile -t personas:1.0 .
 ```
 2. Ejecutar la imagen de docker
 ```
-docker run -p 5001:5001 -d usuarios:1.0  
+docker run -p 5001:5001 -d personas:1.0  
 ```

@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-loaded = load_dotenv('.env.development')
+loaded = load_dotenv('.env.environment')
 
 import os 
 from flask import Flask, jsonify
