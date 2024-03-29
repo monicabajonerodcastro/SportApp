@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from src.commands.crear_usuario import CrearUsuario
 from src.commands.get_usuario import GetUsuario
+from src.commands.crear_perfil_deportivo import CrearPerfilDeportivo
 from src.models.database import db_session
 from src.errors.errors import MissingRequiredField
 
@@ -30,9 +31,16 @@ def crear_usuario():
 def obtener_usuario(email):
     result = GetUsuario(db_session, request.headers, email).execute()
     if result is not None :
-        return jsonify({'nombre' : result.nombre, 'apellido': result.apellido, "email": result.email}),200
+        return jsonify({'id' : result.id,'nombre' : result.nombre, 'apellido': result.apellido, "email": result.email}),200
     else :
         return jsonify({'msg' :"Usuario no existe"}),200
     
 
  
+@personas_blueprint.route('/perildeportivo', methods = ['POST'])
+def crear_perfil_deportivo():
+    json_request = request.get_json()
+    
+    result = CrearPerfilDeportivo(db_session, json_request).execute()  
+    return jsonify({'msg':result}),201  
+    

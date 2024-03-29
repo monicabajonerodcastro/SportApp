@@ -14,3 +14,7 @@ class InvalidFormatField(ApiError):
     code = 400
     description = "Parámeto(s) con formato inválido"   
 
+class InvalidUser(ApiError):
+    code = 400
+    description = "Usuario no existe" 
+

@@ -3,6 +3,7 @@ from sqlalchemy  import  Column, String
 from src.models.database import Base
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
+from sqlalchemy.orm import relationship
 
 class Usuario(Base):
 	__tablename__  =  'usuario'
@@ -15,8 +16,11 @@ class Usuario(Base):
 	username = Column(String, nullable=False)
 	password = Column(String, nullable=False)
 	suscripcion =Column(String, nullable=False)
+	#Relationships
+	perfil_deportivo = relationship("PerfilDeportivo")
 
-
+	
+    
 	def  __init__(self, email, nombre, apellido,tipo_id,numero_identificacion,username,password,suscripcion):
 		self.email  = email
 		self.nombre  = nombre
