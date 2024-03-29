@@ -6,6 +6,8 @@ on:
         - main
       types: 
         - synchronize
+        - opened
+        - edited
 jobs:
     correr-pruebas-personas:
         name: Correr pruebas personas
