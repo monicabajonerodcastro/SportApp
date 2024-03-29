@@ -37,7 +37,7 @@ def obtener_usuario(email):
     
 
  
-@personas_blueprint.route('/perildeportivo', methods = ['POST'])
+@personas_blueprint.route('/perfildeportivo', methods = ['POST'])
 def crear_perfil_deportivo():
     json_request = request.get_json()
     
