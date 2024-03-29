@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 
 class PerfilDeportivo(Base):
 	__tablename__  =  'perfil_deportivo'
-	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+	id = Column(UUID(as_uuid=True),  default=uuid.uuid4)
 	genero = Column(String, nullable=False)
 	edad = Column(Integer, nullable=False)
 	peso = Column(String, nullable=False)
@@ -27,7 +27,7 @@ class PerfilDeportivo(Base):
 	vo2max = Column(Float, nullable=True,default=0.0)
 	ftp = Column(Integer, nullable=True,default=0)
 	#deportes = Column(String, nullable=True)
-	id_usuario = Column(UUID(as_uuid=True), ForeignKey("usuario.id"))
+	id_usuario = Column(UUID(as_uuid=True), ForeignKey("usuario.id"),primary_key=True)
 	# Relationships
 	usuario = relationship("Usuario")
 	

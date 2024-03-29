@@ -1,6 +1,6 @@
 from src.models.perfil_deportivo import PerfilDeportivo
 from src.commands.base_command import BaseCommannd
-from src.errors.errors import MissingRequiredField,InvalidUser
+from src.errors.errors import MissingRequiredField,InvalidUser,PerfilDeportivoAlreadyRegistered
 from src.commands.get_usuario import GetUsuario
 from src.models.usuario import Usuario
 
@@ -40,6 +40,10 @@ class CrearPerfilDeportivo(BaseCommannd):
         if usuario is None :
                 raise InvalidUser()
      
+        perfildeportivo = self.session.query(PerfilDeportivo).filter(PerfilDeportivo.id_usuario == id_usuario).first()
+        if perfildeportivo is not None :
+                raise PerfilDeportivoAlreadyRegistered()
+        
         self.perfil_deportivo = PerfilDeportivo(
                                 id_usuario=id_usuario,
                                 genero = genero,

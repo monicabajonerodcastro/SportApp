@@ -18,3 +18,7 @@ class InvalidUser(ApiError):
     code = 400
     description = "Usuario no existe" 
 
+class PerfilDeportivoAlreadyRegistered(ApiError):
+    code = 400
+    description = "Perfil Deportivo ya existe" 
+
