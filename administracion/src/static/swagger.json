@@ -1,0 +1,125 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "SportApp - Módulo administración",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/administracion/health-check": {
+        "get": {
+          "description": "Health Check del servicio de administración",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio ejecutándose correctamente"
+            }
+          }
+        }
+      },
+      "/administracion/plan": {
+        "get": {
+          "description": "Obtiene la lista de planes disponibles",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de planes disponibles",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Plan"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/plan/:planId:": {
+        "get": {
+          "description": "Obtiene información de un plan en específico",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "planId",
+              "description": "Uuid del plan a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle de plan solicitado",
+              "schema": {
+                "$ref": "#/definitions/Plan"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      }
+    },
+    "definitions":{
+      "Plan":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Plan Básico"
+          },
+          "funciones":  {
+            "type": "string",
+            "example": "Este plan permite ..."
+          },
+          "valor":  {
+            "type": "int",
+            "example": 20000
+          }
+        }
+      }
+    }
+  }

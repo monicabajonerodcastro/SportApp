@@ -1,0 +1,176 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "SportApp - Módulo personas",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/personas/health-check": {
+        "get": {
+          "description": "Health Check del servicio de personas",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio ejecutándose correctamente"
+            }
+          }
+        }
+      },
+      "/personas/usuario": {
+        "post": {
+          "description": "Crear un usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos del usuario a crear",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Usuario"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "El usuario se creó exitosamente"
+            },
+            "400": {
+              "description": "El usuario ya se encuentra registrado / Parámetros requeridos / Parámeto(s) con formato inválido"
+            }
+          }
+        }
+      },
+      "/personas/ingresar": {
+        "post": {
+          "description": "Realiza el login del usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Usuario y contraseña para hacer el ingreso",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "El usuario se creó exitosamente",
+              "schema": {
+                "$ref": "#/definitions/Token"
+              }
+            },
+            "400": {
+              "description": "Parámetros requeridos / Parámeto(s) con formato inválido"
+            }
+          }
+        }
+      },
+      "/personas/validar-token": {
+        "post": {
+          "description": "Realiza el login del usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Token para validar",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Token"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "El token es correcto"
+            },
+            "401": {
+              "description": "Token invalido / Token expirado"
+            }
+          }
+        }
+      }
+    },
+    "definitions":{
+      "Usuario":{
+        "type": "object",
+        "properties":{
+          "email": {
+            "type": "string",
+            "example":"correo@gmail.com"
+          },
+          "nombre":{
+            "type": "string",
+            "example":"Pedro"
+          },
+          "apellido":{
+            "type": "string",
+            "example":"Perez"
+          },
+          "tipo_identificacion":{
+            "type": "string",
+            "example":"CC"
+          },
+          "numero_identificacion":{
+            "type": "string",
+            "example":"123456"
+          },
+          "username":{
+            "type": "string",
+            "example":"pedro.perez"
+          },
+          "password":{
+            "type": "string",
+            "example":"contrasena_segura"
+          },
+          "suscripcion":{
+            "type": "string",
+            "example":"1"
+          }
+        }
+      },
+      "Login":{
+        "type": "object",
+        "properties":{
+          "email": {
+            "type": "string",
+            "example":"correo@gmail.com"
+          },
+          "password":{
+            "type": "string",
+            "example":"contrasena_segura"
+          }
+        }
+      },
+      "Token":{
+        "type": "object",
+        "properties":{
+          "token": {
+            "type": "string",
+            "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE4MzM4ODMsImlhdCI6MTcxMTgzMjk4Mywic3ViIjoibW9uaWNhLmJham9uZXJvIn0.5SnulBHcv2y__jo9dZbEUibPVE2_A50aQ2xkaxZJmfs"
+          }
+        }
+      }
+    }
+  }

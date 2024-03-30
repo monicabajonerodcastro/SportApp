@@ -9,7 +9,7 @@ personas_blueprint = Blueprint('personas', __name__,url_prefix="/personas")
 
 @personas_blueprint.route('/health-check', methods = ['GET'])
 def health_check():
-    return jsonify({"mensaje":"UP"}),200     
+    return jsonify({"description":"UP"}),200     
 
 @personas_blueprint.route('/usuario', methods = ['POST'])
 def crear_usuario():
@@ -20,10 +20,10 @@ def crear_usuario():
 
     usuario = GetUsuario(db_session, request.headers,  json_request["email"]).execute()
     if usuario is None :
-            result = CrearUsuario(db_session, json_request,request.headers).execute()  
-            return jsonify({'msg':result}),201  
+        result = CrearUsuario(db_session, json_request).execute()  
+        return jsonify({'description':result}),201  
     else :
-        return jsonify({'msg' :"Usuario ya esta registrado"}),200
+        return jsonify({'description' :"Usuario ya esta registrado"}), 400
 
  
 @personas_blueprint.route('/usuario/<string:email>', methods=['GET'])
