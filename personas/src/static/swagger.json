@@ -70,7 +70,7 @@
           ],
           "responses": {
             "200": {
-              "description": "El usuario se creó exitosamente",
+              "description": "El token se retorna exitosamente",
               "schema": {
                 "$ref": "#/definitions/Token"
               }

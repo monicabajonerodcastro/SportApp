@@ -1,8 +1,10 @@
 from src.comandos.base_command import BaseCommand
 from src.modelos.plan import Plan, PlanSchema
+from src.servicios import auth
 from uuid import UUID
-
+from src.errores.errores import NotFoundError, BadRequestError
 plan_schema = PlanSchema()
+
 
 class ObtenerPlanId(BaseCommand):
     def __init__(self, session, headers, id_plan) -> None:
@@ -16,22 +18,16 @@ class ObtenerPlanId(BaseCommand):
         except ValueError:
             return False
         return str(uuid_obj) == uuid
-
+       
     def execute(self):
-        if 'Authorization' not in self.headers:
-            return {"mensaje": "No se encontró el header de autorización"}, 403
-        else:
-            authorization_header = self.headers["Authorization"]
-            if "Bearer" not in authorization_header:
-                return {"mensaje": "El header de autorización no tiene un formato correcto"}, 403
-            # TODO validate token
-
+        auth.validar_autenticacion(headers=self.headers)
+        
         if self._is_valid_id(self.id_plan):
             plan = self.session.query(Plan).filter(Plan.id == self.id_plan).first()
             if plan is None:
-                return {"mensaje":f"No se encontró un plan con el id [{self.id_plan}]"}, 404
+                raise NotFoundError(description=f"No se encontró un plan con el id [{self.id_plan}]")
 
             return plan_schema.dump(plan), 200
         else:
-            return {"mensaje": "El identificador del plan no es válido"}, 400
+            raise BadRequestError(description="El identificador del plan no es válido")
     
