@@ -18,7 +18,7 @@ class PerfilDeportivo(Base):
 	ciudad_residencia = Column(String, nullable=False)
 	antiguedad_residencia =Column(Integer, nullable=False)
 	imc = Column(Float, nullable=True)
-	horas_semanal = Column(String, nullable=True)
+	horas_semanal = Column(Integer, nullable=True)
 	peso_objetivo = Column(Float, nullable=True)
 	alergias = Column(String, nullable=True)
 	preferencia_alimenticia = Column(String, nullable=True)
