@@ -1,12 +1,11 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from faker import Faker
 
 from src.commands.get_usuario import GetUsuario
 from src.models.usuario import Usuario
 from test.mock_session import MockSession
-from src.errors.errors import MissingRequiredField,InvalidFormatField
-import random, os
+import random
 
 fake = Faker()
 

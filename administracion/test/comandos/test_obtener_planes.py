@@ -4,6 +4,7 @@ from faker import Faker
 
 from src.comandos.obtener_planes import ObtenerPlan
 from src.modelos.plan import Plan
+from src.errores.errores import InvalidAuthenticationError
 from test.mock_session import MockSession
 
 fake = Faker()
@@ -13,14 +14,16 @@ def mock_session():
     return MockSession()
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_planes(mock_session):
+def test_obtener_planes(mock_session, requests_mock):
     mock_plan = planes_mock()
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
     mock_query.all.return_value = mock_plan
+
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
     
-    service = ObtenerPlan(session=mock_session_instance, headers={"Authorization": "Bearer"})
+    service = ObtenerPlan(session=mock_session_instance, headers={"Authorization": "Bearer a"})
     (result, _) = service.execute()
 
     assert mock_session_instance.query.called
@@ -34,10 +37,10 @@ def test_obtener_planes_sin_autorizacion(mock_session):
     mock_query = mock_session_instance.query.return_value
     mock_query.all.return_value = mock_plan
     
-    service = ObtenerPlan(session=mock_session_instance, headers={})
-    (_, status) = service.execute()
+    with pytest.raises(InvalidAuthenticationError):
+        ObtenerPlan(session=mock_session_instance, headers={}).execute()
+
     assert not mock_session_instance.query.called
-    assert status == 403
 
 def planes_mock():
     return [Plan(id=fake.uuid4(), nombre=fake.name(), funciones=fake.text(), valor_mensual=fake.pyint())]

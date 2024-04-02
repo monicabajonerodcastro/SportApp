@@ -7,7 +7,7 @@ administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/ad
 
 @administracion_blueprint.route('/health-check', methods = ['GET'])
 def health_check():
-    return jsonify({"mensaje":"UP"}),200  
+    return jsonify({"description":"UP"}),200  
 
 @administracion_blueprint.route('/plan', methods = ['GET'])
 def obtener_planes():
