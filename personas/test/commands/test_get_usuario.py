@@ -28,7 +28,7 @@ def test_get_usuario(mock_session):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = user_mock
     
-    service = GetUsuario(mock_session_instance,user_mock.email )
+    service = GetUsuario(mock_session_instance,"",user_mock.email )
     result = service.execute()
     assert mock_session_instance.query.called
     assert result.email == user_mock.email

@@ -26,8 +26,9 @@ def handle_exception(err):
 
     
 def init_db():
-  if not inspect(engine).has_table("usuario"):
-    Base.metadata.create_all(bind=engine)
+  #if not inspect(engine).has_table("usuario") or not inspect(engine).has_table("perfil_deportivo"):
+  #Base.metadata.drop_all(bind=engine)
+  Base.metadata.create_all(bind=engine)
     
 with app.app_context():
   init_db()

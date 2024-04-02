@@ -15,7 +15,16 @@ class InvalidFormatField(ApiError):
     code = 400
     description = "Parámeto(s) con formato inválido"   
 
+class InvalidUser(ApiError):
+    code = 400
+    description = "Usuario no existe" 
+
+class PerfilDeportivoAlreadyRegistered(ApiError):
+    code = 400
+    description = "Perfil Deportivo ya existe" 
+
 class InvalidAuthentication(ApiError):
     def __init__(self, code = 401, description= "Usuario y/o contraseña incorrectos"):
         self.code = code
         self.description = description
+

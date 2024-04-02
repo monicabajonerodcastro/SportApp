@@ -18,7 +18,7 @@ def mock_session():
     return MockSession()
 
 
-def crear_usuario(session, usuario_mock):
+def crear_usuario(session, usuario_mock,headers):
     return CrearUsuario(session,
                         {"email": usuario_mock.email,
                         "nombre": usuario_mock.nombre,
@@ -27,7 +27,8 @@ def crear_usuario(session, usuario_mock):
                         "numero_identificacion": usuario_mock.numero_identificacion,
                         "username": usuario_mock.username,
                         "password": usuario_mock.password,
-                        "suscripcion": usuario_mock.suscripcion}
+                        "suscripcion": usuario_mock.suscripcion},
+                        headers
                      )
 
 
@@ -41,7 +42,7 @@ def test_crear_usuario():
     query = MagicMock()
     query.filter.return_value.first.return_value = my_usuario_mock
     session.query.return_value = query
-    crearUsuario = crear_usuario(session, my_usuario_mock)
+    crearUsuario = crear_usuario(session, my_usuario_mock,"")
     result = crearUsuario.execute()
     assert result == "Usuario Registrado con exito"
 
@@ -55,7 +56,7 @@ def test_crear_usuario_missing_requiredfield():
 
 
     with pytest.raises(MissingRequiredField) as exc_info:
-        service = crear_usuario(session, my_usuario_mock)
+        service = crear_usuario(session, my_usuario_mock,""),
         service.execute()
 
 
@@ -73,7 +74,7 @@ def test_crear_usuario_invalid_formatfield():
 
 
     with pytest.raises(InvalidFormatField) as exc_info:
-        service = crear_usuario(session, my_usuario_mock)
+        service = crear_usuario(session, my_usuario_mock,"")
         service.execute()
 
 

@@ -3,7 +3,7 @@ from src.models.usuario import Usuario
 
 
 class GetUsuario(BaseCommannd):
-    def __init__(self, session,email):
+    def __init__(self, session,header, email):
 
         self.session = session
         self.user = self.session.query(Usuario).filter(Usuario.email == email).first()
