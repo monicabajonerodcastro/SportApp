@@ -5,17 +5,21 @@ import os
 from flask import Flask, jsonify
 from .errores.errores import ApiError
 from .blueprints.administracion import administracion_blueprint
+from .blueprints.swagger import swagger_ui_blueprint
 from .modelos.database import Base, engine
 from sqlalchemy import inspect
 
+SWAGGER_URL="/swagger"
+
 app = Flask(__name__)
 
+app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.register_blueprint(administracion_blueprint)
 
 @app.errorhandler(ApiError)
 def handle_exception(err):
     response = {
-      "msg": err.description,
+      "description": err.description,
       "version": os.environ["VERSION"]
     }
     return jsonify(response), err.code
