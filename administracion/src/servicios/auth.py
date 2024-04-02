@@ -18,7 +18,8 @@ def validar_autenticacion(headers):
     }
     validacion_token = http.post_request(url=f"{HOST_PERSONAS}/personas/validar-token", data=body)
     estado_auth = validacion_token.status_code
+    if estado_auth == 401:
+        raise InvalidAuthenticationError(code=estado_auth, description=validacion_token.json()["msg"])
     if estado_auth < 200 or estado_auth > 209:
-        mensaje_auth = validacion_token.json()
-        raise InvalidAuthenticationError(code=estado_auth, description=mensaje_auth["msg"])
+        raise InvalidAuthenticationError(code=estado_auth, description=validacion_token.text)
 

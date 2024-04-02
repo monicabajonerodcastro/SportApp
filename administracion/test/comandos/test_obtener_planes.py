@@ -8,14 +8,17 @@ from src.errores.errores import InvalidAuthenticationError
 from test.mock_session import MockSession
 
 fake = Faker()
+_SECRET_TEST = "secret"
 
 @pytest.fixture
 def mock_session():
     return MockSession()
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_planes(mock_session, requests_mock):
+def test_obtener_planes(mock_session, requests_mock, mocker):
     mock_plan = planes_mock()
+
+    mocker.patch("src.servicios.secret.get_secret", return_value=_SECRET_TEST)
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
@@ -30,8 +33,10 @@ def test_obtener_planes(mock_session, requests_mock):
     assert len(result) > 0
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_planes_sin_autorizacion(mock_session):
+def test_obtener_planes_sin_autorizacion(mock_session, mocker):
     mock_plan = planes_mock()
+
+    mocker.patch("src.servicios.secret.get_secret", return_value=_SECRET_TEST)
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
