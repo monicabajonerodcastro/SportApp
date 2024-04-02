@@ -24,8 +24,13 @@ jobs:
             pip install pipenv
             cd personas
             pipenv install --system --deploy
+        - name: Autenticación de Google
+          id: auth
+          uses: google-github-actions/auth@v2
+          with:
+            credentials_json: '${{ secrets.GCP_SA_STORAGE_KEY }}'
         - name: Correr pruebas
-          run: pytest personas/test -v
+          run: pytest personas/test -v --cov=. --cov-fail-under=80
         - name: Validar resultado con errores
           if: ${{ failure() }}
           env:
@@ -36,6 +41,7 @@ jobs:
           env:
             MENSAJE_EXITO: Todas las pruebas fueron exitosas
           run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+
     correr-pruebas-administracion:
       name: Correr pruebas administracion
       runs-on: ubuntu-latest
@@ -52,8 +58,13 @@ jobs:
           cd administracion
           ls -la
           pipenv install --system --deploy
+      - name: Autenticación de Google
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_STORAGE_KEY }}'
       - name: Correr pruebas
-        run: pytest administracion/test -v
+        run: pytest administracion/test -v --cov=. --cov-fail-under=80
       - name: Validar resultado con errores
         if: ${{ failure() }}
         env:
