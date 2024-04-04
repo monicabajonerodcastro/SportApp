@@ -12,7 +12,7 @@ done
 
 # Obtener el número de tag más alto, agregar v.1.0.0 si no existe ninguno
 git fetch --prune --unshallow 2>/dev/null
-CURRENT_VERSION=`git describe --tags --abbrev=0 2>/dev/null`
+CURRENT_VERSION=`git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null`
 
 if [[ $CURRENT_VERSION == '' ]]
 then
