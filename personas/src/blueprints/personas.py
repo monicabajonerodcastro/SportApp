@@ -26,7 +26,7 @@ def crear_usuario():
         result = CrearUsuario(db_session, json_request).execute()  
         return jsonify({'description':result}),201  
     else :
-        return jsonify({'msg' :"Usuario ya esta registrado"}),400
+        return jsonify({'description' :"Usuario ya esta registrado"}),400
 
  
 @personas_blueprint.route('/perfildeportivo', methods = ['POST'])
@@ -34,7 +34,7 @@ def crear_perfil_deportivo():
     json_request = request.get_json()
     
     result = CrearPerfilDeportivo(db_session, json_request).execute()  
-    return jsonify({'msg':result}),201  
+    return jsonify({'description':result}),201  
 
 
 @personas_blueprint.route('/ingresar', methods=["POST"])
