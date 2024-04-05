@@ -19,7 +19,7 @@ app.register_blueprint(personas_blueprint)
 @app.errorhandler(ApiError)
 def handle_exception(err):
     response = {
-      "msg": err.description,
+      "description": err.description,
       "version": os.environ["VERSION"]
     }
     return jsonify(response), err.code

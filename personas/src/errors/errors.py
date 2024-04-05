@@ -28,3 +28,7 @@ class InvalidAuthentication(ApiError):
         self.code = code
         self.description = description
 
+class NotFoundError(ApiError):
+    def __init__(self, code = 404, description= "No se encontró el recurso solicitado"):
+        self.code = code
+        self.description = description

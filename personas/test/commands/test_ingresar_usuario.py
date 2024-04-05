@@ -30,8 +30,6 @@ def test_ingresar(mock_session):
     service = IngresarUsuario(session=mock_session_instance, json_request=json_request)
     (result, status) = service.execute()
 
-    print(result)
-
     assert mock_session_instance.query.called
     assert status == 200
     assert result["token"]
