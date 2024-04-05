@@ -16,7 +16,7 @@ def mock_session():
     return MockSession()
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_usuario_id(mock_session, requests_mock, mocker):
+def test_obtener_usuario_id(mock_session, mocker):
     mock_usuario = usuario_mock()
 
     mock_session_instance = mock_session.return_value
@@ -32,7 +32,7 @@ def test_obtener_usuario_id(mock_session, requests_mock, mocker):
     assert result["email"] == mock_usuario.email
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_plan_id_sin_autorizacion(mock_session, mocker):
+def test_obtener_plan_id_sin_autorizacion(mock_session):
     mock_usuario = usuario_mock()
 
     mock_session_instance = mock_session.return_value
