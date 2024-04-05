@@ -2,7 +2,7 @@
 name: Despliegue del microservicio personas
 on: 
     push:
-        branches: [main]
+        branches: [develop]
         paths: 
           - personas/**
           - .github/workflows/gcp_microservicio_personas.yml
