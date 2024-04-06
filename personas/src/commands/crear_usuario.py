@@ -42,7 +42,7 @@ class CrearUsuario(BaseCommannd):
                                	numero_identificacion = numero_identificacion,
                                 username = username,
                                 password = password,
-                                suscripcion = suscripcion)
+                                suscripcion = suscripcion, rol="DEPORTISTA")
         
    
     def execute(self):
