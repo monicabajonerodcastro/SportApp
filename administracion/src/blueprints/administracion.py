@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
+from src.comandos.asignar_deportista_a_plan import AsignarDeportistaPlan
 from src.modelos.database import db_session
 
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
@@ -16,3 +17,7 @@ def obtener_planes():
 @administracion_blueprint.route('/plan/<string:id_plan>', methods = ['GET'])
 def get_plan_por_id(id_plan):
     return ObtenerPlanId(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@administracion_blueprint.route('/plan/deportista', methods=["POST"])
+def asignar_deportista_a_plan():
+    return AsignarDeportistaPlan(session=db_session, headers=request.headers, json_request=request.get_json()).execute()

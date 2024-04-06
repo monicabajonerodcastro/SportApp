@@ -96,6 +96,52 @@
             }
           }
         }
+      },
+      "/administracion/plan/deportista": {
+        "post": {
+          "description": "Asignar un deportista a un plan de suscripción",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Identificador del deportista e identificador del plan de suscripción",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/AsociacionDeportistaPlan"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Deportista asignado correctamente al plan"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró un deportista con el id [...] / No se encontró un plan con el id [...]"
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -118,6 +164,21 @@
           "valor":  {
             "type": "int",
             "example": 20000
+          }
+        }
+      },
+      "AsociacionDeportistaPlan":{
+        "type": "object",
+        "properties":{
+          "id_plan": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_deportista":  {
+            "type": "string",
+            "format": "uuid",
+            "example": "b553cea1-1a09-42fc-aa38-1c5029b9bdb8"
           }
         }
       }
