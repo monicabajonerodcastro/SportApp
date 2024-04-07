@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-loaded = load_dotenv('.env.environment')
+loaded = load_dotenv('.env.prod')
 
 import os
 from flask import Flask, jsonify
@@ -26,8 +26,7 @@ def handle_exception(err):
 
     
 def init_db():
-  if not inspect(engine).has_table("usuarios"):
-    Base.metadata.create_all(bind=engine)
+  Base.metadata.create_all(bind=engine)
     
 with app.app_context():
   init_db()

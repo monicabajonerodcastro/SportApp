@@ -110,6 +110,51 @@
             }
           }
         }
+      },
+      "/personas/:id_persona:": {
+        "get": {
+          "description": "Obtiene un usuario por id de usuario",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "id_persona",
+              "description": "Id del usuario a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle de usuario solicitado",
+              "schema": {
+                "$ref": "#/definitions/Usuario"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "El usuario no se encuentra registrado"
+            }
+          }
+        }
       }
     },
     "definitions":{

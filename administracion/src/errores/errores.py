@@ -17,15 +17,19 @@ class BadRequestError(ApiError):
         self.code = code
         self.description = description
 
+
+class MissingRequiredField(ApiError):
+    def __init__(self, code = 404, description="No se encontró un parámetro requerido", parameter: str = None) -> None:
+        self.code = code
+        self.description = description
+        if parameter:
+            self.description = f"No se encontró el parámetro [{parameter}]"
+
 class MissingRequiredToken(ApiError):
     code = 401
     description = "No existe token en la solicitud" 
 
-class MissingRequiredField(ApiError):
-    code = 400
-    description = "Parámetros requeridos"
-
-class InvalidFormatField(ApiError):
+    class InvalidFormatField(ApiError):
     code = 400
     description = "Parámeto(s) con formato inválido"   
 
