@@ -1,18 +1,15 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 from faker import Faker
 
 from src.commands.crear_perfil_deportivo import CrearPerfilDeportivo
 from src.models.perfil_deportivo import PerfilDeportivo
 from src.models.usuario import Usuario
 from test.mock_session import MockSession
-from src.errors.errors import MissingRequiredField,InvalidFormatField,InvalidUser,PerfilDeportivoAlreadyRegistered
-import random, os
+from src.errors.errors import MissingRequiredField,InvalidUser,PerfilDeportivoAlreadyRegistered
+import random
 
 fake = Faker()
-
-
-
 
 @pytest.fixture
 def mock_session():
@@ -44,18 +41,7 @@ def perfildeportivo_mock():
     return PerfilDeportivo( fake.uuid4(),random.choice(['F', 'M', 'O']), fake.pyint(min_value=15), fake.pyint(), fake.pyint(max_value=250), fake.country(), fake.city(),fake.country(), fake.city(),fake.pyint(),fake.pyfloat(max_value=100,right_digits=2),fake.pyint(),fake.pyfloat(right_digits=2),"","","","","","",)
 
 def usuario_mock():
-    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4())
-
-
-""" def test_crear_perfildeportivo():
-    my_perfildeportivo_mock= perfildeportivo_mock()
-    session = MagicMock()
-    query = MagicMock()
-    query.filter.return_value.first.return_value = usuario_mock()
-    session.query.return_value = query
-    crearPerfilDeportivo = crear_perfil_deportivo(session, my_perfildeportivo_mock)
-    result = crearPerfilDeportivo.execute()
-    assert result == "Perfil Deportivo Registrado con exito" """
+    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
 
 def test_crear_perfildeportivo_missing_requiredfield():
     my_perfildeportivo_mock= perfildeportivo_mock()
