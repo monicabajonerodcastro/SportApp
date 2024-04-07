@@ -29,7 +29,7 @@ class MissingRequiredToken(ApiError):
     code = 401
     description = "No existe token en la solicitud" 
 
-    class InvalidFormatField(ApiError):
+class InvalidFormatField(ApiError):
     code = 400
     description = "Parámeto(s) con formato inválido"   
 
