@@ -3,6 +3,12 @@ from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
 from src.modelos.database import db_session
 
+from flask import Blueprint, jsonify, request
+from src.comandos.crear_socio import CrearSocio
+from src.comandos.obtener_socio import ObtenerSocio
+from src.comandos.obtener_socios import ObtenerSocios
+from src.errores.errores import MissingRequiredField
+
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
 
 @administracion_blueprint.route('/health-check', methods = ['GET'])
@@ -16,3 +22,21 @@ def obtener_planes():
 @administracion_blueprint.route('/plan/<string:id_plan>', methods = ['GET'])
 def get_plan_por_id(id_plan):
     return ObtenerPlanId(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@administracion_blueprint.route('/socio', methods = ['POST'])
+def crear_socio():
+    json_request = request.get_json()
+    
+    if ( "email" not in json_request.keys() ) :
+        raise MissingRequiredField()
+
+    usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"]).execute()
+    if usuario is None :
+        result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        return jsonify({'description':result}),201  
+    else :
+        return jsonify({'msg' :"Usuario ya esta registrado"}),400
+    
+@administracion_blueprint.route('/socios', methods = ['GET'])
+def obtener_socios():  
+    return ObtenerSocios(session=db_session, headers=request.headers,test=False).execute()
