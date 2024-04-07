@@ -42,3 +42,7 @@ class InvalidAuthentication(ApiError):
         self.code = code
         self.description = description
 
+class MissingRequiredField2(ApiError):
+    code = 400
+    description = "Parámetros requeridos"
+
