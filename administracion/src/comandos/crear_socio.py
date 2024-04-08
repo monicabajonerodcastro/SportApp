@@ -1,6 +1,6 @@
 from src.modelos.socio import Socio
 from src.comandos.base_command import BaseCommand
-from src.errores.errores import MissingRequiredField2,InvalidFormatField
+from src.errores.errores import MissingRequiredField,InvalidFormatField
 from src.servicios import auth
 import re
 
@@ -17,7 +17,7 @@ class CrearSocio(BaseCommand):
                             "username" not in json_request.keys() or json_request["username"] =="" or
                                 "password" not in json_request.keys() or json_request["password"] =="" or
                                     "detalle" not in json_request.keys() or json_request["detalle"] =="" ) :  
-                                    raise MissingRequiredField2()
+                                    raise MissingRequiredField()
 
 
         self.session = session
