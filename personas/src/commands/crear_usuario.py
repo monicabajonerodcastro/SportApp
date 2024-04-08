@@ -5,7 +5,7 @@ import re
 
 
 class CrearUsuario(BaseCommannd):
-    def __init__(self, session, json_request,headers) -> None:
+    def __init__(self, session, json_request) -> None:
         
 
         if ( "email" not in json_request.keys() or json_request["email"] =="" or

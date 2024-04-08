@@ -2,7 +2,11 @@ import jwt, os, datetime
 from src.errors.errors import InvalidAuthentication
 from src.services.secret import get_secret
 
-secret_encode = get_secret(os.environ["PROJECT_ID"], "secret_jwt")
+if os.environ["ENVIRONMENT"] == 'prod':
+    secret_encode = get_secret(os.environ["PROJECT_ID"], "secret_jwt")
+else:
+    secret_encode = "HPgBKB0wzo2NWbT"
+
 
 def generar_token(usuario):
     payload = {

@@ -6,7 +6,7 @@ from test.mock_session import MockSession
 from src.comandos.crear_socio import CrearSocio
 from src.modelos.socio import Socio
 from test.mock_session import MockSession
-from src.errores.errores import MissingRequiredField,InvalidFormatField
+from src.errores.errores import MissingRequiredField2,InvalidFormatField
 import random, os
 
 fake = Faker()
@@ -56,7 +56,7 @@ def test_crear_socio_missing_requiredfield():
     session.query.return_value = query
 
 
-    with pytest.raises(MissingRequiredField) as exc_info:
+    with pytest.raises(MissingRequiredField2) as exc_info:
         service = crear_socio(session, my_socio_mock,"",True),
         service.execute()
 

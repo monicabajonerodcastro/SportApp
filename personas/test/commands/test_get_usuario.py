@@ -9,15 +9,9 @@ import random
 
 fake = Faker()
 
-
-
-
 @pytest.fixture
 def mock_session():
     return MockSession()
-
-
-
 
 @patch('test.mock_session', autospec=True)
 def test_get_usuario(mock_session):
@@ -28,12 +22,10 @@ def test_get_usuario(mock_session):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = user_mock
     
-    service = GetUsuario(mock_session_instance,"",user_mock.email )
+    service = GetUsuario(mock_session_instance,user_mock.email )
     result = service.execute()
     assert mock_session_instance.query.called
     assert result.email == user_mock.email
-
-
 
 def usuario_mock():
     return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4())

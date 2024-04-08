@@ -2,7 +2,7 @@
 name: Despliegue del microservicio personas
 on: 
     push:
-        branches: [main]
+        branches: [develop]
         paths: 
           - personas/**
           - .github/workflows/gcp_microservicio_personas.yml
@@ -27,6 +27,13 @@ jobs:
           uses: 'google-github-actions/setup-gcloud@v2'
           with:
             project_id: ${{env.PROJECT_ID}}
+        - name: Crear archivo de credenciales de GCP
+          uses: DamianReeves/write-file-action@master
+          with:
+            path: personas/credentials.json
+            contents: |
+              ${{secrets.GCP_SA_STORAGE_KEY}}
+            write-mode: append
         - name: Construir la imagen de docker
           run: docker build -f personas/Dockerfile -t $IMAGE_NAME:latest .
         - name: Tag automatico de releases

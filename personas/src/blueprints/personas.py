@@ -3,6 +3,7 @@ from src.commands.crear_usuario import CrearUsuario
 from src.commands.ingresar_usuario import IngresarUsuario
 from src.commands.get_usuario import GetUsuario
 from src.commands.crear_perfil_deportivo import CrearPerfilDeportivo
+from src.commands.get_usuario_por_id import GetUsuarioPorId
 from src.commands.validar_token import ValidarToken
 from src.models.database import db_session
 from src.errors.errors import MissingRequiredField
@@ -26,16 +27,14 @@ def crear_usuario():
         result = CrearUsuario(db_session, json_request).execute()  
         return jsonify({'description':result}),201  
     else :
-        return jsonify({'msg' :"Usuario ya esta registrado"}),400
+        return jsonify({'description' :"Usuario ya esta registrado"}),400
 
- 
 @personas_blueprint.route('/perfildeportivo', methods = ['POST'])
 def crear_perfil_deportivo():
     json_request = request.get_json()
     
     result = CrearPerfilDeportivo(db_session, json_request).execute()  
-    return jsonify({'msg':result}),201  
-
+    return jsonify({'description':result}),201  
 
 @personas_blueprint.route('/ingresar', methods=["POST"])
 def ingresar_usuario():
@@ -47,5 +46,8 @@ def validar_token():
     json_request = request.get_json()
     return ValidarToken(json_request=json_request).execute()
 
+@personas_blueprint.route('/<string:id_persona>', methods=["GET"])
+def obtener_usuario_por_id(id_persona):
+    return GetUsuarioPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
      
 
