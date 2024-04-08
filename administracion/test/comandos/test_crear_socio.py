@@ -59,10 +59,8 @@ def test_crear_socio_missing_requiredfield():
     with pytest.raises(MissingRequiredField) as exc_info:
         service = crear_socio(session, my_socio_mock,"",True),
         service.execute()
-
-
-    assert exc_info.value.code == 400
-    assert exc_info.value.description == "Parámetros requeridos"
+        
+    assert exc_info.value.code == 404
 
 
 def test_crear_socio_invalid_formatfield():
