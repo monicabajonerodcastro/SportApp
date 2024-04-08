@@ -30,12 +30,12 @@ def crear_socio():
     if ( "email" not in json_request.keys() ) :
         raise MissingRequiredField()
 
-    usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"]).execute()
+    usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
     if usuario is None :
         result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
         return jsonify({'description':result}),201  
     else :
-        return jsonify({'msg' :"Usuario ya esta registrado"}),400
+        return jsonify({'description' :"Usuario ya esta registrado"}),400
     
 @administracion_blueprint.route('/socios', methods = ['GET'])
 def obtener_socios():  
