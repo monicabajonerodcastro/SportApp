@@ -23,3 +23,11 @@ class MissingRequiredField(ApiError):
         self.description = description
         if parameter:
             self.description = f"No se encontró el parámetro [{parameter}]"
+
+class InvalidFormatField(ApiError):
+    code = 400
+    description = "Parámeto(s) con formato inválido"   
+
+class SocioAlreadyRegistered(ApiError):
+    code = 400
+    description = "Socio de negocio ya existe" 
