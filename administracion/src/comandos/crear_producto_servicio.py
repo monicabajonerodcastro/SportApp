@@ -65,5 +65,4 @@ class CrearProductoServicio(BaseCommand):
     def execute(self):
         self.session.add(self.producto_servicio)
         self.session.commit()
-        return "Producto o Servicio Registrado con exito"
-         
+        return {"description": "Producto o Servicio Registrado con exito"}         

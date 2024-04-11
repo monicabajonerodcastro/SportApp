@@ -29,8 +29,6 @@ class ProductoServicio(Base):
 
 class ProductoServicioSchema(Schema):
 	id = fields.UUID(dump_only=True)
-	id_plan  = fields.Str()
-	id_deportista  = fields.Str()
 	nombre = fields.Str()
 	valor = fields.Str()
 	detalle = fields.Str()
