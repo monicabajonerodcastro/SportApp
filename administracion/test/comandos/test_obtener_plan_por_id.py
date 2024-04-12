@@ -47,6 +47,6 @@ def test_obtener_plan_id_sin_autorizacion(mock_session, mocker):
     assert not mock_session_instance.query.called
 
 def plan_mock():
-    return Plan(id=fake.uuid4(), nombre=fake.name(), funciones=fake.text(), valor_mensual=fake.pyint())
+    return Plan(id=fake.uuid4(), nombre=fake.name(), llave=fake.text(), funciones=fake.text(), valor_mensual=fake.pyint())
 
 
