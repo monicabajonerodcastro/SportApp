@@ -26,7 +26,7 @@
 - `idPlan`: Id del plan a consultar
 
 *Headers:*
-- `Authorization`: Token tipo Bearer de autorización 
+- `Authorization`: Token tipo Bearer de autorización
 
 *Responses:*
 - `200`: Información del plan

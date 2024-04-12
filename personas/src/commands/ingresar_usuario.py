@@ -3,7 +3,6 @@ from src.models.usuario import Usuario, UsuarioJsonSchema
 from src.errors.errors import MissingRequiredField,InvalidFormatField
 from src.services import servicio_token
 from sqlalchemy import and_
-from flask import jsonify
 import re
 
 usuario_schema = UsuarioJsonSchema()
@@ -30,6 +29,7 @@ class IngresarUsuario(BaseCommannd):
             return {"description": "Usuario y/o contraseña inválidos"}, 400
         user_response = {}
         user_response["token"] = servicio_token.generar_token(usuario=user.username)
+        user_response["rol"] = user.rol
         return user_response, 200 
 
     
