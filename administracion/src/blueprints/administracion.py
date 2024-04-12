@@ -8,13 +8,23 @@ from flask import Blueprint, jsonify, request
 from src.comandos.crear_socio import CrearSocio
 from src.comandos.obtener_socio import ObtenerSocio
 from src.comandos.obtener_socios import ObtenerSocios
+from src.comandos.obtener_paises import ObtenerPaises
+from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
 
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
 
+#####################################################################
+#                          Health Check                             #
+#####################################################################
+
 @administracion_blueprint.route('/health-check', methods = ['GET'])
 def health_check():
     return jsonify({"description":"UP"}),200  
+
+#####################################################################
+#                              Planes                               #
+#####################################################################
 
 @administracion_blueprint.route('/plan', methods = ['GET'])
 def obtener_planes():
@@ -27,6 +37,10 @@ def get_plan_por_id(id_plan):
 @administracion_blueprint.route('/plan/deportista', methods=["POST"])
 def asignar_deportista_a_plan():
     return AsignarDeportistaPlan(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
+
+#####################################################################
+#                             Socios                                #
+#####################################################################
 
 @administracion_blueprint.route('/socio', methods = ['POST'])
 def crear_socio():
@@ -45,3 +59,15 @@ def crear_socio():
 @administracion_blueprint.route('/socios', methods = ['GET'])
 def obtener_socios():  
     return ObtenerSocios(session=db_session, headers=request.headers,test=False).execute()
+
+#####################################################################
+#                         Paises/Ciudades                           #
+#####################################################################
+
+@administracion_blueprint.route("/paises", methods = ['GET'])
+def obtener_paises():
+    return ObtenerPaises(session=db_session).execute()
+
+@administracion_blueprint.route("/paises/<string:id_pais>/ciudades", methods = ['GET'])
+def obtener_ciudades(id_pais):
+    return ObtenerCiudades(session=db_session, id_pais=id_pais).execute()
