@@ -1,7 +1,8 @@
 from src.comandos.base_command import BaseCommand
-from src.modelos.socio import Socio
+from src.modelos.socio import Socio, SocioJsonSchema
 from src.servicios import auth
 
+socio_schema=SocioJsonSchema()
 
 class ObtenerSocio(BaseCommand):
     def __init__(self, session, email, username, headers):
@@ -13,5 +14,16 @@ class ObtenerSocio(BaseCommand):
             self.socio = self.session.query(Socio).filter(Socio.username == username).first()
     
     def execute(self):
-        auth.validar_autenticacion(headers=self.headers)
+        #auth.validar_autenticacion(headers=self.headers)
         return self.socio   
+    
+class ObtenerSocioId(BaseCommand):
+    def __init__(self, session, id, headers):
+
+        self.session = session
+        self.headers = headers
+        self.socio = self.session.query(Socio).filter(Socio.id == id).first()
+
+    def execute(self):
+        auth.validar_autenticacion(headers=self.headers)
+        return socio_schema.dump(self.socio),200
