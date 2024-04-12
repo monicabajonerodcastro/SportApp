@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from faker import Faker
 
 from src.errores.errores import MissingRequiredField,BadRequestError,NotFoundError
@@ -16,8 +16,8 @@ def mock_session():
     return MockSession()
 
 
-def crear_producto_servicio(session, producto_servicio_mock):
-    return CrearProductoServicio(session,
+def crear_producto_servicio(session, headers, producto_servicio_mock):
+    return CrearProductoServicio(session, headers,
                         {
                         "nombre": producto_servicio_mock.nombre,
                         "valor": producto_servicio_mock.valor,
@@ -32,82 +32,90 @@ def crear_producto_servicio(session, producto_servicio_mock):
 def producto_servicio_mock():
     return ProductoServicio(fake.name(),fake.pyint(min_value=1000), fake.name(), fake.name(), fake.uuid4(),fake.uuid4())
 
-
-def test_crear_producto_servicio():
+@patch('test.mock_session', autospec=True)
+def test_crear_producto_servicio(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
-    session = MagicMock()
-    productoUsuario= crear_producto_servicio(session, my_producto_servicio_mock)
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    productoUsuario= crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
     result = productoUsuario.execute()
     assert result['description'] == "Producto o Servicio Registrado con exito"
 
-def test_crear_producto_servicio_missing_requiredfield():
+@patch('test.mock_session', autospec=True)
+def test_crear_producto_servicio_missing_requiredfield(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.nombre=''
-    session = MagicMock()
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
 
     with pytest.raises(MissingRequiredField) as exc_info:
-        service = crear_producto_servicio(session, my_producto_servicio_mock)
+        service = crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
         service.execute()
 
 
     assert exc_info.value.code == 404
     assert exc_info.value.description.__contains__("No se encontró el parámetro")
 
-
-def ttest_crear_producto_servicio_invalid_deporte_formatfield():
+@patch('test.mock_session', autospec=True)
+def ttest_crear_producto_servicio_invalid_deporte_formatfield(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.id_deporte='asasasasasa'
-    session = MagicMock()
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
 
     with pytest.raises(BadRequestError) as exc_info:
-        service = crear_producto_servicio(session, my_producto_servicio_mock)
+        service = crear_producto_servicio(mock_session_instance,{"Authorization": "Bearer"}, my_producto_servicio_mock)
         service.execute()
 
 
     assert exc_info.value.code == 400
     assert exc_info.value.description == "El identificador del Deporte no es válido"
 
-def test_crear_producto_servicio_invalid_socio_formatfield():
+@patch('test.mock_session', autospec=True)
+def test_crear_producto_servicio_invalid_socio_formatfield(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.id_socio='asasasasasa'
-    session = MagicMock()
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
 
     with pytest.raises(BadRequestError) as exc_info:
-        service = crear_producto_servicio(session, my_producto_servicio_mock)
+        service = crear_producto_servicio(mock_session_instance,{"Authorization": "Bearer"}, my_producto_servicio_mock)
         service.execute()
 
 
     assert exc_info.value.code == 400
     assert exc_info.value.description == "El identificador del Socio no es válido"
 
-
-def test_crear_producto_servicio_deporte_none():
+@patch('test.mock_session', autospec=True)
+def test_crear_producto_servicio_deporte_none(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
-    session = MagicMock()
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
     query = MagicMock()
     query.filter.return_value.first.return_value = None
-    session.query.return_value = query
+    mock_session_instance.query.return_value = query
 
 
     with pytest.raises(NotFoundError) as exc_info:
-        service = crear_producto_servicio(session, my_producto_servicio_mock)
+        service = crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"},my_producto_servicio_mock)
         service.execute()
 
 
     assert exc_info.value.code == 404
     assert exc_info.value.description.__contains__("No se encontró un Deporte con el id")
 
-
-def test_crear_producto_servicio_socio_none():
+@patch('test.mock_session', autospec=True)
+def test_crear_producto_servicio_socio_none(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
-    session = MagicMock()
+    mock_session_instance = mock_session.return_value
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
     query = MagicMock()
     query.filter.return_value.first.return_value = None
-    session.query.return_value = query
+    mock_session_instance.query.return_value = query
 
 
     with pytest.raises(NotFoundError) as exc_info:
-        service = crear_producto_servicio(session, my_producto_servicio_mock)
+        service = crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"},my_producto_servicio_mock)
         service.execute()
 
 

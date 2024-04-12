@@ -15,14 +15,14 @@ def mock_session():
     return MockSession()
 
 @patch('test.mock_session', autospec=True)
-def test_obtener_producto_servicio(mock_session):
+def test_obtener_producto_servicio(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     mock_session_instance = mock_session.return_value
 
     mock_query = mock_session_instance.query.return_value
     mock_query.all.return_value = my_producto_servicio_mock
- 
-    service = ObtenerProductoServicios(session=mock_session_instance)
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    service = ObtenerProductoServicios(session=mock_session_instance,headers={"Authorization": "Bearer"})
     (result, _) = service.execute()
 
     assert mock_session_instance.query.called

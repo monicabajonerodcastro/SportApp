@@ -6,9 +6,9 @@ from src.servicios import auth
 producto_servicio_schema = ProductoServicioSchema()
 
 class ObtenerProductoServicios(BaseCommand):
-    def __init__(self, session):
+    def __init__(self, session,headers):
         self.session = session
-        
+        auth.validar_autenticacion(headers)
     
     def execute(self):
  

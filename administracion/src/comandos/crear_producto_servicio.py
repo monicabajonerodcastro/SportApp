@@ -10,10 +10,10 @@ producto_servicio_schema = ProductoServicioSchema()
 
 
 class CrearProductoServicio(BaseCommand):
-    def __init__(self, session, json_request) -> None:
+    def __init__(self, session, headers, json_request) -> None:
         
         self.session = session
-
+        auth.validar_autenticacion(headers)
 
         if "nombre" not in json_request.keys() or json_request["nombre"] == "":
             raise MissingRequiredField(parameter="Producto Servicio (nombre)")

@@ -69,11 +69,11 @@ def obtener_socios():
 
 @administracion_blueprint.route('/producto_servicio', methods = ['POST'])
 def crear_producto_servicio():  
-    return CrearProductoServicio(session=db_session, json_request=request.get_json()).execute()
+    return CrearProductoServicio(session=db_session,  headers=request.headers,json_request=request.get_json()).execute()
 
 @administracion_blueprint.route('/producto_servicio', methods = ['GET'])
 def obtener_producto_servicio():  
-    return ObtenerProductoServicios(session=db_session).execute()
+    return ObtenerProductoServicios(session=db_session, headers=request.headers).execute()
 
 #####################################################################
 #                         Paises/Ciudades                           #
