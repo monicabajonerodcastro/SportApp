@@ -1,3 +1,4 @@
+
 from flask import Blueprint, jsonify, request
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
@@ -11,6 +12,8 @@ from src.comandos.obtener_socios import ObtenerSocios
 from src.comandos.obtener_paises import ObtenerPaises
 from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
+from src.comandos.crear_producto_servicio import CrearProductoServicio
+from src.comandos.obtener_producto_servicios import ObtenerProductoServicios
 
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
 
@@ -59,6 +62,18 @@ def crear_socio():
 @administracion_blueprint.route('/socios', methods = ['GET'])
 def obtener_socios():  
     return ObtenerSocios(session=db_session, headers=request.headers,test=False).execute()
+
+#####################################################################
+#                           Servicios                               #
+#####################################################################
+
+@administracion_blueprint.route('/producto_servicio', methods = ['POST'])
+def crear_producto_servicio():  
+    return CrearProductoServicio(session=db_session,  headers=request.headers,json_request=request.get_json()).execute()
+
+@administracion_blueprint.route('/producto_servicio', methods = ['GET'])
+def obtener_producto_servicio():  
+    return ObtenerProductoServicios(session=db_session, headers=request.headers).execute()
 
 #####################################################################
 #                         Paises/Ciudades                           #
