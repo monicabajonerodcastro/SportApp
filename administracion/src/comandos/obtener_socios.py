@@ -10,12 +10,14 @@ class ObtenerSocios(BaseCommand):
         self.session = session
         self.headers = headers
         self.test = test
+        print(headers)
         
     
     def execute(self):
         if self.test==False:
             auth.validar_autenticacion(headers=self.headers)
+
         self.socios = self.session.query(Socio).all() 
-        return [socio_schema.dump(plan) for plan in self.socios], 200  
+        return [socio_schema.dump(socio) for socio in self.socios], 200
 
 

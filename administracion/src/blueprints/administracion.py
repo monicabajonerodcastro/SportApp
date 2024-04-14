@@ -1,5 +1,6 @@
 
 from flask import Blueprint, jsonify, request
+from src.comandos.actualizar_socio import ActualizarSocio
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
 from src.comandos.asignar_deportista_a_plan import AsignarDeportistaPlan
@@ -7,7 +8,7 @@ from src.modelos.database import db_session
 
 from flask import Blueprint, jsonify, request
 from src.comandos.crear_socio import CrearSocio
-from src.comandos.obtener_socio import ObtenerSocio
+from src.comandos.obtener_socio import ObtenerSocio, ObtenerSocioId
 from src.comandos.obtener_socios import ObtenerSocios
 from src.comandos.obtener_paises import ObtenerPaises
 from src.comandos.obtener_ciudades import ObtenerCiudades
@@ -53,6 +54,7 @@ def crear_socio():
         raise MissingRequiredField()
 
     usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
+    print(json_request)
     if usuario is None :
         result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
         return jsonify({'description':result}),201  
@@ -62,6 +64,22 @@ def crear_socio():
 @administracion_blueprint.route('/socios', methods = ['GET'])
 def obtener_socios():  
     return ObtenerSocios(session=db_session, headers=request.headers,test=False).execute()
+
+
+@administracion_blueprint.route('/socios/<string:id_socio>', methods = ['GET'])
+def get_socio_por_id(id_socio):
+    return ObtenerSocioId(db_session, id=id_socio, headers=request.headers).execute()  
+        
+@administracion_blueprint.route('/socio/<string:id_socio>', methods = ['POST'])
+def actualizar_socio(id_socio):
+    json_request = request.get_json()
+    
+    if ( "email" not in json_request.keys() ) :
+        raise MissingRequiredField()
+    
+    result = ActualizarSocio(session=db_session, id=id_socio, headers=request.headers, json_request=json_request, test=False).execute()  
+    return jsonify({'description':result}),201  
+    
 
 #####################################################################
 #                           Servicios                               #
