@@ -1,17 +1,14 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 from faker import Faker
 
 from src.commands.crear_usuario import CrearUsuario
 from src.models.usuario import Usuario
 from test.mock_session import MockSession
 from src.errors.errors import MissingRequiredField,InvalidFormatField
-import random, os
+import random
 
 fake = Faker()
-
-
-
 
 @pytest.fixture
 def mock_session():
@@ -33,7 +30,7 @@ def crear_usuario(session, usuario_mock):
 
 
 def usuario_mock():
-    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4())
+    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
 
 
 def test_crear_usuario():
