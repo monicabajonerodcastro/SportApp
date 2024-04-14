@@ -55,6 +55,85 @@
           }
         }
       },
+      "/administracion/socios": {
+        "get": {
+          "description": "Obtiene los socios registrados",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de socios registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Socio"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/socios/:socioId:": {
+        "get": {
+          "description": "Obtiene información de un socio en específico",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "socioId",
+              "description": "Uuid del socio a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle de socio solicitado",
+              "schema": {
+                "$ref": "#/definitions/Socio"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
       "/administracion/plan/:planId:": {
         "get": {
           "description": "Obtiene información de un plan en específico",
@@ -142,6 +221,106 @@
             }
           }
         }
+      },
+      "/administracion/socio": {
+        "post": {
+          "description": "Agregar nuevo socio",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalles del socio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SocioAdd"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Socio Registrado con exito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró un deportista con el id [...] / No se encontró un plan con el id [...]"
+            }
+          }
+        }
+      },
+      "/administracion/socio/:socioId:": {
+        "post": {
+          "description": "Agregar nuevo socio",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "socioId",
+              "description": "Uuid del socio a actualizar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalles del socio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SocioAdd"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Socio Registrado con exito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró un deportista con el id [...] / No se encontró un plan con el id [...]"
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -179,6 +358,87 @@
             "type": "string",
             "format": "uuid",
             "example": "b553cea1-1a09-42fc-aa38-1c5029b9bdb8"
+          }
+        }
+      },
+      "Socio":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "apellido": {
+            "type": "string",
+            "example": "Gómez"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Ej detalle de socio"
+          },
+          "email":  {
+            "type": "string",
+            "example": "nnn@gmail.com"
+          }
+          ,
+          "nombre":  {
+            "type": "string",
+            "example": "Carlos"
+          },
+          "numero_identificacion":  {
+            "type": "string",
+            "example": "12345"
+          },
+          "password":  {
+            "type": "string",
+            "example": "1234"
+          },
+          "tipo_id":  {
+            "type": "string",
+            "example": "CC"
+          },
+          "username":  {
+            "type": "string",
+            "example": "cgomez"
+          }
+        }
+      },
+      "SocioAdd":{
+        "type": "object",
+        "properties":{
+          "apellido": {
+            "type": "string",
+            "example": "Gómez"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Ej detalle de socio"
+          },
+          "email":  {
+            "type": "string",
+            "example": "nnn@gmail.com"
+          }
+          ,
+          "nombre":  {
+            "type": "string",
+            "example": "Carlos"
+          },
+          "numero_identificacion":  {
+            "type": "string",
+            "example": "12345"
+          },
+          "password":  {
+            "type": "string",
+            "example": "1234"
+          },
+          "tipo_id":  {
+            "type": "string",
+            "example": "CC"
+          },
+          "username":  {
+            "type": "string",
+            "example": "cgomez"
           }
         }
       }
