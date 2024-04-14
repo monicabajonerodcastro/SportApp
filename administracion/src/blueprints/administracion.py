@@ -11,6 +11,7 @@ from src.comandos.crear_socio import CrearSocio
 from src.comandos.obtener_socio import ObtenerSocio, ObtenerSocioId
 from src.comandos.obtener_socios import ObtenerSocios
 from src.comandos.obtener_paises import ObtenerPaises
+from src.comandos.obtener_deportes import ObtenerDeportes
 from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
 from src.comandos.crear_producto_servicio import CrearProductoServicio
@@ -54,7 +55,6 @@ def crear_socio():
         raise MissingRequiredField()
 
     usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
-    print(json_request)
     if usuario is None :
         result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
         return jsonify({'description':result}),201  
@@ -104,3 +104,11 @@ def obtener_paises():
 @administracion_blueprint.route("/paises/<string:id_pais>/ciudades", methods = ['GET'])
 def obtener_ciudades(id_pais):
     return ObtenerCiudades(session=db_session, id_pais=id_pais).execute()
+
+#####################################################################
+#                             Deportes                              #
+#####################################################################
+
+@administracion_blueprint.route("/deportes", methods = ['GET'])
+def obtener_deportes():
+    return ObtenerDeportes(session=db_session).execute()

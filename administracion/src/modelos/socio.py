@@ -38,7 +38,6 @@ class SocioJsonSchema(Schema):
 	tipo_id = fields.Str()
 	numero_identificacion = fields.Str()
 	username = fields.Str()
-	password = fields.Str()
 	detalle = fields.Str()
 
 
