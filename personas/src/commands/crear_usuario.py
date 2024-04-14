@@ -48,5 +48,5 @@ class CrearUsuario(BaseCommannd):
     def execute(self):
         self.session.add(self.usuario)
         self.session.commit()
-        return "Usuario Registrado con exito"
+        return {"description" : "Usuario Registrado con exito", "id": self.usuario.id}
          

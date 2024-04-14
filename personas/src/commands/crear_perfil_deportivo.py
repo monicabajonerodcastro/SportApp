@@ -1,7 +1,6 @@
 from src.models.perfil_deportivo import PerfilDeportivo
 from src.commands.base_command import BaseCommannd
 from src.errors.errors import MissingRequiredField,InvalidUser,PerfilDeportivoAlreadyRegistered
-from src.commands.get_usuario import GetUsuario
 from src.models.usuario import Usuario
 
 
@@ -69,5 +68,5 @@ class CrearPerfilDeportivo(BaseCommannd):
     def execute(self):
         self.session.add(self.perfil_deportivo)
         self.session.commit()
-        return "Perfil Deportivo Registrado con exito"
+        return {"description" : "Perfil Deportivo Registrado con exito", "id": self.perfil_deportivo.id}
          

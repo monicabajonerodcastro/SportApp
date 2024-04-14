@@ -14,7 +14,7 @@ class ObtenerSocio(BaseCommand):
             self.socio = self.session.query(Socio).filter(Socio.username == username).first()
     
     def execute(self):
-        #auth.validar_autenticacion(headers=self.headers)
+        auth.validar_autenticacion(headers=self.headers)
         return self.socio   
     
 class ObtenerSocioId(BaseCommand):

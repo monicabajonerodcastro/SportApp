@@ -41,7 +41,7 @@ def test_crear_usuario():
     session.query.return_value = query
     crearUsuario = crear_usuario(session, my_usuario_mock)
     result = crearUsuario.execute()
-    assert result == "Usuario Registrado con exito"
+    assert result["description"] == "Usuario Registrado con exito"
 
 def test_crear_usuario_missing_requiredfield():
     my_usuario_mock = usuario_mock()
@@ -77,7 +77,3 @@ def test_crear_usuario_invalid_formatfield():
 
     assert exc_info.value.code == 400
     assert exc_info.value.description == "Parámeto(s) con formato inválido"
-
-
-
-

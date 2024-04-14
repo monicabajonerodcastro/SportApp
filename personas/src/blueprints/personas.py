@@ -10,10 +10,17 @@ from src.errors.errors import MissingRequiredField
 
 personas_blueprint = Blueprint('personas', __name__,url_prefix="/personas")
 
+#####################################################################
+#                          Health Check                             #
+#####################################################################
 
 @personas_blueprint.route('/health-check', methods = ['GET'])
 def health_check():
     return jsonify({"description":"UP"}),200     
+
+#####################################################################
+#                             Usuarios                              #
+#####################################################################
 
 @personas_blueprint.route('/usuario', methods = ['POST'])
 def crear_usuario():
@@ -25,16 +32,28 @@ def crear_usuario():
     usuario = GetUsuario(db_session, json_request["email"]).execute()
     if usuario is None :
         result = CrearUsuario(db_session, json_request).execute()  
-        return jsonify({'description':result}),201  
+        return result,201  
     else :
         return jsonify({'description' :"Usuario ya esta registrado"}),400
+
+@personas_blueprint.route('/<string:id_persona>', methods=["GET"])
+def obtener_usuario_por_id(id_persona):
+    return GetUsuarioPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
+
+#####################################################################
+#                         Perfil Deportivo                          #
+#####################################################################
 
 @personas_blueprint.route('/perfildeportivo', methods = ['POST'])
 def crear_perfil_deportivo():
     json_request = request.get_json()
     
     result = CrearPerfilDeportivo(db_session, json_request).execute()  
-    return jsonify({'description':result}),201  
+    return result,201  
+
+#####################################################################
+#                           Autenticación                           #
+#####################################################################
 
 @personas_blueprint.route('/ingresar', methods=["POST"])
 def ingresar_usuario():
@@ -46,8 +65,6 @@ def validar_token():
     json_request = request.get_json()
     return ValidarToken(json_request=json_request).execute()
 
-@personas_blueprint.route('/<string:id_persona>', methods=["GET"])
-def obtener_usuario_por_id(id_persona):
-    return GetUsuarioPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
+
      
 
