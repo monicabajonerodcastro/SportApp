@@ -12,7 +12,7 @@ class IngresarUsuario(BaseCommannd):
         
         if ( "email" not in json_request.keys() or json_request["email"] == "" or
             "password" not in json_request.keys() or json_request["password"] == ""):
-            raise MissingRequiredField()
+            raise MissingRequiredField(description="No se encontraron los parámetros para ingresar")
 
         self.session = session
         self.email = json_request["email"]

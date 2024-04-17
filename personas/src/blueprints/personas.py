@@ -27,7 +27,7 @@ def crear_usuario():
     json_request = request.get_json()
     
     if ( "email" not in json_request.keys() ) :
-        raise MissingRequiredField()
+        raise MissingRequiredField(description="No se encontró el email en la petición")
 
     usuario = GetUsuario(db_session, json_request["email"]).execute()
     if usuario is None :

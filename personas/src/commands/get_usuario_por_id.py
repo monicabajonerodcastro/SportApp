@@ -25,7 +25,7 @@ class GetUsuarioPorId(BaseCommannd):
         validar_autenticacion(self.headers)
 
         if not self._is_valid_id(self.id_usuario):
-            raise InvalidFormatField()
+            raise InvalidFormatField(description=f"El usuario [{self.id_usuario}] no tiene un formato uuid correcto")
         
         user = self.session.query(Usuario).filter(Usuario.id == self.id_usuario).first()
         if user is None:

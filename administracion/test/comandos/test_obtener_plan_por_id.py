@@ -9,6 +9,7 @@ from src.errores.errores import InvalidAuthenticationError
 
 fake = Faker()
 _SECRET_TEST = "secret"
+_TOKEN = fake.uuid4()
 
 @pytest.fixture
 def mock_session():
@@ -24,7 +25,7 @@ def test_obtener_plan_id(mock_session, requests_mock, mocker):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_plan
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     
     service = ObtenerPlanId(session=mock_session_instance, headers={"Authorization": "Bearer "}, id_plan=mock_plan.id)
     (result, _) = service.execute()
