@@ -31,14 +31,16 @@ def crear_perfil_deportivo(session, perfildeportivo_mock):
                             "antiguedad_residencia" :perfildeportivo_mock.antiguedad_residencia , 
                             "imc" : perfildeportivo_mock.imc , 
                             "horas_semanal" : perfildeportivo_mock.horas_semanal ,
-                            "peso_objetivo" :perfildeportivo_mock.peso_objetivo
+                            "peso_objetivo" :perfildeportivo_mock.peso_objetivo,
+                            "tipo_sangre": perfildeportivo_mock.tipo_sangre,
+                            "deporte": perfildeportivo_mock.deporte,
                           
   }
                      )
 
 
 def perfildeportivo_mock():
-    return PerfilDeportivo( fake.uuid4(),random.choice(['F', 'M', 'O']), fake.pyint(min_value=15), fake.pyint(), fake.pyint(max_value=250), fake.country(), fake.city(),fake.country(), fake.city(),fake.pyint(),fake.pyfloat(max_value=100,right_digits=2),fake.pyint(),fake.pyfloat(right_digits=2),"","","","","","",)
+    return PerfilDeportivo( fake.uuid4(),random.choice(['F', 'M', 'O']), fake.pyint(min_value=15), fake.pyint(), fake.pyint(max_value=250), fake.country(), fake.city(),fake.country(), fake.city(),fake.pyint(),fake.pyfloat(max_value=100,right_digits=2),fake.pyint(),fake.pyfloat(right_digits=2),"","","","","","",fake.name(),fake.name())
 
 def usuario_mock():
     return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
@@ -58,7 +60,7 @@ def test_crear_perfildeportivo_missing_requiredfield():
 
 
     assert exc_info.value.code == 400
-    assert exc_info.value.description == "Parámetros requeridos"
+    assert exc_info.value.description == "No se encontró el usuario en la petición"
 
 
 def test_crear_perfildeportivo_usuario_no_registrado():

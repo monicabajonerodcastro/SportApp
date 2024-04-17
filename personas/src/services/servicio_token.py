@@ -10,7 +10,7 @@ else:
 
 def generar_token(usuario):
     payload = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=15),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=30),
         'iat': datetime.datetime.utcnow(),
         'sub': usuario
     }
@@ -19,8 +19,9 @@ def generar_token(usuario):
 
 def validar_token(token):
     try:  
-        jwt.decode(jwt=token, key=secret_encode, algorithms=["HS256"])
-        return "", 200
+        informacion = jwt.decode(jwt=token, key=secret_encode, algorithms=["HS256"])
+        nuevo_token = generar_token(informacion["sub"])
+        return {"token": nuevo_token}, 200
     except jwt.DecodeError:
         raise InvalidAuthentication(description="Error al decodificar el token")
     except jwt.ExpiredSignatureError:

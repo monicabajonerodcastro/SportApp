@@ -24,4 +24,5 @@ def validar_autenticacion(headers):
         raise InvalidAuthenticationError(code=estado_auth, description="El token de autenticación no tiene un formato correcto")
     if estado_auth < 200 or estado_auth > 209:
         raise InvalidAuthenticationError(code=estado_auth, description=validacion_token.text)
+    return validacion_token.json()["token"]
 

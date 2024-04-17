@@ -24,7 +24,7 @@ def test_obtener_usuario_id(mock_session, mocker):
     mock_query.filter.return_value.first.return_value = mock_usuario
 
     funcion_auth = mocker.patch("src.services.servicio_token.validar_token")
-    funcion_auth.return_value = "", 200
+    funcion_auth.return_value = {"token": _TOKEN}, 200
     
     service = GetUsuarioPorId(session=mock_session_instance, headers={"Authorization": f"Bearer {_TOKEN}"}, id_usuario=fake.uuid4())
     (result, _) = service.execute()

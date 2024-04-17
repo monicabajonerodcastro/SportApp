@@ -10,6 +10,7 @@ from test.mock_session import MockSession
 fake = Faker()
 _ID_PERSONA = fake.uuid4()
 _ID_PLAN = fake.uuid4()
+_TOKEN = fake.uuid4()
 
 @pytest.fixture
 def mock_session():
@@ -23,7 +24,7 @@ def test_asignar_deportista(mock_session, requests_mock):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_plan
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     requests_mock.get(f'http://host-personas-test/personas/{_ID_PERSONA}', json={})
 
     service = AsignarDeportistaPlan(session=mock_session_instance, 
@@ -57,7 +58,7 @@ def test_asignar_deportista_sin_id_plan(mock_session, requests_mock):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_plan
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     
     with pytest.raises(MissingRequiredField):
         AsignarDeportistaPlan(session=mock_session_instance, headers={"Authorization": "Bearer"},  json_request={"id_deportista": _ID_PERSONA}).execute()
@@ -72,7 +73,7 @@ def test_asignar_deportista_sin_id_deportista(mock_session, requests_mock):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_plan
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     
     with pytest.raises(MissingRequiredField):
         AsignarDeportistaPlan(session=mock_session_instance, headers={"Authorization": "Bearer"},  json_request={"id_plan": _ID_PLAN}).execute()

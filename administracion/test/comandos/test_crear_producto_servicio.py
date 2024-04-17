@@ -10,6 +10,7 @@ from test.mock_session import MockSession
 import random
 
 fake = Faker()
+_TOKEN = fake.uuid4()
 
 @pytest.fixture
 def mock_session():
@@ -36,7 +37,7 @@ def producto_servicio_mock():
 def test_crear_producto_servicio(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     productoUsuario= crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
     result = productoUsuario.execute()
     assert result['description'] == "Producto o Servicio Registrado con exito"
@@ -46,7 +47,7 @@ def test_crear_producto_servicio_missing_requiredfield(mock_session,requests_moc
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.nombre=''
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
     with pytest.raises(MissingRequiredField) as exc_info:
         service = crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
@@ -61,7 +62,7 @@ def ttest_crear_producto_servicio_invalid_deporte_formatfield(mock_session,reque
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.id_deporte='asasasasasa'
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
     with pytest.raises(BadRequestError) as exc_info:
         service = crear_producto_servicio(mock_session_instance,{"Authorization": "Bearer"}, my_producto_servicio_mock)
@@ -76,7 +77,7 @@ def test_crear_producto_servicio_invalid_socio_formatfield(mock_session,requests
     my_producto_servicio_mock = producto_servicio_mock()
     my_producto_servicio_mock.id_socio='asasasasasa'
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
     with pytest.raises(BadRequestError) as exc_info:
         service = crear_producto_servicio(mock_session_instance,{"Authorization": "Bearer"}, my_producto_servicio_mock)
@@ -90,7 +91,7 @@ def test_crear_producto_servicio_invalid_socio_formatfield(mock_session,requests
 def test_crear_producto_servicio_deporte_none(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     query = MagicMock()
     query.filter.return_value.first.return_value = None
     mock_session_instance.query.return_value = query
@@ -108,7 +109,7 @@ def test_crear_producto_servicio_deporte_none(mock_session,requests_mock):
 def test_crear_producto_servicio_socio_none(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     mock_session_instance = mock_session.return_value
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     query = MagicMock()
     query.filter.return_value.first.return_value = None
     mock_session_instance.query.return_value = query
