@@ -6,19 +6,25 @@ import re
 
 
 class CrearSocio(BaseCommand):
-    def __init__(self, session, headers, json_request, test ) -> None:
-        self.test=test
+    def __init__(self, session, headers, json_request ) -> None:
         self.headers = headers
-        if ( "email" not in json_request.keys() or json_request["email"] =="" or
-                "nombre" not in json_request.keys()  or   json_request["nombre"] =="" or
-                "apellido" not in json_request.keys() or json_request["apellido"] =="" or
-                    "tipo_identificacion" not in json_request.keys() or  json_request["tipo_identificacion"] =="" or
-                        "numero_identificacion" not in json_request.keys() or  json_request["numero_identificacion"] =="" or
-                            "username" not in json_request.keys() or json_request["username"] =="" or
-                                "password" not in json_request.keys() or json_request["password"] =="" or
-                                    "detalle" not in json_request.keys() or json_request["detalle"] =="" ) :  
-                                    raise MissingRequiredField()
 
+        if "email" not in json_request.keys() or json_request["email"] == "":
+            raise MissingRequiredField(parameter="Entrenador (email)")
+        if "nombre" not in json_request.keys() or json_request["nombre"] == "":
+            raise MissingRequiredField(parameter="Entrenador (nombre)")
+        if "apellido" not in json_request.keys() or json_request["apellido"] == "":
+            raise MissingRequiredField(parameter="Entrenador (apellido)")
+        if "tipo_identificacion" not in json_request.keys() or json_request["tipo_identificacion"] == "":
+            raise MissingRequiredField(parameter="Entrenador (tipo_identificacion)")
+        if "numero_identificacion" not in json_request.keys() or json_request["numero_identificacion"] == "":
+            raise MissingRequiredField(parameter="Entrenador (numero_identificacion)")
+        if "username" not in json_request.keys() or json_request["username"] == "":
+            raise MissingRequiredField(parameter="Entrenador (username)")
+        if "password" not in json_request.keys() or json_request["password"] == "":
+            raise MissingRequiredField(parameter="Entrenador (password)")
+        if "detalle" not in json_request.keys() or json_request["detalle"] == "":
+            raise MissingRequiredField(parameter="Entrenador (detalle)")
 
         self.session = session
         email = json_request["email"]
@@ -34,7 +40,7 @@ class CrearSocio(BaseCommand):
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
         if(re.fullmatch(regex, email) ):
-            print(email)
+            pass
         else:
             raise InvalidFormatField
     
@@ -47,8 +53,7 @@ class CrearSocio(BaseCommand):
         
    
     def execute(self):
-        if self.test==False:
-            auth.validar_autenticacion(headers=self.headers)
+        auth.validar_autenticacion(headers=self.headers)
         self.session.add(self.socio)
         self.session.commit()
         return "Socio Registrado con exito"
