@@ -1,5 +1,8 @@
 
 from flask import Blueprint, jsonify, request
+from src.comandos.obtener_servicios_por_evento import ObtenerServiciosPorEvento
+from src.comandos.asignar_servicio_evento import AsignarServicioEvento
+from src.comandos.obtener_evento_por_id import ObtenerEventoId
 from src.comandos.asignar_reunion_usuario import AsignarReunionUsuario
 from src.comandos.crear_reunion import CrearReunion
 from src.comandos.obtener_reuniones import ObtenerReuniones, ObteneReunionesDisponibles
@@ -10,7 +13,6 @@ from src.comandos.obtener_producto_servicio_por_id import ObtenerProductoServici
 from src.comandos.actualizar_socio import ActualizarSocio
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
-from src.comandos.asignar_deportista_a_plan import AsignarDeportistaPlan
 from src.modelos.database import db_session
 
 from flask import Blueprint, jsonify, request
@@ -45,10 +47,6 @@ def obtener_planes():
 @administracion_blueprint.route('/plan/<string:id_plan>', methods = ['GET'])
 def get_plan_por_id(id_plan):
     return ObtenerPlanId(session=db_session, headers=request.headers, id_plan=id_plan).execute()
-
-@administracion_blueprint.route('/plan/deportista', methods=["POST"])
-def asignar_deportista_a_plan():
-    return AsignarDeportistaPlan(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
 
 #####################################################################
 #                             Socios                                #
@@ -174,3 +172,21 @@ def obtener_reuniones_disponibles():
 def asignar_reunion_usuario(id, id_usuario):    
     result = AsignarReunionUsuario(session=db_session, id=id, id_usuario=id_usuario, headers=request.headers).execute()  
     return jsonify({'description':result}),200  
+
+#####################################################################
+#                         Servicio / Eventos                        #
+#####################################################################
+
+@administracion_blueprint.route("/evento/<string:id_evento>/servicio/<string:id_servicio>", methods = ['POST'])
+def asignar_servicio_a_evento(id_evento, id_servicio):
+    (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
+    (servicio_respuesta, _) = ObtenerProductoServicioId(session=db_session, headers=request.headers, id_servicio=id_servicio).execute()
+
+    return AsignarServicioEvento(session=db_session, headers=request.headers, 
+                                evento=evento_respuesta["respuesta"], servicio=servicio_respuesta["respuesta"]).execute()
+
+@administracion_blueprint.route("/evento/<string:id_evento>/servicios", methods = ['GET'])
+def obtener_servicios_por_evento(id_evento):
+    (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
+
+    return ObtenerServiciosPorEvento(session=db_session, headers=request.headers, evento=evento_respuesta["respuesta"]).execute()
