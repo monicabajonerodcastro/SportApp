@@ -11,13 +11,14 @@ import random, os
 
 fake = Faker()
 _SECRET_TEST = "secret"
+_TOKEN = fake.uuid4()
 
 @pytest.fixture
 def mock_session():
     return MockSession()
 
 
-def crear_entrenador(session, entrenador_mock, headers, test):
+def crear_entrenador(session, entrenador_mock, headers):
     return CrearEntrenador(session,headers,
                         {"email": entrenador_mock.email,
                         "nombre": entrenador_mock.nombre,
@@ -28,54 +29,55 @@ def crear_entrenador(session, entrenador_mock, headers, test):
                         "password": entrenador_mock.password,
                         "detalle": entrenador_mock.detalle,
                         "deporte": entrenador_mock.deporte,
-                        }, test
-                        
+                        }                     
                      )
-
 
 def entrenador_mock():
     return Entrenador(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), fake.uuid4())
 
 @patch('test.mock_session', autospec=True)
-def test_crear_entrenador(mock_session):
+def test_crear_entrenador(mock_session,requests_mock):
     my_entrenador_mock = entrenador_mock()
 
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_entrenador_mock
     session.query.return_value = query
-
-    crearEntrenador = crear_entrenador(session, my_entrenador_mock, headers={"Authorization": "Bearer a"},test=True)
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
+    crearEntrenador = crear_entrenador(session, my_entrenador_mock, headers={"Authorization": "Bearer"})
     result = crearEntrenador.execute()
     assert result == "Entrenador registrado con éxito"
 
-def test_crear_entrenador_missing_requiredfield():
+@patch('test.mock_session', autospec=True)
+def test_crear_entrenador_missing_requiredfield(mock_session,requests_mock):
     my_entrenador_mock = entrenador_mock()
     my_entrenador_mock.nombre=""
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_entrenador_mock
     session.query.return_value = query
-
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
     with pytest.raises(MissingRequiredField) as exc_info:
-        service = crear_entrenador(session, my_entrenador_mock,"",True),
+        service = crear_entrenador(session, my_entrenador_mock,""),
         service.execute()
         
     assert exc_info.value.code == 404
 
 
-def test_crear_entrenador_invalid_formatfield():
+@patch('test.mock_session', autospec=True)
+def test_crear_entrenador_invalid_formatfield(mock_session,requests_mock):
     my_entrenador_mock = entrenador_mock()
     my_entrenador_mock.email="uno@uno."
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_entrenador_mock
     session.query.return_value = query
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
 
     with pytest.raises(InvalidFormatField) as exc_info:
-        service = crear_entrenador(session, my_entrenador_mock,"",True)
+        service = crear_entrenador(session, my_entrenador_mock,"")
         service.execute()
 
 

@@ -25,7 +25,7 @@ def test_obtener_entrenadores(mock_session, requests_mock):
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
  
-    service = ObtenerEntrenadores(session=mock_session_instance, headers={"Authorization": "Bearer a"}, test=True)
+    service = ObtenerEntrenadores(session=mock_session_instance, headers={"Authorization": "Bearer"})
     (result, _) = service.execute()
 
     assert mock_session_instance.query.called

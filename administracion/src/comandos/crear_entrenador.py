@@ -5,20 +5,27 @@ from src.servicios import auth
 import re
 
 class CrearEntrenador(BaseCommand):
-    def __init__(self, session, headers, json_request, test ) -> None:
-        self.test=test
-        self.headers = headers
+    def __init__(self, session, headers, json_request) -> None:
+        self.headers = headers       
 
-        if ( "email" not in json_request.keys() or json_request["email"] =="" or
-                "nombre" not in json_request.keys()  or   json_request["nombre"] =="" or
-                "apellido" not in json_request.keys() or json_request["apellido"] =="" or
-                    "tipo_identificacion" not in json_request.keys() or  json_request["tipo_identificacion"] =="" or
-                        "numero_identificacion" not in json_request.keys() or  json_request["numero_identificacion"] =="" or
-                            "username" not in json_request.keys() or json_request["username"] =="" or
-                                "password" not in json_request.keys() or json_request["password"] =="" or
-                                    "detalle" not in json_request.keys() or json_request["detalle"] =="" or
-                                        "deporte" not in json_request.keys() or json_request["deporte"] =="" ) :  
-                                    raise MissingRequiredField()
+        if "email" not in json_request.keys() or json_request["email"] == "":
+            raise MissingRequiredField(parameter="Entrenador (email)")
+        if "nombre" not in json_request.keys() or json_request["nombre"] == "":
+            raise MissingRequiredField(parameter="Entrenador (nombre)")
+        if "apellido" not in json_request.keys() or json_request["apellido"] == "":
+            raise MissingRequiredField(parameter="Entrenador (apellido)")
+        if "tipo_identificacion" not in json_request.keys() or json_request["tipo_identificacion"] == "":
+            raise MissingRequiredField(parameter="Entrenador (tipo_identificacion)")
+        if "numero_identificacion" not in json_request.keys() or json_request["numero_identificacion"] == "":
+            raise MissingRequiredField(parameter="Entrenador (numero_identificacion)")
+        if "username" not in json_request.keys() or json_request["username"] == "":
+            raise MissingRequiredField(parameter="Entrenador (username)")
+        if "password" not in json_request.keys() or json_request["password"] == "":
+            raise MissingRequiredField(parameter="Entrenador (password)")
+        if "detalle" not in json_request.keys() or json_request["detalle"] == "":
+            raise MissingRequiredField(parameter="Entrenador (detalle)")
+        if "deporte" not in json_request.keys() or json_request["deporte"] == "":
+            raise MissingRequiredField(parameter="Entrenador (deporte)")
 
 
         self.session = session
@@ -49,8 +56,7 @@ class CrearEntrenador(BaseCommand):
                                 deporte=deporte)
         
     def execute(self):
-        if self.test==False:
-            auth.validar_autenticacion(headers=self.headers)
+        auth.validar_autenticacion(headers=self.headers)
         self.session.add(self.entrenador)
         self.session.commit()
         return "Entrenador registrado con éxito"

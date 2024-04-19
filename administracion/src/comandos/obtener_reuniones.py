@@ -7,7 +7,7 @@ from src.servicios import auth
 reunion_schema = ReunionJsonSchema()
 
 class ObtenerReuniones(BaseCommand):
-    def __init__(self, session, headers, test):
+    def __init__(self, session, headers):
         self.session = session
         self.headers = headers
         

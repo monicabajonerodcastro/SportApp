@@ -17,8 +17,6 @@ def mock_session():
     return MockSession()
 
 
-
-
 @patch('test.mock_session', autospec=True)
 def test_obtener_reuniones(mock_session, requests_mock):
     reunion_mock = reunion_mock_all()
@@ -29,7 +27,7 @@ def test_obtener_reuniones(mock_session, requests_mock):
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
  
-    service = ObtenerReuniones(session=mock_session_instance, headers={"Authorization": "Bearer a"}, test=True)
+    service = ObtenerReuniones(session=mock_session_instance, headers={"Authorization": "Bearer"})
     (result, _) = service.execute()
 
     assert mock_session_instance.query.called
@@ -49,7 +47,7 @@ def test_obtener_reuniones_disponibles(mock_session, requests_mock):
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
  
-    service = ObteneReunionesDisponibles(session=mock_session_instance, headers={"Authorization": "Bearer a"})
+    service = ObteneReunionesDisponibles(session=mock_session_instance, headers={"Authorization": "Bearer"})
     (result, _) = service.execute()
 
     assert mock_session_instance.query.called

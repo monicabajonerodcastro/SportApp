@@ -62,14 +62,14 @@ def crear_socio():
 
     usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
     if usuario is None :
-        result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request).execute()  
         return jsonify({'description':result}),200  
     else :
         return jsonify({'description' :"Usuario ya esta registrado"}),400
     
 @administracion_blueprint.route('/socios', methods = ['GET'])
 def obtener_socios():  
-    return ObtenerSocios(session=db_session, headers=request.headers,test=False).execute()
+    return ObtenerSocios(session=db_session, headers=request.headers).execute()
 
 
 @administracion_blueprint.route('/socios/<string:id_socio>', methods = ['GET'])
@@ -83,7 +83,7 @@ def actualizar_socio(id_socio):
     if ( "email" not in json_request.keys() ) :
         raise MissingRequiredField()
     
-    result = ActualizarSocio(session=db_session, id=id_socio, headers=request.headers, json_request=json_request, test=False).execute()  
+    result = ActualizarSocio(session=db_session, id=id_socio, headers=request.headers, json_request=json_request).execute()  
     return jsonify({'description':result}),200  
     
 
@@ -132,14 +132,14 @@ def crear_entrenador():
 
     usuario = ObtenerEntrenador(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
     if usuario is None :
-        result = CrearEntrenador(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        result = CrearEntrenador(session=db_session, headers=request.headers, json_request=json_request).execute()  
         return jsonify({'description':result}),200  
     else :
         return jsonify({'description' :"Usuario ya esta registrado"}),400
     
 @administracion_blueprint.route('/entrenadores', methods = ['GET'])
 def obtener_entrenadores():  
-    return ObtenerEntrenadores(session=db_session, headers=request.headers,test=False).execute()
+    return ObtenerEntrenadores(session=db_session, headers=request.headers).execute()
 
 #####################################################################
 #                             Reuniones                             #
@@ -151,16 +151,15 @@ def crear_reunion():
 
     entrenador = ObtenerentrenadorId(db_session, json_request["id_entrenador"], headers=request.headers).execute()
     
-    print("sadasd", len(entrenador[0]['respuesta']))
     if len(entrenador[0]['respuesta'])==0:
         return jsonify({'description' :"No existe el entrenador especificado"}),400
     else :     
-        result = CrearReunion(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        result = CrearReunion(session=db_session, headers=request.headers, json_request=json_request).execute()  
         return jsonify({'description':result}),200  
 
 @administracion_blueprint.route('/reuniones', methods = ['GET'])
 def obtener_reuniones():  
-    return ObtenerReuniones(session=db_session, headers=request.headers,test=False).execute()
+    return ObtenerReuniones(session=db_session, headers=request.headers).execute()
 
 @administracion_blueprint.route('/reuniones/disponibles', methods = ['GET'])
 def obtener_reuniones_disponibles():  

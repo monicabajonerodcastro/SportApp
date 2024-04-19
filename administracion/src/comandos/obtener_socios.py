@@ -6,7 +6,7 @@ from src.servicios import auth
 socio_schema = SocioJsonSchema()
 
 class ObtenerSocios(BaseCommand):
-    def __init__(self, session, headers, test):
+    def __init__(self, session, headers):
         self.session = session
         self.headers = headers
         

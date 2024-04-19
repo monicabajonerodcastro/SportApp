@@ -12,19 +12,20 @@ import random, os
 
 fake = Faker()
 _SECRET_TEST = "secret"
+_TOKEN = fake.uuid4()
 
 @pytest.fixture
 def mock_session():
     return MockSession()
 
 
-def crear_reunion(session, reunion_mock, headers, test):
+def crear_reunion(session, reunion_mock, headers):
     return CrearReunion(session,headers,
                         {"fecha": reunion_mock.fecha,
                         "lugar": reunion_mock.lugar,
                         "id_entrenador": reunion_mock.id_entrenador,
                         "id_usuario": reunion_mock.id_usuario
-                        }, test                       
+                        }                       
                      )
 
 
@@ -33,7 +34,7 @@ def reunion_mock():
 
 
 @patch('test.mock_session', autospec=True)
-def test_crear_reunion(mock_session):
+def test_crear_reunion(mock_session,requests_mock):
     my_reunion_mock = reunion_mock()
 
     session = MagicMock()
@@ -41,41 +42,25 @@ def test_crear_reunion(mock_session):
     query.filter.return_value.first.return_value = my_reunion_mock
     session.query.return_value = query
 
-    print(my_reunion_mock)
-    crearreunion = crear_reunion(session, my_reunion_mock, headers={"Authorization": "Bearer a"},test=True)
-    result = crearreunion.execute()
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
+    crearReunion = crear_reunion(session, my_reunion_mock, headers={"Authorization": "Bearer"})
+    result = crearReunion.execute()
     assert result == "Reunión registrada con éxito"
 
-def test_crear_reunion_missing_requiredfield():
+@patch('test.mock_session', autospec=True)
+def test_crear_reunion_missing_requiredfield(mock_session,requests_mock):
     my_reunion_mock = reunion_mock()
     my_reunion_mock.id_entrenador=""
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_reunion_mock
     session.query.return_value = query
-
-
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
+    
     with pytest.raises(MissingRequiredField) as exc_info:
-        service = crear_reunion(session, my_reunion_mock,"",True),
+        service = crear_reunion(session, my_reunion_mock,""),
         service.execute()
         
     assert exc_info.value.code == 404
 
-
-##def test_crear_reunion_invalid_formatfield():
-  #  my_reunion_mock = reunion_mock()
-   # my_reunion_mock.fecha="12345"
-    #session = MagicMock()
-    #query = MagicMock()
-    #query.filter.return_value.first.return_value = my_reunion_mock
-    #session.query.return_value = query
-
-
-    #with pytest.raises(InvalidFormatField) as exc_info:
-     #   service = crear_reunion(session, my_reunion_mock,"",True)
-      #  service.execute()
-
-
-    #assert exc_info.value.code == 400
-    #assert exc_info.value.description == "Parámeto(s) con formato inválido"
 

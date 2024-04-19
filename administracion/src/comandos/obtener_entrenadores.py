@@ -6,7 +6,7 @@ from src.servicios import auth
 entrenador_schema = EntrenadorJsonSchema()
 
 class ObtenerEntrenadores(BaseCommand):
-    def __init__(self, session, headers, test):
+    def __init__(self, session, headers):
         self.session = session
         self.headers = headers
         
