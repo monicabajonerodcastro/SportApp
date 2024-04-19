@@ -1,5 +1,11 @@
 
 from flask import Blueprint, jsonify, request
+from src.comandos.asignar_reunion_usuario import AsignarReunionUsuario
+from src.comandos.crear_reunion import CrearReunion
+from src.comandos.obtener_reuniones import ObtenerReuniones, ObteneReunionesDisponibles
+from src.comandos.crear_entrenador import CrearEntrenador
+from src.comandos.obtener_entrenador import ObtenerEntrenador, ObtenerentrenadorId
+from src.comandos.obtener_entrenadores import ObtenerEntrenadores
 from src.comandos.actualizar_socio import ActualizarSocio
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
@@ -57,7 +63,7 @@ def crear_socio():
     usuario = ObtenerSocio(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
     if usuario is None :
         result = CrearSocio(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
-        return jsonify({'description':result}),201  
+        return jsonify({'description':result}),200  
     else :
         return jsonify({'description' :"Usuario ya esta registrado"}),400
     
@@ -78,7 +84,7 @@ def actualizar_socio(id_socio):
         raise MissingRequiredField()
     
     result = ActualizarSocio(session=db_session, id=id_socio, headers=request.headers, json_request=json_request, test=False).execute()  
-    return jsonify({'description':result}),201  
+    return jsonify({'description':result}),200  
     
 
 #####################################################################
@@ -112,3 +118,55 @@ def obtener_ciudades(id_pais):
 @administracion_blueprint.route("/deportes", methods = ['GET'])
 def obtener_deportes():
     return ObtenerDeportes(session=db_session).execute()
+
+#####################################################################
+#                             Entrenadores                          #
+#####################################################################
+
+@administracion_blueprint.route('/entrenador', methods = ['POST'])
+def crear_entrenador():
+    json_request = request.get_json()
+    
+    if ( "email" not in json_request.keys() ) :
+        raise MissingRequiredField()
+
+    usuario = ObtenerEntrenador(db_session, json_request["email"], json_request["username"], headers=request.headers).execute()
+    if usuario is None :
+        result = CrearEntrenador(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        return jsonify({'description':result}),200  
+    else :
+        return jsonify({'description' :"Usuario ya esta registrado"}),400
+    
+@administracion_blueprint.route('/entrenadores', methods = ['GET'])
+def obtener_entrenadores():  
+    return ObtenerEntrenadores(session=db_session, headers=request.headers,test=False).execute()
+
+#####################################################################
+#                             Reuniones                             #
+#####################################################################
+
+@administracion_blueprint.route('/reunion', methods = ['POST'])
+def crear_reunion():
+    json_request = request.get_json()
+
+    entrenador = ObtenerentrenadorId(db_session, json_request["id_entrenador"], headers=request.headers).execute()
+    
+    print("sadasd", len(entrenador[0]['respuesta']))
+    if len(entrenador[0]['respuesta'])==0:
+        return jsonify({'description' :"No existe el entrenador especificado"}),400
+    else :     
+        result = CrearReunion(session=db_session, headers=request.headers, json_request=json_request, test=False).execute()  
+        return jsonify({'description':result}),200  
+
+@administracion_blueprint.route('/reuniones', methods = ['GET'])
+def obtener_reuniones():  
+    return ObtenerReuniones(session=db_session, headers=request.headers,test=False).execute()
+
+@administracion_blueprint.route('/reuniones/disponibles', methods = ['GET'])
+def obtener_reuniones_disponibles():  
+    return ObteneReunionesDisponibles(session=db_session, headers=request.headers).execute()
+
+@administracion_blueprint.route('/reunion/<string:id>/<string:id_usuario>', methods = ['POST'])
+def asignar_reunion_usuario(id, id_usuario):    
+    result = AsignarReunionUsuario(session=db_session, id=id, id_usuario=id_usuario, headers=request.headers).execute()  
+    return jsonify({'description':result}),200  
