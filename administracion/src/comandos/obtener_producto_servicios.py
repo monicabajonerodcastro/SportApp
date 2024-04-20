@@ -14,6 +14,7 @@ class ObtenerProductoServicios(BaseCommand):
  
         self.producto_servicio = self.session.query(ProductoServicio).all() 
         respuesta = [producto_servicio_schema.dump(ps) for ps in self.producto_servicio]
+        self.session.close()
         return {"respuesta": respuesta, "token": self.nuevo_token}
 
 

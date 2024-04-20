@@ -21,5 +21,6 @@ class ObtenerServiciosPorEvento(BaseCommand):
                 producto_servicio = self.session.query(ProductoServicio).filter(ProductoServicio.id == servicio.id_servicio).first()
                 self.servicios.append(producto_servicio)
         respuesta = [producto_servicio_schema.dump(serv) for serv in self.servicios]
+        self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200
         

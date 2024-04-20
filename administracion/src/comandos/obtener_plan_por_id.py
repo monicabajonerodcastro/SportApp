@@ -17,9 +17,11 @@ class ObtenerPlanId(BaseCommand):
         if util.is_valid_id(self.id_plan):
             plan = self.session.query(Plan).filter(Plan.id == self.id_plan).first()
             if plan is None:
+                self.session.close()
                 raise NotFoundError(description=f"No se encontró un plan con el id [{self.id_plan}]")
-
+            self.session.close()
             return plan_schema.dump(plan), 200
         else:
+            self.session.close()
             raise BadRequestError(description="El identificador del plan no es válido")
     

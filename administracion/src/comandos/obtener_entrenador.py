@@ -15,6 +15,7 @@ class ObtenerEntrenador(BaseCommand):
     
     def execute(self):
         auth.validar_autenticacion(headers=self.headers)
+        self.session.close()
         return self.entrenador   
     
 class ObtenerentrenadorId(BaseCommand):
@@ -26,4 +27,5 @@ class ObtenerentrenadorId(BaseCommand):
 
     def execute(self):
         nuevo_token = auth.validar_autenticacion(headers=self.headers)
+        self.session.close()
         return {"respuesta" : entrenador_schema.dump(self.entrenador), "token" : nuevo_token},200

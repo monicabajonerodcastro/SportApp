@@ -17,6 +17,7 @@ class ObtenerReuniones(BaseCommand):
 
         self.reuniones = self.session.query(Reunion).all()
         respuesta = [reunion_schema.dump(reunion) for reunion in self.reuniones]
+        self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200
     
 class ObteneReunionesDisponibles(BaseCommand):
@@ -24,12 +25,12 @@ class ObteneReunionesDisponibles(BaseCommand):
 
         self.session = session
         self.headers = headers
-
         self.reuniones = session.query(Reunion).filter(Reunion.id_usuario == None).all() 
   
     def execute(self):
         nuevo_token = auth.validar_autenticacion(headers=self.headers)
         respuesta = [reunion_schema.dump(reunion) for reunion in self.reuniones]
+        self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200
     
     
