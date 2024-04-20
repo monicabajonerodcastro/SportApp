@@ -21,7 +21,7 @@ def validar_token(token):
     try:  
         informacion = jwt.decode(jwt=token, key=secret_encode, algorithms=["HS256"])
         nuevo_token = generar_token(informacion["sub"])
-        return {"token": nuevo_token}, 200
+        return {"token": nuevo_token, "id_usuario": informacion["sub"]}, 200
     except jwt.DecodeError:
         raise InvalidAuthentication(description="Error al decodificar el token")
     except jwt.ExpiredSignatureError:
