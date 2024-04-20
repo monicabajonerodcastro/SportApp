@@ -6,6 +6,7 @@ from src.comandos.obtener_reuniones import ObtenerReuniones, ObteneReunionesDisp
 from src.comandos.crear_entrenador import CrearEntrenador
 from src.comandos.obtener_entrenador import ObtenerEntrenador, ObtenerentrenadorId
 from src.comandos.obtener_entrenadores import ObtenerEntrenadores
+from src.comandos.obtener_producto_servicio_por_id import ObtenerProductoServicioId
 from src.comandos.actualizar_socio import ActualizarSocio
 from src.comandos.obtener_plan_por_id import ObtenerPlanId
 from src.comandos.obtener_planes import ObtenerPlan
@@ -98,6 +99,10 @@ def crear_producto_servicio():
 @administracion_blueprint.route('/producto_servicio', methods = ['GET'])
 def obtener_producto_servicio():  
     return ObtenerProductoServicios(session=db_session, headers=request.headers).execute()
+
+@administracion_blueprint.route('/producto_servicio/<string:id_servicio>', methods = ['GET'])
+def obtener_producto_servicio_por_id(id_servicio):
+    return ObtenerProductoServicioId(session=db_session, headers=request.headers, id_servicio=id_servicio).execute()
 
 #####################################################################
 #                         Paises/Ciudades                           #
