@@ -16,4 +16,5 @@ class ObtenerEntrenadores(BaseCommand):
 
         self.entrenadores = self.session.query(Entrenador).all() 
         respuesta = [entrenador_schema.dump(entrenador) for entrenador in self.entrenadores]
+        self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200

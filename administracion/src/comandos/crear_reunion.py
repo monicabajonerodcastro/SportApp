@@ -26,5 +26,6 @@ class CrearReunion(BaseCommand):
         auth.validar_autenticacion(headers=self.headers)
         self.session.add(self.reunion)
         self.session.commit()
+        self.session.close()
         return "Reunión registrada con éxito"
          

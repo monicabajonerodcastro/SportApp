@@ -18,10 +18,13 @@ class ObtenerEventoId(BaseCommand):
         if util.is_valid_id(self.id_evento):
             evento = self.session.query(Evento).filter(Evento.id == self.id_evento).first()
             if evento is None:
+                self.session.close()
                 raise NotFoundError(description=f"No se encontró un evento con el id [{self.id_evento}]")
 
             respuesta = evento_schema.dump(evento)
+            self.session.close()
             return {"respuesta": respuesta, "token" : token}, 200
         else:
+            self.session.close()
             raise BadRequestError(description="El identificador del evento no es válido")
     

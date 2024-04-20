@@ -19,4 +19,5 @@ class AsignarReunionUsuario(BaseCommand):
         auth.validar_autenticacion(headers=self.headers)
         
         self.session.commit()
+        self.session.close()
         return "Reunión asignada con éxito"

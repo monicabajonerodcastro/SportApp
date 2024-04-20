@@ -9,4 +9,5 @@ class ObtenerDeportes(BaseCommand):
     
     def execute(self):
         deportes = self.session.query(Deporte).all()
+        self.session.close()
         return [deporte_schema.dump(deporte) for deporte in deportes], 200 

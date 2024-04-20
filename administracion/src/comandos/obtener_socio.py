@@ -15,6 +15,7 @@ class ObtenerSocio(BaseCommand):
     
     def execute(self):
         auth.validar_autenticacion(headers=self.headers)
+        self.session.close()
         return self.socio   
     
 class ObtenerSocioId(BaseCommand):
@@ -26,4 +27,5 @@ class ObtenerSocioId(BaseCommand):
 
     def execute(self):
         nuevo_token = auth.validar_autenticacion(headers=self.headers)
+        self.session.close()
         return {"respuesta" : socio_schema.dump(self.socio), "token" : nuevo_token},200

@@ -19,10 +19,12 @@ class AsignarServicioEvento(BaseCommand):
             nuevo_evento_servicio = EventoServicio(self.evento["id"], self.servicio["id"])
             self.session.add(nuevo_evento_servicio)
             self.session.commit()
+            self.session.close()
             return {"respuesta": "Servicio asignado correctamente al evento", "token" : token}, 200
 
         evento_nombre = self.evento["nombre"]
         servicio_nombre = self.servicio["nombre"]
+        self.session.close()
         raise BadRequestError(description=f"El evento [{evento_nombre}] ya tiene el servicio [{servicio_nombre}] asociado")
 
         

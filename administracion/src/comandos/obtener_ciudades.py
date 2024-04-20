@@ -10,4 +10,5 @@ class ObtenerCiudades(BaseCommand):
     
     def execute(self):
         ciudades = self.session.query(Ciudad).filter(Ciudad.pais == self.id_pais).all()
+        self.session.close()
         return [ciudad_schema.dump(ciudad) for ciudad in ciudades], 200 
