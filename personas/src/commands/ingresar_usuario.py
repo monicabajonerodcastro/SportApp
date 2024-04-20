@@ -24,12 +24,15 @@ class IngresarUsuario(BaseCommannd):
             raise InvalidFormatField
         
     def execute(self):
+        user: Usuario
         user = self.session.query(Usuario).filter(and_(Usuario.email == self.email, Usuario.password == self.password)).first()
         if user is None:
+            self.session.close()
             return {"description": "Usuario y/o contraseña inválidos"}, 400
         user_response = {}
-        user_response["token"] = servicio_token.generar_token(usuario=user.username)
+        user_response["token"] = servicio_token.generar_token(usuario=str(user.id))
         user_response["rol"] = user.rol
+        self.session.close()
         return user_response, 200 
 
     

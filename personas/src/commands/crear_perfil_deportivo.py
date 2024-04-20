@@ -72,5 +72,6 @@ class CrearPerfilDeportivo(BaseCommannd):
     def execute(self):
         self.session.add(self.perfil_deportivo)
         self.session.commit()
+        self.session.close()
         return {"description" : "Perfil Deportivo Registrado con exito", "id": self.perfil_deportivo.id}
          

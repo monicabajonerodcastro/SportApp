@@ -12,5 +12,6 @@ class ObtenerPlan(BaseCommand):
 
     def execute(self):
         planes = self.session.query(Plan).all() 
+        self.session.close()
         return [plan_schema.dump(plan) for plan in planes], 200 
     

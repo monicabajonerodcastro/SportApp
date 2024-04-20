@@ -59,5 +59,6 @@ class CrearEntrenador(BaseCommand):
         auth.validar_autenticacion(headers=self.headers)
         self.session.add(self.entrenador)
         self.session.commit()
+        self.session.close()
         return "Entrenador registrado con éxito"
          

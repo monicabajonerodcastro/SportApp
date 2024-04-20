@@ -16,6 +16,7 @@ class ObtenerSocios(BaseCommand):
 
         self.socios = self.session.query(Socio).all() 
         respuesta = [socio_schema.dump(socio) for socio in self.socios]
+        self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200
     
 

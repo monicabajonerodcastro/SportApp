@@ -29,7 +29,9 @@ class GetUsuarioPorId(BaseCommannd):
         
         user = self.session.query(Usuario).filter(Usuario.id == self.id_usuario).first()
         if user is None:
+            self.session.close()
             raise NotFoundError(description="El usuario no se encuentra registrado")
+        self.session.close()
         return usuario_schema.dump(user), 200
 
     

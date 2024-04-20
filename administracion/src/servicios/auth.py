@@ -4,7 +4,7 @@ import os
 
 HOST_PERSONAS = os.environ["HOST_PERSONAS"]
 
-def validar_autenticacion(headers):
+def validar_autenticacion(headers, retornar_usuario: bool = False):
     if 'Authorization' not in headers:
         raise InvalidAuthenticationError(code=403, description="No se encontró el header de autorización")
 
@@ -24,5 +24,5 @@ def validar_autenticacion(headers):
         raise InvalidAuthenticationError(code=estado_auth, description="El token de autenticación no tiene un formato correcto")
     if estado_auth < 200 or estado_auth > 209:
         raise InvalidAuthenticationError(code=estado_auth, description=validacion_token.text)
-    return validacion_token.json()["token"]
+    return validacion_token.json()["id_usuario"] if retornar_usuario else validacion_token.json()["token"]
 

@@ -39,16 +39,20 @@ class CrearProductoServicio(BaseCommand):
         if util.is_valid_id(id_deporte):
             deporte = self.session.query(Deporte).filter(Deporte.id == id_deporte).first()
             if deporte is None:
+                self.session.close()
                 raise NotFoundError(description=f"No se encontró un Deporte con el id [{id_deporte}]")
         else:
+            self.session.close()
             raise BadRequestError(description="El identificador del Deporte no es válido")
 
 
         if util.is_valid_id(id_socio):
             socio = self.session.query(Socio).filter(Socio.id == id_socio).first()
             if socio is None:
+                self.session.close()
                 raise NotFoundError(description=f"No se encontró un Socio con el id [{id_socio}]")
         else:
+            self.session.close()
             raise BadRequestError(description="El identificador del Socio no es válido")
 
     
@@ -65,4 +69,5 @@ class CrearProductoServicio(BaseCommand):
     def execute(self):
         self.session.add(self.producto_servicio)
         self.session.commit()
+        self.session.close()
         return {"description": "Producto o Servicio Registrado con exito"}         

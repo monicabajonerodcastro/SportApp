@@ -49,7 +49,7 @@ class ActualizarSocio(BaseCommand):
    
     def execute(self):
         auth.validar_autenticacion(headers=self.headers)
-        
         self.session.commit()
+        self.session.close()
         return "Socio Actualizado con exito"
          

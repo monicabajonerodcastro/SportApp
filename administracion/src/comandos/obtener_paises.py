@@ -9,4 +9,5 @@ class ObtenerPaises(BaseCommand):
     
     def execute(self):
         paises = self.session.query(Pais).all()
+        self.session.close()
         return [pais_schema.dump(pais) for pais in paises], 200 

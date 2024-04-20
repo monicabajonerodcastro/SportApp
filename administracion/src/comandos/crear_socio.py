@@ -56,5 +56,6 @@ class CrearSocio(BaseCommand):
         auth.validar_autenticacion(headers=self.headers)
         self.session.add(self.socio)
         self.session.commit()
+        self.session.close()
         return "Socio Registrado con exito"
          
