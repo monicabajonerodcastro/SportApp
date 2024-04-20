@@ -710,6 +710,98 @@
             }
           }
         }
+      },
+      "/administracion/evento/:idEvento/servicio/:idServicio": {
+        "post": {
+          "description": "Asignar un servicio a un evento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idEvento",
+              "description": "Evento al cual se desea asociar el servicio",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            },
+            {
+              "name": "idServicio",
+              "description": "Servicio que se deseea asociar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "d538c05e-ce84-4aa4-964f-62ec446a97a5"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Asociación realizada exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/evento/:idEvento/servicios": {
+        "get": {
+          "description": "Obtiene la lista de servicios asignados al evento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idEvento",
+              "description": "Evento que se desea consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de servicios registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ServicioProducto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -904,7 +996,8 @@
             "example": "Atletismo"
           }
         }
-      },"Entrenador":{
+      },
+      "Entrenador":{
         "type": "object",
         "properties":{
           "id": {
@@ -945,7 +1038,8 @@
             "example": "Atletismo"
           }
         }
-      },"Reunion":{
+      },
+      "Reunion":{
         "type": "object",
         "properties":{
           "id": {
