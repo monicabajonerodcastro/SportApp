@@ -1,13 +1,13 @@
 from dotenv import load_dotenv
 loaded = load_dotenv('.env.development')
 
-import os 
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
-from .blueprints.personas import personas_blueprint
+from .errores.errores import ApiError
+from .blueprints.deporte import deporte_blueprint
 from .blueprints.swagger import swagger_ui_blueprint
-from .errors.errors import ApiError
-from .models.database import Base, engine
+from .modelos.database import Base, engine
 
 SWAGGER_URL="/swagger"
 
@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
-app.register_blueprint(personas_blueprint)
+app.register_blueprint(deporte_blueprint)
 
 @app.errorhandler(ApiError)
 def handle_exception(err):
@@ -31,4 +31,3 @@ def init_db():
     
 with app.app_context():
   init_db()
-
