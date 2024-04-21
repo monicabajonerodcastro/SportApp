@@ -26,8 +26,7 @@ def test_asignar_reunion_usuairo(mock_session, requests_mock):
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
 
-    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID, id_usuario=_ID_USUARIO,
-                                    headers={"Authorization": "Bearer"})
+    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID, headers={"Authorization": "Bearer"})
     result = service.execute()
 
     assert mock_session_instance.query.called
