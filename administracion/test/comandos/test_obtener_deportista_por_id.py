@@ -20,7 +20,7 @@ def test_obtener_deportista_id(requests_mock):
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": deportista_mock["id"]})
     requests_mock.get(f'http://host-personas-test/personas/{deportista_mock["id"]}', json=deportista_mock)
 
-    (result, _) = ObtenerDeportistaId(headers={"Authorization": "Bearer "}, id_deportista=deportista_mock["id"]).execute()
+    (result, _) = ObtenerDeportistaId(headers={"Authorization": "Bearer "}).execute()
     assert result["id"] == deportista_mock["id"]
 
 def test_obtener_deportista_no_exsite(requests_mock):
@@ -31,7 +31,7 @@ def test_obtener_deportista_no_exsite(requests_mock):
     requests_mock.get(f'http://host-personas-test/personas/{deportista_mock["id"]}', status_code=400)
 
     with pytest.raises(NotFoundError):
-        ObtenerDeportistaId(headers={"Authorization": "Bearer "}, id_deportista=deportista_mock["id"]).execute()
+        ObtenerDeportistaId(headers={"Authorization": "Bearer "}).execute()
 
 def mock_deportista():
     return {"apellido":fake.name(), "email": fake.email(), "id": fake.uuid4(), "nombre": fake.name(), "numero_identificacion": fake.pyint(min_value=1000),

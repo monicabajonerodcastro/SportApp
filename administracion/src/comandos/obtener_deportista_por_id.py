@@ -6,9 +6,8 @@ import os
 HOST_PERSONAS = os.environ["HOST_PERSONAS"]
 
 class ObtenerDeportistaId(BaseCommand):
-    def __init__(self, headers, id_deportista) -> None:
+    def __init__(self, headers) -> None:
         self.headers = headers
-        self.id_deportista = id_deportista
 
     def execute(self):
         id_usuario = auth.validar_autenticacion(headers=self.headers, retornar_usuario=True) 
