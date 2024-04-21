@@ -197,9 +197,9 @@ def obtener_servicios_por_evento(id_evento):
 #                        Servicio / Deportista                      #
 #####################################################################
 
-@administracion_blueprint.route("/deportista/<string:id_deportista>/servicio/<string:id_servicio>", methods = ["POST"])
-def asignar_servicio_a_deportista(id_deportista, id_servicio):
-    (deportista_respuesta, _) = ObtenerDeportistaId(headers=request.headers, id_deportista=id_deportista).execute()
+@administracion_blueprint.route("/deportista/servicio/<string:id_servicio>", methods = ["POST"])
+def asignar_servicio_a_deportista(id_servicio):
+    (deportista_respuesta, _) = ObtenerDeportistaId(headers=request.headers).execute()
     (servicio_respuesta, _) = ObtenerProductoServicioId(session=db_session, headers=request.headers, id_servicio=id_servicio).execute()
     return AsignarServicioDeportista(session=db_session, headers=request.headers,
                                      servicio=servicio_respuesta["respuesta"], deportista=deportista_respuesta).execute()
