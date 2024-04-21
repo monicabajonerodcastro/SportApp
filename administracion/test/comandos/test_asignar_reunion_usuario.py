@@ -24,9 +24,9 @@ def test_asignar_reunion_usuario(mock_session, requests_mock):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_reunion
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": fake.uuid4()})
 
-    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID, id_usuario=_ID_USUARIO,
+    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID,
                                     headers={"Authorization": "Bearer"})
     result = service.execute()
 

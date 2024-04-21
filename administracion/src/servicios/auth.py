@@ -17,7 +17,6 @@ def validar_autenticacion(headers, retornar_usuario: bool = False):
         "token": token
     }
     validacion_token = http.post_request(url=f"{HOST_PERSONAS}/personas/validar-token", data=body)
-    print(validacion_token.json())
     estado_auth = validacion_token.status_code
     if estado_auth == 401:
         raise InvalidAuthenticationError(code=estado_auth, description=validacion_token.json()["description"])
