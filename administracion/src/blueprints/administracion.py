@@ -170,9 +170,9 @@ def obtener_reuniones():
 def obtener_reuniones_disponibles():  
     return ObteneReunionesDisponibles(session=db_session, headers=request.headers).execute()
 
-@administracion_blueprint.route('/reunion/<string:id>/<string:id_usuario>', methods = ['POST'])
-def asignar_reunion_usuario(id, id_usuario):    
-    result = AsignarReunionUsuario(session=db_session, id=id, id_usuario=id_usuario, headers=request.headers).execute()  
+@administracion_blueprint.route('/reunion/<string:id>', methods = ['POST'])
+def asignar_reunion_usuario(id): 
+    result = AsignarReunionUsuario(session=db_session, id=id, headers=request.headers).execute()
     return jsonify({'description':result}),200  
 
 #####################################################################

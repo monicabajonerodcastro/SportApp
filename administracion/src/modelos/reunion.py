@@ -12,7 +12,7 @@ db = SQLAlchemy()
 class Reunion(Base):
 	__tablename__  =  'reunion'
 	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-	fecha = Column(db.Date(), nullable=False)
+	fecha = Column(db.DateTime(), nullable=False)
 	lugar = Column(String, nullable=False)
 	id_entrenador = Column(UUID(as_uuid=True), ForeignKey("entrenador.id"),primary_key=True, nullable=False)
 	id_usuario = Column(UUID(as_uuid=True), nullable=True)
@@ -28,9 +28,19 @@ class Reunion(Base):
 class ReunionJsonSchema(Schema):
 
 	id = fields.UUID(dump_only=True)
-	fecha  = fields.Date()
+	fecha  = fields.DateTime()
 	lugar  = fields.Str()
 	id_entrenador  = fields.Str()
 	id_usuario  = fields.Str()
+
+class ReunionDisponibleJsonSchema(Schema):
+
+	id = fields.UUID(dump_only=True)
+	fecha  = fields.Str()
+	lugar  = fields.Str()
+	id_entrenador  = fields.Str()
+	id_usuario  = fields.Str()
+	nombre_entrenador = fields.Str()
+	detalle_entrenador = fields.Str()
 
 
