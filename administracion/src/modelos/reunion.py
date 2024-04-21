@@ -33,7 +33,7 @@ class ReunionJsonSchema(Schema):
 	id_entrenador  = fields.Str()
 	id_usuario  = fields.Str()
 
-class ReunionDisponobleJsonSchema(Schema):
+class ReunionDisponibleJsonSchema(Schema):
 
 	id = fields.UUID(dump_only=True)
 	fecha  = fields.Str()

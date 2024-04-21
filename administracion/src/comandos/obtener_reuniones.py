@@ -2,12 +2,12 @@
 from sqlalchemy import JSON
 from src.modelos.entrenador import Entrenador
 from src.comandos.base_command import BaseCommand
-from src.modelos.reunion import Reunion, ReunionJsonSchema, ReunionDisponobleJsonSchema
+from src.modelos.reunion import Reunion, ReunionJsonSchema, ReunionDisponibleJsonSchema
 from src.servicios import auth
 import datetime
 
 reunion_schema = ReunionJsonSchema()
-reunion_disponible_schema = ReunionDisponobleJsonSchema()
+reunion_disponible_schema = ReunionDisponibleJsonSchema()
 
 class ObtenerReuniones(BaseCommand):
     def __init__(self, session, headers):
