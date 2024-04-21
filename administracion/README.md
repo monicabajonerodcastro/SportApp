@@ -6,7 +6,6 @@
 *Responses:*
 - `200`: Servicio activo
 
-
 ## GET - Obtener planes
 *Endpoint:* `/administracion/plan`
 
