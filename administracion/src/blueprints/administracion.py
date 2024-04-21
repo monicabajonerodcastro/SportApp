@@ -27,6 +27,7 @@ from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
 from src.comandos.crear_producto_servicio import CrearProductoServicio
 from src.comandos.obtener_producto_servicios import ObtenerProductoServicios
+from src.servicios import auth
 
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
 
@@ -170,8 +171,9 @@ def obtener_reuniones():
 def obtener_reuniones_disponibles():  
     return ObteneReunionesDisponibles(session=db_session, headers=request.headers).execute()
 
-@administracion_blueprint.route('/reunion/<string:id>/<string:id_usuario>', methods = ['POST'])
-def asignar_reunion_usuario(id, id_usuario):    
+@administracion_blueprint.route('/reunion/<string:id>', methods = ['POST'])
+def asignar_reunion_usuario(id): 
+    id_usuario=auth.validar_autenticacion(headers=request.headers, retornar_usuario=True) 
     result = AsignarReunionUsuario(session=db_session, id=id, id_usuario=id_usuario, headers=request.headers).execute()  
     return jsonify({'description':result}),200  
 
