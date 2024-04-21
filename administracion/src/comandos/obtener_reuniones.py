@@ -38,7 +38,7 @@ class ObteneReunionesDisponibles(BaseCommand):
 
     def execute(self):
         nuevo_token = auth.validar_autenticacion(headers=self.headers)
-        respuesta = [reunion_schema.dump(reunion) for reunion in self.reuniones]
+        respuesta = [reunion_disponible_schema.dump(reunion) for reunion in self.reuniones]
         self.session.close()
         return {"respuesta": respuesta, "token": nuevo_token}, 200
     

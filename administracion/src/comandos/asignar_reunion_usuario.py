@@ -16,6 +16,7 @@ class AsignarReunionUsuario(BaseCommand):
         self.reunion.id_usuario = self.id_usuario
    
     def execute(self):
+        print(self.headers)
         auth.validar_autenticacion(headers=self.headers)
         
         self.session.commit()
