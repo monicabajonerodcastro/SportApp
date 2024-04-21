@@ -17,16 +17,17 @@ def mock_session():
     return MockSession()
 
 @patch('test.mock_session', autospec=True)
-def test_asignar_reunion_usuairo(mock_session, requests_mock):
+def test_asignar_reunion_usuario(mock_session, requests_mock):
     mock_reunion = reunion_mock_disponibles()
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_reunion
 
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
+    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": fake.uuid4()})
 
-    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID, headers={"Authorization": "Bearer"})
+    service = AsignarReunionUsuario(session=mock_session_instance, id=_ID,
+                                    headers={"Authorization": "Bearer"})
     result = service.execute()
 
     assert mock_session_instance.query.called

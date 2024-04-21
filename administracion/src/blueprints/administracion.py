@@ -27,6 +27,7 @@ from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
 from src.comandos.crear_producto_servicio import CrearProductoServicio
 from src.comandos.obtener_producto_servicios import ObtenerProductoServicios
+from src.servicios import auth
 
 administracion_blueprint = Blueprint('administracion', __name__, url_prefix="/administracion")
 
