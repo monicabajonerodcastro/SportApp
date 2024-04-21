@@ -37,22 +37,20 @@ def entrenamiento_mock():
                          random.choice(['DIARIO', 'SEMANAL', 'POR_DIAS']), fake.sentences(),
                          random.choice(['Atletismo', 'Ciclismo']))
 
-
+@patch('src.servicios.http.requests.post')
 @patch('test.mock_session', autospec=True)
 def test_crear_entrenamiento(mock_session, requests_mock):
+    requests_mock.return_value.status_code = 200
     my_entrenamiento_mock = entrenamiento_mock()
-    print("----------")
-    print(my_entrenamiento_mock)
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_entrenamiento_mock
     session.query.return_value = query
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
     crearEntrenamiento = crear_entrenamiento(session, my_entrenamiento_mock, headers={"Authorization": "Bearer"})
     result = crearEntrenamiento.execute()
     assert result == "Entrenamiento registrado con éxito"
 
-
+@patch('src.comandos.crear_entrenamiento')
 @patch('test.mock_session', autospec=True)
 def test_crear_entrenamiento_missing_requiredfield(mock_session, requests_mock):
     my_entrenamiento_mock = entrenamiento_mock()
