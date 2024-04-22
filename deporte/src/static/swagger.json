@@ -101,6 +101,197 @@
           }
         }
       },
+      "/deporte/rutina-alimenticia": {
+        "post": {
+          "description": "Crea una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle de la rutina alimenticio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/RutinaAlimenticia"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/rutina-alimenticia/:rutinaAlimenticiaId/producto-alimenticio": {
+        "post": {
+          "description": "Asignar un producto a una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "rutinaAlimenticiaId",
+              "description": "UUID de la rutina alimenticia",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle del producto para asignar a la rutina",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ProductoRutina"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto asociado a rutina alimenticia exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/producto-alimenticio": {
+        "post": {
+          "description": "Crea un producto alimenticio",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle del producto alimenticio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ProductoAlimenticio"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/rutina-alimenticia/:rutinaAlimenticiaId/enviar": {
+        "post": {
+          "description": "Enviar los productos de una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "rutinaAlimenticiaId",
+              "description": "UUID de la rutina alimenticia",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Solicitud de productos enviada exitosamente. De 5 a 8 días recibirá sus productos"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      }
     },
     "definitions":{
       "Entrenamiento":{
@@ -133,6 +324,52 @@
           "deporte": {
             "type": "string",
             "example": "Ciclismo"
+          }
+        }
+      },
+      "ProductoRutina": {
+        "type": "object",
+        "properties":{
+          "dosis": {
+            "type": "string",
+            "example": "2 veces por día"
+          },
+          "producto_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "131df3a0-1e8e-49d3-9fb2-f173d1226f03"
+          }
+        }
+      },
+      "ProductoAlimenticio": {
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Queso doblecrema"
+          },
+          "producto_id": {
+            "type": "number",
+            "example": 8
+          }
+        }
+      },
+      "RutinaAlimenticia": {
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Rutina basada en lácteos"
+          },
+          "producto_id": {
+            "type": "string",
+            "example": "Alta ingesta de lácteos para fortalecer el sistema óseo"
+          },
+          "productos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ProductoRutina"
+            }
           }
         }
       }
