@@ -22,7 +22,7 @@ def crear_entrenamiento():
     return CrearEntrenamiento(session=db_session,  headers=request.headers,json_request=request.get_json()).execute()
 
 #####################################################################
-#                         Paises/Ciudades                           #
+#                         Lista entrenamientos                      #
 #####################################################################
 
 @deporte_blueprint.route("/entrenamientos", methods = ['GET'])
