@@ -1,0 +1,140 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "SportApp - Módulo administración",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/deporte/health-check": {
+        "get": {
+          "description": "Health Check del servicio de deporte",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio ejecutándose correctamente"
+            }
+          }
+        }
+      },
+      "/deporte/entrenamientos": {
+        "get": {
+          "description": "Obtiene la lista de planes de entrenamiento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de planes de entrenamiento",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Entrenamiento"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/deporte/entrenamiento": {
+        "post": {
+          "description": "Guarda un plan de entrenamiento en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del plan de entrenamiento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Entrenamiento"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Entrenamiento registrado con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+    },
+    "definitions":{
+      "Entrenamiento":{
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Entrenamiento 2"
+          },
+          "hora_inicio": {
+            "type": "string",
+            "example": "2015-04-09 14:07:46.580465000"
+          },
+          "hora_fin": {
+            "type": "string",
+            "example": "2015-04-09 14:07:46.580465000"
+          },
+          "lugar": {
+            "type": "string",
+            "example": "Cancha sintetica"
+          },
+          "frecuencia": {
+            "type": "string",
+            "example": "DIARIA"
+          },
+          "detalle": {
+            "type": "string",
+            "example": "Llevar bicileta alta"
+          },
+          "deporte": {
+            "type": "string",
+            "example": "Ciclismo"
+          }
+        }
+      }
+    }
+  }
