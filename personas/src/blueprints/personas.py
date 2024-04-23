@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from src.commands.get_perfil_deportivo_por_usuario import GetPerfilDeportivoPorUsuario
 from src.commands.crear_usuario import CrearUsuario
 from src.commands.ingresar_usuario import IngresarUsuario
 from src.commands.get_usuario import GetUsuario
@@ -43,6 +44,11 @@ def obtener_usuario_por_id(id_persona):
 #####################################################################
 #                         Perfil Deportivo                          #
 #####################################################################
+
+
+@personas_blueprint.route('/perfildeportivo/<string:id_persona>', methods = ['GET'])
+def obtener_perfil_deportivo_por_id_usuario(id_persona):
+    return GetPerfilDeportivoPorUsuario(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
 
 @personas_blueprint.route('/perfildeportivo', methods = ['POST'])
 def crear_perfil_deportivo():

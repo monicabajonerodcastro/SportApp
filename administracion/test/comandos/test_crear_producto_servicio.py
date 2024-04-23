@@ -7,8 +7,6 @@ from src.comandos.crear_producto_servicio import CrearProductoServicio
 from src.modelos.producto_servicio import ProductoServicio
 from test.mock_session import MockSession
 
-import random
-
 fake = Faker()
 _TOKEN = fake.uuid4()
 
@@ -38,8 +36,8 @@ def test_crear_producto_servicio(mock_session,requests_mock):
     my_producto_servicio_mock = producto_servicio_mock()
     mock_session_instance = mock_session.return_value
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
-    productoUsuario= crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
-    result = productoUsuario.execute()
+    producto_usuario= crear_producto_servicio(mock_session_instance, {"Authorization": "Bearer"}, my_producto_servicio_mock)
+    result = producto_usuario.execute()
     assert result['description'] == "Producto o Servicio Registrado con exito"
 
 @patch('test.mock_session', autospec=True)

@@ -29,12 +29,13 @@ class PerfilDeportivo(Base):
 	id_usuario = Column(UUID(as_uuid=True), ForeignKey("usuario.id"),primary_key=True)
 	deporte = Column(String, nullable=True)
 	tipo_sangre = Column(String, nullable=True)
+	direccion = Column(String, nullable=True)
 	
 	# Relationships
 	usuario = relationship("Usuario")
 
 	def  __init__(self, id_usuario,genero, edad, peso,altura,pais_nacimiento,ciudad_nacimiento,pais_residencia,ciudad_residencia,antiguedad_residencia,
-			   imc,horas_semanal,peso_objetivo,alergias,preferencia_alimenticia,plan_nutricional,url_historia_clinica,vo2max,ftp,deporte,tipo_sangre,):
+			   imc,horas_semanal,peso_objetivo,alergias,preferencia_alimenticia,plan_nutricional,url_historia_clinica,vo2max,ftp,deporte,tipo_sangre,direccion):
 			self.id_usuario = id_usuario
 			self.genero = genero
 			self.edad = edad
@@ -56,10 +57,11 @@ class PerfilDeportivo(Base):
 			self.ftp = ftp
 			self.deporte = deporte
 			self.tipo_sangre = tipo_sangre
+			self.direccion = direccion
 		
 
 
-class UsuarioJsonSchema(Schema):
+class PerfilDeportivoJsonSchema(Schema):
 	id = fields.UUID(dump_only=True)
 	id_usuario = fields.Str()
 	genero = fields.Str()
@@ -82,5 +84,6 @@ class UsuarioJsonSchema(Schema):
 	ftp = fields.Str()
 	deporte = fields.Str()
 	tipo_sangre = fields.Str()
+	direccion = fields.Str()
 
 

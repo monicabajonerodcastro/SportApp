@@ -32,8 +32,6 @@ class Usuario(Base):
 		self.password = password
 		self.suscripcion = suscripcion
 		self.rol = rol
-		
-
 
 class UsuarioJsonSchema(Schema):
 	id = fields.UUID(dump_only=True)
@@ -43,7 +41,6 @@ class UsuarioJsonSchema(Schema):
 	tipo_id = fields.Str()
 	numero_identificacion = fields.Str()
 	username = fields.Str()
-	password = fields.Str()
 	suscripcion =fields.Str()
 	rol = fields.Str()
 

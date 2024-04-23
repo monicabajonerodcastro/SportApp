@@ -7,10 +7,9 @@ from src.comandos.crear_socio import CrearSocio
 from src.modelos.socio import Socio
 from test.mock_session import MockSession
 from src.errores.errores import MissingRequiredField,InvalidFormatField
-import random, os
+import random
 
 fake = Faker()
-_SECRET_TEST = "secret"
 _TOKEN = fake.uuid4()
 
 @pytest.fixture
@@ -43,8 +42,8 @@ def test_crear_socio(mock_session,requests_mock):
     query.filter.return_value.first.return_value = my_socio_mock
     session.query.return_value = query
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN})
-    crearSocio = crear_socio(session, my_socio_mock, headers={"Authorization": "Bearer"})
-    result = crearSocio.execute()
+    crear_socio_respuesta = crear_socio(session, my_socio_mock, headers={"Authorization": "Bearer"})
+    result = crear_socio_respuesta.execute()
     assert result == "Socio Registrado con exito"
 
 @patch('test.mock_session', autospec=True)
