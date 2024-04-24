@@ -48,7 +48,7 @@ def test_crear_entrenamiento(mock_session, requests_mock):
     session.query.return_value = query
     crearEntrenamiento = crear_entrenamiento(session, my_entrenamiento_mock, headers={"Authorization": "Bearer"})
     result = crearEntrenamiento.execute()
-    assert result == {"respuesta": "Entrenamiento registrado con éxito"}
+    assert result == ({"respuesta": "Entrenamiento registrado con éxito"}, 200)
 
 @patch('src.comandos.crear_entrenamiento')
 @patch('test.mock_session', autospec=True)
