@@ -45,5 +45,5 @@ class CrearEntrenamiento(BaseCommand):
         self.session.add(self.entrenamiento)
         self.session.commit()
         self.session.close()
-        return "Entrenamiento registrado con éxito"
+        return {"respuesta": "Entrenamiento registrado con éxito"}, 200
          
