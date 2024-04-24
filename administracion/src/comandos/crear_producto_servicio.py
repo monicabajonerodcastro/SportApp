@@ -1,13 +1,14 @@
 
+import os
 from src.modelos.socio import Socio
-from src.modelos.deporte import Deporte
-from src.errores.errores import BadRequestError, MissingRequiredField, NotFoundError
+from src.errores.errores import BadRequestError, InternalServerError, MissingRequiredField, NotFoundError
 from src.modelos.producto_servicio import ProductoServicio, ProductoServicioSchema
 from src.comandos.base_command import BaseCommand
-from src.servicios import auth, util
+from src.servicios import auth, util, http
 
 producto_servicio_schema = ProductoServicioSchema()
 
+HOST_DEPORTE = os.environ["HOST_DEPORTE"]
 
 class CrearProductoServicio(BaseCommand):
     def __init__(self, session, headers, json_request) -> None:
@@ -37,13 +38,19 @@ class CrearProductoServicio(BaseCommand):
         id_socio =  json_request["id_socio"] 
 
         if util.is_valid_id(id_deporte):
-            deporte = self.session.query(Deporte).filter(Deporte.id == id_deporte).first()
-            if deporte is None:
+            response = {}
+            try:
+                response = http.get_request(f"{HOST_DEPORTE}/deporte/deportes/{id_deporte}")
+            except Exception as e:
+                print(e)
+                raise InternalServerError(description="Ocurrio un error al obtener el deporte, intente más tarde")
+            
+            if  response.status_code < 200 or response.status_code > 209:
                 self.session.close()
-                raise NotFoundError(description=f"No se encontró un Deporte con el id [{id_deporte}]")
+                raise NotFoundError(description=f"No se encontró un deporte con el id [{id_deporte}]")
         else:
             self.session.close()
-            raise BadRequestError(description="El identificador del Deporte no es válido")
+            raise BadRequestError(description="El identificador del deporte no es válido")
 
 
         if util.is_valid_id(id_socio):

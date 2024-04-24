@@ -11,3 +11,4 @@ class ObtenerDeportes(BaseCommand):
         deportes = self.session.query(Deporte).all()
         self.session.close()
         return [deporte_schema.dump(deporte) for deporte in deportes], 200 
+    

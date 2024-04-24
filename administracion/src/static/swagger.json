@@ -449,28 +449,6 @@
           }
         }
       },
-      "/administracion/deportes": {
-        "get": {
-          "description": "Obtiene la lista de deportes ofrecidos en el sistema",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "Lista de deportes registrados",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/Deporte"
-                }
-              }
-            }
-          }
-        }
-      },
       "/administracion/entrenadores": {
         "get": {
           "description": "Obtiene la información de todos los entrenadores registrados en el sistema",
@@ -980,20 +958,6 @@
           "pais": {
             "type": "string",
             "example": "AR"
-          }
-        }
-      },
-      "Deporte":{
-        "type": "object",
-        "properties":{
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
-          },
-          "nombre":  {
-            "type": "string",
-            "example": "Atletismo"
           }
         }
       },

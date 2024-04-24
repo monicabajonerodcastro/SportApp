@@ -17,6 +17,11 @@ class BadRequestError(ApiError):
         self.code = code
         self.description = description
 
+class InternalServerError(ApiError):
+    def __init__(self, code = 503, description= "Ocurrió un error interno del servidor"):
+        self.code = code
+        self.description = description
+
 class MissingRequiredField(ApiError):
     def __init__(self, code = 404, description="No se encontró un parámetro requerido", parameter: str = None) -> None:
         self.code = code

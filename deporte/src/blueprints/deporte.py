@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify, request
+from src.comandos.obtener_deporte_por_id import ObtenerDeportePorId
+from src.comandos.obtener_deportes import ObtenerDeportes
 from src.comandos.enviar_productos_rutina_alimenticia import EnviarProductosRutinaAlimenticia
 from src.comandos.asociar_producto_a_rutina import AsociarProductoARutina
 from src.comandos.crear_producto_alimenticio import CrearProductoAlimenticio
@@ -58,3 +60,15 @@ def asociar_producto_a_rutina(id_rutina_alimenticia):
 def enviar_productos_alimenticios(id_rutina_alimenticia):
     return EnviarProductosRutinaAlimenticia(session=db_session, headers=request.headers, id_rutina_alimenticia=id_rutina_alimenticia).execute()
 
+#####################################################################
+#                             Deportes                              #
+#####################################################################
+
+@deporte_blueprint.route("/deportes", methods = ['GET'])
+def obtener_deportes():
+    return ObtenerDeportes(session=db_session).execute()
+
+
+@deporte_blueprint.route("/deportes/<string:id_deporte>", methods = ['GET'])
+def obtener_deporte_por_id(id_deporte):
+    return ObtenerDeportePorId(session=db_session, id_deporte=id_deporte).execute()
