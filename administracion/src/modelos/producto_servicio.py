@@ -13,7 +13,7 @@ class ProductoServicio(Base):
 	valor = Column(Float, nullable=True,default=0.0)
 	detalle = Column(String, nullable=False)
 	descripcion = Column(String, nullable=False)
-	id_deporte = mapped_column(ForeignKey("deporte.id"))
+	id_deporte =Column(String, nullable=False)
 	id_socio = mapped_column(ForeignKey("socio.id"))
 
 	def  __init__(self, nombre, valor,detalle,descripcion

@@ -10,12 +10,9 @@ class Deporte(Base):
 	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 	nombre = Column(String, nullable=False)
 	
-	
-    
+
 	def  __init__(self, nombre):
 		self.nombre  = nombre
-
-		
 
 
 class DeporteJsonSchema(Schema):

@@ -22,7 +22,6 @@ from src.comandos.crear_socio import CrearSocio
 from src.comandos.obtener_socio import ObtenerSocio, ObtenerSocioId
 from src.comandos.obtener_socios import ObtenerSocios
 from src.comandos.obtener_paises import ObtenerPaises
-from src.comandos.obtener_deportes import ObtenerDeportes
 from src.comandos.obtener_ciudades import ObtenerCiudades
 from src.errores.errores import MissingRequiredField
 from src.comandos.crear_producto_servicio import CrearProductoServicio
@@ -116,13 +115,6 @@ def obtener_paises():
 def obtener_ciudades(id_pais):
     return ObtenerCiudades(session=db_session, id_pais=id_pais).execute()
 
-#####################################################################
-#                             Deportes                              #
-#####################################################################
-
-@administracion_blueprint.route("/deportes", methods = ['GET'])
-def obtener_deportes():
-    return ObtenerDeportes(session=db_session).execute()
 
 #####################################################################
 #                             Entrenadores                          #
