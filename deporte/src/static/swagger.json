@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-      "title": "SportApp - Módulo administración",
+      "title": "SportApp - Módulo Deporte",
       "version": "1.0.0"
     },
     "paths": {
@@ -313,6 +313,96 @@
             }
           }
         }
+      },
+      "/deporte/planes-entrenamiento": {
+        "get": {
+          "description": "Obtiene la lista de planes de entrenamiento",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de planes de entrenamiento",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/PlanEntrenamiento"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/deporte/planes-entrenamiento/:id_plan": {
+        "get": {
+          "description": "Obtiene la lista entrenamientos de un plan específico",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de entrenamientos de un plan específico",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Entrenamiento"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/deporte/plan-entrenamiento": {
+        "post": {
+          "description": "Guarda un plan de entrenamiento en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del plan de entrenamiento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/PlanEntrenamientoPost"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Plan de entrenamiento creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -406,6 +496,58 @@
           "nombre":  {
             "type": "string",
             "example": "Atletismo"
+          }
+        }
+      },
+      "PlanEntrenamiento":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Plan light"
+          },
+          "id_deporte":  {
+            "type": "string",
+            "example": "Atletismo"
+          }
+        }
+      },
+      "PlanEntrenamientoPost":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Plan light"
+          },
+          "deporte":  {
+            "type": "string",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "entrenamientos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/EntrenamientoId"
+            }
+          }
+        }
+      },
+      "EntrenamientoId":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
           }
         }
       }
