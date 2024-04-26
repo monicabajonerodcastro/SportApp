@@ -7,7 +7,7 @@ from flask_cors import CORS
 from .errores.errores import ApiError
 from .blueprints.administracion import administracion_blueprint
 from .blueprints.swagger import swagger_ui_blueprint
-from .modelos.database import Base, engine
+from .modelos.database import Base, engine, db_session
 
 SWAGGER_URL="/swagger"
 
@@ -25,6 +25,11 @@ def handle_exception(err):
     }
     return jsonify(response), err.code
 
+@app.teardown_request
+def session_clear(exception=None):
+    db_session.remove()
+    if exception and db_session.is_active:
+        db_session.rollback()
     
 def init_db():
   Base.metadata.create_all(bind=engine)
