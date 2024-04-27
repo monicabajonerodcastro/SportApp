@@ -15,9 +15,7 @@ class CrearPlanEntrenamiento(BaseCommand):
             raise MissingRequiredField(parameter="nombre")
         if "deporte" not in json_request.keys() or json_request["deporte"] == "":
             raise MissingRequiredField(parameter="descripcion")
-        #if "entrenamientos" not in json_request.keys() or json_request["entrenamientos"] == "" or len(json_request["entrenamientos"]) < 1:
-            #raise MissingRequiredField(parameter="entrenamientos")
-        
+
         self.nombre = json_request["nombre"]
         self.deporte = json_request["deporte"]
         self.entrenamientos = json_request["entrenamientos"]
