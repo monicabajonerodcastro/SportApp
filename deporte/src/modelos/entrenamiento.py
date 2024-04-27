@@ -15,9 +15,6 @@ class Entrenamiento(Base):
 	detalle = Column(String, nullable=True)
 	frecuencia = Column(String, nullable=False)
 	deporte = Column(String, nullable=False)
-
-			# Relationships
-	#reunion = relationship("Reunion")
 	   
 	def  __init__(self, nombre, hora_inicio,hora_fin,lugar,detalle,frecuencia,deporte):
 		self.nombre  = nombre

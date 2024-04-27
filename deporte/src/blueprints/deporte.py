@@ -1,4 +1,8 @@
 from flask import Blueprint, jsonify, request
+from src.comandos.remover_plan_deportista import RemoverPlanDeportista
+from src.comandos.obtener_plan_por_deportista import ObtenerPlanesDeportista
+from src.comandos.asignar_plan_deportista import AsignarPlanDeportista
+from src.comandos.obtener_entrenamientos_plan import ObtenerEntrenamientosPlan
 from src.comandos.obtener_deporte_por_id import ObtenerDeportePorId
 from src.comandos.obtener_deportes import ObtenerDeportes
 from src.comandos.enviar_productos_rutina_alimenticia import EnviarProductosRutinaAlimenticia
@@ -8,6 +12,8 @@ from src.comandos.crear_rutina_alimenticia import CrearRutinaAlimenticia
 from src.modelos.database import db_session
 from src.comandos.crear_entrenamiento import CrearEntrenamiento
 from src.comandos.obtener_entrenamientos import ObtenerEntrenamientos
+from src.comandos.crear_plan_entrenamiento import CrearPlanEntrenamiento
+from src.comandos.obtener_planes_entrenamiento import ObtenerPlanesEntrenamiento
 
 deporte_blueprint = Blueprint('deporte', __name__, url_prefix="/deporte")
 
@@ -72,3 +78,32 @@ def obtener_deportes():
 @deporte_blueprint.route("/deportes/<string:id_deporte>", methods = ['GET'])
 def obtener_deporte_por_id(id_deporte):
     return ObtenerDeportePorId(session=db_session, id_deporte=id_deporte).execute()
+
+#####################################################################
+#                         Planes de entrenamiento                      #
+#####################################################################
+
+@deporte_blueprint.route("/planes-entrenamiento", methods = ['GET'])
+def obtener_plan_entrenamiento():
+    return ObtenerPlanesEntrenamiento(session=db_session, headers=request.headers).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/<string:id_plan>", methods = ['GET'])
+def obtener_entrenamientos_plan(id_plan):
+    return ObtenerEntrenamientosPlan(session=db_session, id_plan=id_plan, headers=request.headers).execute()
+
+@deporte_blueprint.route('/plan-entrenamiento', methods = ['POST'])
+def crear_plan_entrenamiento():
+    return CrearPlanEntrenamiento(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/<string:id_plan>/deportista", methods = ["POST"])
+def asignar_plan_deportista(id_plan):
+    return AsignarPlanDeportista(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/<string:id_plan>/deportista", methods = ["DELETE"])
+def remover_plan_deportista(id_plan):
+    return RemoverPlanDeportista(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/deportista", methods = ["GET"])
+def obtener_plan_deportista():
+    return ObtenerPlanesDeportista(session=db_session, headers=request.headers).execute()
+
