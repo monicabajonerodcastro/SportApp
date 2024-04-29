@@ -10,7 +10,6 @@ class ActualizarSocio(BaseCommand):
         self.id=id
         self.headers = headers
 
-
         if "email" not in json_request.keys() or json_request["email"] == "":
             raise MissingRequiredField(parameter="Entrenador (email)")
         if "nombre" not in json_request.keys() or json_request["nombre"] == "":
