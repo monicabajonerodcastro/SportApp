@@ -13,11 +13,11 @@ class CrearPlanEntrenamiento(BaseCommand):
 
         if "nombre" not in json_request.keys() or json_request["nombre"] == "":
             raise MissingRequiredField(parameter="nombre")
-        if "deporte" not in json_request.keys() or json_request["deporte"] == "":
-            raise MissingRequiredField(parameter="descripcion")
+        if "id_deporte" not in json_request.keys() or json_request["id_deporte"] == "":
+            raise MissingRequiredField(parameter="id_deporte")
 
         self.nombre = json_request["nombre"]
-        self.deporte = json_request["deporte"]
+        self.deporte = json_request["id_deporte"]
         self.entrenamientos = json_request["entrenamientos"]
         self.entrenamientos_bd = []
 
@@ -26,12 +26,13 @@ class CrearPlanEntrenamiento(BaseCommand):
             raise NotFoundError(description="No existe deporte con id "+ self.deporte)
 
         self.plan_entrenamiento = PlanEntrenamiento(nombre=self.nombre, deporte=self.deporte)
-            
-        for entrenamiento in self.entrenamientos:
-            entren = self.session.query(Entrenamiento).filter(Entrenamiento.id == entrenamiento["id"]).first()
-            if entren is None:
-                raise NotFoundError(description="No existe la entrenamiento con id "+ entrenamiento["id"])
-            self.entrenamientos_bd.append(PlanEntrenamientoU(id_entrenamiento=entrenamiento["id"], id_plan=self.plan_entrenamiento.id))
+
+        if self.entrenamientos != '':    
+            for entrenamiento in self.entrenamientos:
+                entren = self.session.query(Entrenamiento).filter(Entrenamiento.id == entrenamiento).first()
+                if entren is None:
+                    raise NotFoundError(description="No existe la entrenamiento con id "+ entrenamiento)
+                self.entrenamientos_bd.append(PlanEntrenamientoU(id_entrenamiento=entrenamiento, id_plan=self.plan_entrenamiento.id))
 
     def execute(self):
         token = auth.validar_autenticacion(headers=self.headers)

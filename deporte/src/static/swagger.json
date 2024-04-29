@@ -529,7 +529,7 @@
             "type": "string",
             "example": "Plan light"
           },
-          "deporte":  {
+          "id_deporte":  {
             "type": "string",
             "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
           },

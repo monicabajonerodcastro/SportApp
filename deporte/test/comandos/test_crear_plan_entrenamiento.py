@@ -18,7 +18,7 @@ def mock_session():
 def crear_plan_emtrenamiento(session, plan_mock, headers):
     return CrearPlanEntrenamiento(session,headers,
                         {"nombre": plan_mock.nombre,
-                        "deporte": plan_mock.deporte,
+                        "id_deporte": plan_mock.deporte,
                         "entrenamientos": {                            
                         } }                  
                      )
