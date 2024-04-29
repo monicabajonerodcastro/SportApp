@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 
 class PlanEntrenamiento(Base):
 	__tablename__  =  'plan_entrenamiento'
-	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
 	nombre = Column(String, nullable=False)
 	id_deporte = Column(UUID(as_uuid=True), ForeignKey("deporte.id"), primary_key=True, nullable=True)
 	

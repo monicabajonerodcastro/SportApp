@@ -1,4 +1,7 @@
 from flask import Blueprint, jsonify, request
+from src.comandos.remover_plan_deportista import RemoverPlanDeportista
+from src.comandos.obtener_plan_por_deportista import ObtenerPlanesDeportista
+from src.comandos.asignar_plan_deportista import AsignarPlanDeportista
 from src.comandos.obtener_entrenamientos_plan import ObtenerEntrenamientosPlan
 from src.comandos.obtener_deporte_por_id import ObtenerDeportePorId
 from src.comandos.obtener_deportes import ObtenerDeportes
@@ -91,4 +94,16 @@ def obtener_entrenamientos_plan(id_plan):
 @deporte_blueprint.route('/plan-entrenamiento', methods = ['POST'])
 def crear_plan_entrenamiento():
     return CrearPlanEntrenamiento(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/<string:id_plan>/deportista", methods = ["POST"])
+def asignar_plan_deportista(id_plan):
+    return AsignarPlanDeportista(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/<string:id_plan>/deportista", methods = ["DELETE"])
+def remover_plan_deportista(id_plan):
+    return RemoverPlanDeportista(session=db_session, headers=request.headers, id_plan=id_plan).execute()
+
+@deporte_blueprint.route("/planes-entrenamiento/deportista", methods = ["GET"])
+def obtener_plan_deportista():
+    return ObtenerPlanesDeportista(session=db_session, headers=request.headers).execute()
 
