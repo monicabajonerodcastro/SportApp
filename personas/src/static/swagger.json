@@ -40,7 +40,10 @@
           ],
           "responses": {
             "201": {
-              "description": "El usuario se creó exitosamente"
+              "description": "El usuario se creó exitosamente",
+              "schema": {
+                "$ref": "#/definitions/UsuarioCreado"
+              }
             },
             "400": {
               "description": "El usuario ya se encuentra registrado / Parámetros requeridos / Parámeto(s) con formato inválido"
@@ -110,6 +113,139 @@
             }
           }
         }
+      },
+      "/personas/:id_persona:": {
+        "get": {
+          "description": "Obtiene un usuario por id de usuario",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "id_persona",
+              "description": "Id del usuario a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle de usuario solicitado",
+              "schema": {
+                "$ref": "#/definitions/Usuario"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "El usuario no se encuentra registrado"
+            }
+          }
+        }
+      },
+      "/personas/perfildeportivo": {
+        "post": {
+          "description": "Asociar un perfil deportivo a un deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos del usuario a crear",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/PerfilDeportivo"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Perfil Deportivo Registrado con exito",
+              "schema": {
+                "$ref": "#/definitions/PerfilDeportivoCreado"
+              }
+            },
+            "400": {
+              "description": "Parámetros requeridos / Parámeto(s) con formato inválido"
+            },
+            "404": {
+              "description": "El usuario ya tiene un perfil deportivo"
+            }
+          }
+        }
+      },
+      "/personas/perfildeportivo/:id_persona:": {
+        "get": {
+          "description": "Obtiene el perfil deportivo por id de usuario",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "id_persona",
+              "description": "Id del usuario a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Perfil deportivo solicitado",
+              "schema": {
+                "$ref": "#/definitions/PerfilDeportivo"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "El usuario no se encuentra registrado"
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -150,6 +286,20 @@
           }
         }
       },
+      "UsuarioCreado":{
+        "type": "object",
+        "properties":{
+          "description": {
+            "type": "string",
+            "example":"Usuario Registrado con exito"
+          },
+          "id":{
+            "type": "string",
+            "format": "uuid",
+            "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
+          }
+        }
+      },
       "Login":{
         "type": "object",
         "properties":{
@@ -169,6 +319,102 @@
           "token": {
             "type": "string",
             "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE4MzM4ODMsImlhdCI6MTcxMTgzMjk4Mywic3ViIjoibW9uaWNhLmJham9uZXJvIn0.5SnulBHcv2y__jo9dZbEUibPVE2_A50aQ2xkaxZJmfs"
+          }
+        }
+      },
+      "PerfilDeportivo":{
+        "type": "object",
+        "properties":{
+          "id_usuario": {
+            "type": "string",
+            "format": "uuid",
+            "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
+          },
+          "genero": {
+            "type": "string",
+            "example":"F"
+          },
+          "edad": {
+            "type": "int",
+            "example": 18
+          },
+          "peso": {
+            "type": "string",
+            "example":"60"
+          },
+          "altura": {
+            "type": "int",
+            "example": 165
+          },
+          "pais_nacimiento": {
+            "type": "string",
+            "example": "CO"
+          },
+          "ciudad_nacimiento": {
+            "type": "string",
+            "example": "BO"
+          },
+          "pais_residencia": {
+            "type": "string",
+            "example": "CO"
+          },
+          "ciudad_residencia": {
+            "type": "string",
+            "example": "BO"
+          },
+          "antiguedad_residencia": {
+            "type": "int",
+            "example": 10
+          },
+          "imc": {
+            "type": "int",
+            "example": 50
+          },
+          "horas_semanal": {
+            "type": "string",
+            "example": "4"
+          },
+          "peso_objetivo": {
+            "type": "int",
+            "example": 55
+          },
+          "alergias": {
+            "type": "string",
+            "example": "Gluten"
+          },
+          "preferencia_alimenticia": {
+            "type": "string",
+            "example": "Alto en proteína"
+          },
+          "plan_nutricional": {
+            "type": "string",
+            "example": "Alto en proteína"
+          },
+          "url_historia_clinica": {
+            "type": "url",
+            "example": "http://www.google.com"
+          },
+          "vo2max": {
+            "type": "int",
+            "example": 0
+          },
+          "ftp": {
+            "type": "int",
+            "example": 0
+          }
+        }
+      },
+      "PerfilDeportivoCreado":{
+        "type": "object",
+        "properties":{
+          "description": {
+            "type": "string",
+            "example":"Perfil Deportivo Registrado con exito"
+          },
+          "id":{
+            "type": "string",
+            "format": "uuid",
+            "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
           }
         }
       }

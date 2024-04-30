@@ -9,6 +9,7 @@ class GetUsuario(BaseCommannd):
         self.user = self.session.query(Usuario).filter(Usuario.email == email).first()
     
     def execute(self):
+        self.session.close()
         return self.user   
 
     

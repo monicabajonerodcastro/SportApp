@@ -1,17 +1,18 @@
 from dotenv import load_dotenv
-loaded = load_dotenv('.env.environment')
+loaded = load_dotenv('.env.prod')
 
 import os 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from .blueprints.personas import personas_blueprint
 from .blueprints.swagger import swagger_ui_blueprint
 from .errors.errors import ApiError
-from .models.database import Base, engine
-from sqlalchemy import inspect
+from .models.database import Base, engine, db_session
 
 SWAGGER_URL="/swagger"
 
 app = Flask(__name__)
+CORS(app)
 
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.register_blueprint(personas_blueprint)
@@ -19,11 +20,16 @@ app.register_blueprint(personas_blueprint)
 @app.errorhandler(ApiError)
 def handle_exception(err):
     response = {
-      "msg": err.description,
+      "description": err.description,
       "version": os.environ["VERSION"]
     }
     return jsonify(response), err.code
 
+@app.teardown_request
+def session_clear(exception=None):
+    db_session.remove()
+    if exception and db_session.is_active:
+        db_session.rollback()
     
 def init_db():
   Base.metadata.create_all(bind=engine)

@@ -11,8 +11,7 @@ class ObtenerPlan(BaseCommand):
         self.headers = headers
 
     def execute(self):
-        auth.validar_autenticacion(headers=self.headers)
-
         planes = self.session.query(Plan).all() 
+        self.session.close()
         return [plan_schema.dump(plan) for plan in planes], 200 
     

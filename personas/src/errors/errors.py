@@ -8,12 +8,14 @@ class MissingRequiredToken(ApiError):
     description = "No existe token en la solicitud" 
 
 class MissingRequiredField(ApiError):
-    code = 400
-    description = "Parámetros requeridos"
+    def __init__(self, code = 400, description= "Parámetros requeridos"):
+        self.code = code
+        self.description = description
 
 class InvalidFormatField(ApiError):
-    code = 400
-    description = "Parámeto(s) con formato inválido"   
+    def __init__(self, code = 400, description= "Parámeto(s) con formato inválido"):
+        self.code = code
+        self.description = description 
 
 class InvalidUser(ApiError):
     code = 400
@@ -28,3 +30,7 @@ class InvalidAuthentication(ApiError):
         self.code = code
         self.description = description
 
+class NotFoundError(ApiError):
+    def __init__(self, code = 404, description= "No se encontró el recurso solicitado"):
+        self.code = code
+        self.description = description

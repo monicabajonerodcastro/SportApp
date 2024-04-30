@@ -16,12 +16,13 @@ class Usuario(Base):
 	username = Column(String, nullable=False)
 	password = Column(String, nullable=False)
 	suscripcion =Column(String, nullable=False)
+	rol =  Column(String, nullable=False)
 	#Relationships
 	perfil_deportivo = relationship("PerfilDeportivo")
 
 	
     
-	def  __init__(self, email, nombre, apellido,tipo_id,numero_identificacion,username,password,suscripcion):
+	def  __init__(self, email, nombre, apellido,tipo_id,numero_identificacion,username,password,suscripcion,rol):
 		self.email  = email
 		self.nombre  = nombre
 		self.apellido = apellido
@@ -30,8 +31,7 @@ class Usuario(Base):
 		self.username = username
 		self.password = password
 		self.suscripcion = suscripcion
-		
-
+		self.rol = rol
 
 class UsuarioJsonSchema(Schema):
 	id = fields.UUID(dump_only=True)
@@ -41,7 +41,7 @@ class UsuarioJsonSchema(Schema):
 	tipo_id = fields.Str()
 	numero_identificacion = fields.Str()
 	username = fields.Str()
-	password = fields.Str()
 	suscripcion =fields.Str()
+	rol = fields.Str()
 
 

@@ -1,0 +1,555 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "SportApp - Módulo Deporte",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/deporte/health-check": {
+        "get": {
+          "description": "Health Check del servicio de deporte",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio ejecutándose correctamente"
+            }
+          }
+        }
+      },
+      "/deporte/entrenamientos": {
+        "get": {
+          "description": "Obtiene la lista de planes de entrenamiento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de planes de entrenamiento",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Entrenamiento"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/deporte/entrenamiento": {
+        "post": {
+          "description": "Guarda un plan de entrenamiento en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del plan de entrenamiento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Entrenamiento"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Entrenamiento registrado con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/deporte/rutina-alimenticia": {
+        "post": {
+          "description": "Crea una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle de la rutina alimenticio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/RutinaAlimenticia"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/rutina-alimenticia/:rutinaAlimenticiaId/producto-alimenticio": {
+        "post": {
+          "description": "Asignar un producto a una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "rutinaAlimenticiaId",
+              "description": "UUID de la rutina alimenticia",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle del producto para asignar a la rutina",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ProductoRutina"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto asociado a rutina alimenticia exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/producto-alimenticio": {
+        "post": {
+          "description": "Crea un producto alimenticio",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Detalle del producto alimenticio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ProductoAlimenticio"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Producto creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/rutina-alimenticia/:rutinaAlimenticiaId/enviar": {
+        "post": {
+          "description": "Enviar los productos de una rutina alimenticia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "rutinaAlimenticiaId",
+              "description": "UUID de la rutina alimenticia",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Solicitud de productos enviada exitosamente. De 5 a 8 días recibirá sus productos"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el parametro [...]"
+            }
+          }
+        }
+      },
+      "/deporte/deportes": {
+        "get": {
+          "description": "Obtiene la lista de deportes ofrecidos en el sistema",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de deportes registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Deporte"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/deporte/planes-entrenamiento": {
+        "get": {
+          "description": "Obtiene la lista de planes de entrenamiento",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de planes de entrenamiento",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/PlanEntrenamiento"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/deporte/planes-entrenamiento/:id_plan": {
+        "get": {
+          "description": "Obtiene la lista entrenamientos de un plan específico",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de entrenamientos de un plan específico",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Entrenamiento"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/deporte/plan-entrenamiento": {
+        "post": {
+          "description": "Guarda un plan de entrenamiento en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del plan de entrenamiento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/PlanEntrenamientoPost"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Plan de entrenamiento creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      }
+    },
+    "definitions":{
+      "Entrenamiento":{
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Entrenamiento 2"
+          },
+          "hora_inicio": {
+            "type": "string",
+            "example": "2015-04-09 14:07:46.580465000"
+          },
+          "hora_fin": {
+            "type": "string",
+            "example": "2015-04-09 14:07:46.580465000"
+          },
+          "lugar": {
+            "type": "string",
+            "example": "Cancha sintetica"
+          },
+          "frecuencia": {
+            "type": "string",
+            "example": "DIARIA"
+          },
+          "detalle": {
+            "type": "string",
+            "example": "Llevar bicileta alta"
+          },
+          "deporte": {
+            "type": "string",
+            "example": "Ciclismo"
+          }
+        }
+      },
+      "ProductoRutina": {
+        "type": "object",
+        "properties":{
+          "dosis": {
+            "type": "string",
+            "example": "2 veces por día"
+          },
+          "producto_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "131df3a0-1e8e-49d3-9fb2-f173d1226f03"
+          }
+        }
+      },
+      "ProductoAlimenticio": {
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Queso doblecrema"
+          },
+          "producto_id": {
+            "type": "number",
+            "example": 8
+          }
+        }
+      },
+      "RutinaAlimenticia": {
+        "type": "object",
+        "properties":{
+          "nombre": {
+            "type": "string",
+            "example": "Rutina basada en lácteos"
+          },
+          "producto_id": {
+            "type": "string",
+            "example": "Alta ingesta de lácteos para fortalecer el sistema óseo"
+          },
+          "productos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ProductoRutina"
+            }
+          }
+        }
+      },
+      "Deporte":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Atletismo"
+          }
+        }
+      },
+      "PlanEntrenamiento":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Plan light"
+          },
+          "id_deporte":  {
+            "type": "string",
+            "example": "Atletismo"
+          }
+        }
+      },
+      "PlanEntrenamientoPost":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Plan light"
+          },
+          "id_deporte":  {
+            "type": "string",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "entrenamientos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/EntrenamientoId"
+            }
+          }
+        }
+      },
+      "EntrenamientoId":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          }
+        }
+      }
+    }
+  }

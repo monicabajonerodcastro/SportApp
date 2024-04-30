@@ -2,7 +2,7 @@
 name: Despliegue del microservicio administración
 on: 
     push:
-        branches: [main]
+        branches: [develop]
         paths: 
           - administracion/**
           - .github/workflows/gcp_microservicio_administracion.yml
@@ -56,6 +56,7 @@ jobs:
             gcloud run deploy administracion \
             --image=${{env.LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.REPOSITORY}}/${{env.IMAGE_NAME}}:latest \
             --allow-unauthenticated \
+            --min-instances=1 \
             --port=5002 \
             --region=${{env.LOCATION}} \
             --project=${{env.PROJECT_ID}}

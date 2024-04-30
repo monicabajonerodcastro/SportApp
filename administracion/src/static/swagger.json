@@ -96,6 +96,690 @@
             }
           }
         }
+      },
+      "/administracion/plan/deportista": {
+        "post": {
+          "description": "Asignar un deportista a un plan de suscripción",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Identificador del deportista e identificador del plan de suscripción",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/AsociacionDeportistaPlan"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Deportista asignado correctamente al plan"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró un deportista con el id [...] / No se encontró un plan con el id [...]"
+            }
+          }
+        }
+      },
+      "/administracion/socios": {
+        "get": {
+          "description": "Obtiene la información de todos los socios registrados en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de socios registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Socio"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/socio": {
+        "post": {
+          "description": "Guarda un socio de negocio en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del socio de negocio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SocioConPassword"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Socio de negocio creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/socios/:idSocio:": {
+        "get": {
+          "description": "Obtiene la informaición de un socio específico por id",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idSocio",
+              "description": "Uuid del socio a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle del socio solicitado",
+              "schema": {
+                "$ref": "#/definitions/Socio"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/socio/:idSocio:": {
+        "post": {
+          "description": "Actualiza un socio de negocio en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del socio de negocio",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SocioConPassword"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Socio de negocio actualizado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/producto_servicio": {
+        "post": {
+          "description": "Crea un producto o servicio en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del producto o servicio prestado",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ServicioProducto"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Producto o servicio de negocio creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        },
+        "get": {
+          "description": "Obtiene la información de todos los servicios ofrecidos en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de servicios registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ServicioProducto"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/paises": {
+        "get": {
+          "description": "Obtiene la lista de paises de latinoamerica",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de paises registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Pais"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/administracion/paises/:idPais:/ciudades": {
+        "get": {
+          "description": "Obtiene la lista de ciudades de un país de latinoamerica",
+          "parameters": [
+            {
+              "name": "idPais",
+              "description": "Id del país a consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "AR"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de ciudades de un país",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Ciudad"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/administracion/entrenadores": {
+        "get": {
+          "description": "Obtiene la información de todos los entrenadores registrados en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de entrenadores registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Entrenador"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/entrenador": {
+        "post": {
+          "description": "Guarda un entrenador en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del entrenador",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Entrenador"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Entrenador registrado con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/reuniones": {
+        "get": {
+          "description": "Obtiene la información de todas las reuniones registradas en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de reuniones registradas",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Reunion"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/reuniones/disponibles": {
+        "get": {
+          "description": "Obtiene la información de las reuniones disponibles (no asignadas)",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de reuniones disponibles (no asignadas)",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ReunionDisponible"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/reunion": {
+        "post": {
+          "description": "Guarda una reunión en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del entrenador",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ReunionCrear"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Reunión registrada con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/reunion/:id:": {
+        "post": {
+          "description": "Asigna una reunión al usuario de la sesión",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Reunión asignada con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/evento/:idEvento/servicio/:idServicio": {
+        "post": {
+          "description": "Asignar un servicio a un evento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idEvento",
+              "description": "Evento al cual se desea asociar el servicio",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            },
+            {
+              "name": "idServicio",
+              "description": "Servicio que se deseea asociar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "d538c05e-ce84-4aa4-964f-62ec446a97a5"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Asociación realizada exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/evento/:idEvento/servicios": {
+        "get": {
+          "description": "Obtiene la lista de servicios asignados al evento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idEvento",
+              "description": "Evento que se desea consultar",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de servicios registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ServicioProducto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -118,6 +802,286 @@
           "valor":  {
             "type": "int",
             "example": 20000
+          }
+        }
+      },
+      "AsociacionDeportistaPlan":{
+        "type": "object",
+        "properties":{
+          "id_plan": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_deportista":  {
+            "type": "string",
+            "format": "uuid",
+            "example": "b553cea1-1a09-42fc-aa38-1c5029b9bdb8"
+          }
+        }
+      },
+      "Socio":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Pedro"
+          },
+          "apellido":  {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email":  {
+            "type": "string",
+            "example": "correo@correo.com"
+          },
+          "username":  {
+            "type": "string",
+            "example": "pperez"
+          },
+          "tipo_identificacion":  {
+            "type": "string",
+            "example": "CC"
+          },
+          "numero_identificacion":  {
+            "type": "string",
+            "example": "123456"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Socio de deporte"
+          }
+        }
+      },
+      "SocioConPassword":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Pedro"
+          },
+          "apellido":  {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email":  {
+            "type": "string",
+            "example": "correo@correo.com"
+          },
+          "username":  {
+            "type": "string",
+            "example": "pperez"
+          },
+          "password":  {
+            "type": "string",
+            "example": "contrasena_segura"
+          },
+          "tipo_identificacion":  {
+            "type": "string",
+            "example": "CC"
+          },
+          "numero_identificacion":  {
+            "type": "string",
+            "example": "123456"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Socio de deporte"
+          }
+        }
+      },
+      "ServicioProducto":{
+        "type": "object",
+        "properties":{
+          "nombre":  {
+            "type": "string",
+            "example": "Transporte"
+          },
+          "valor":  {
+            "type": "int",
+            "example": 30
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Transporte al sitio de la competencia"
+          },
+          "descripcion":  {
+            "type": "string",
+            "example": "Se presta el servicio recogiendo al deportista en su vivienda y se lleva al punto de encuentro de la competencia"
+          },
+          "id_deporte":  {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_socio":  {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          }
+        }
+      },
+      "Pais":{
+        "type": "object",
+        "properties":{
+          "codigo": {
+            "type": "string",
+            "example": "AR"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Argentina"
+          }
+        }
+      },
+      "Ciudad":{
+        "type": "object",
+        "properties":{
+          "codigo": {
+            "type": "string",
+            "example": "AA"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Bahía Blanca"
+          },
+          "pais": {
+            "type": "string",
+            "example": "AR"
+          }
+        }
+      },
+      "Entrenador":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Pedro"
+          },
+          "apellido":  {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email":  {
+            "type": "string",
+            "example": "correo@correo.com"
+          },
+          "username":  {
+            "type": "string",
+            "example": "pperez"
+          },
+          "tipo_identificacion":  {
+            "type": "string",
+            "example": "CC"
+          },
+          "numero_identificacion":  {
+            "type": "string",
+            "example": "123456"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "Socio de deporte"
+          },
+          "deporte":  {
+            "type": "string",
+            "example": "Atletismo"
+          }
+        }
+      },
+      "Reunion":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "fecha":  {
+            "type": "Date",
+            "example": "2019-05-05 00:00"
+          },
+          "lugar":  {
+            "type": "string",
+            "example": "Bodytech 127"
+          },
+          "id_entrenador":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_usuario":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          }
+        }
+      },
+      "ReunionCrear":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "fecha":  {
+            "type": "Date",
+            "example": "2019-05-05 00:00"
+          },
+          "lugar":  {
+            "type": "string",
+            "example": "Bodytech 127"
+          },
+          "id_entrenador":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          }
+        }
+      },
+      "ReunionDisponible":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "fecha":  {
+            "type": "Date",
+            "example": "2019-05-05 00:00"
+          },
+          "lugar":  {
+            "type": "string",
+            "example": "Bodytech 127"
+          },
+          "id_entrenador":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_usuario":  {
+            "type": "string",
+            "example": null
+          },
+          "nombre_entrenador":  {
+            "type": "string",
+            "example": "Nicolás Rojas"
+          },
+          "detalle_entrenador":  {
+            "type": "string",
+            "example": "Experto en crossfit"
           }
         }
       }

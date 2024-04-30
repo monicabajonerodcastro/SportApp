@@ -30,11 +30,10 @@ def test_ingresar(mock_session):
     service = IngresarUsuario(session=mock_session_instance, json_request=json_request)
     (result, status) = service.execute()
 
-    print(result)
-
     assert mock_session_instance.query.called
     assert status == 200
     assert result["token"]
+    assert result["rol"] == "DEPORTISTA"
 
 @patch('test.mock_session', autospec=True)
 def test_ingresar_sin_campos(mock_session):
@@ -65,6 +64,6 @@ def test_ingresar_con_correo_invalido(mock_session):
 
 
 def usuario_mock():
-    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4())
+    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
 
 

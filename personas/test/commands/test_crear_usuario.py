@@ -1,17 +1,14 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 from faker import Faker
 
 from src.commands.crear_usuario import CrearUsuario
 from src.models.usuario import Usuario
 from test.mock_session import MockSession
 from src.errors.errors import MissingRequiredField,InvalidFormatField
-import random, os
+import random
 
 fake = Faker()
-
-
-
 
 @pytest.fixture
 def mock_session():
@@ -28,13 +25,11 @@ def crear_usuario(session, usuario_mock):
                         "username": usuario_mock.username,
                         "password": usuario_mock.password,
                         "suscripcion": usuario_mock.suscripcion}
-                        
                      )
 
 
 def usuario_mock():
-    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4())
-
+    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
 
 def test_crear_usuario():
     my_usuario_mock = usuario_mock()
@@ -42,13 +37,13 @@ def test_crear_usuario():
     query = MagicMock()
     query.filter.return_value.first.return_value = my_usuario_mock
     session.query.return_value = query
-    crearUsuario = crear_usuario(session, my_usuario_mock)
-    result = crearUsuario.execute()
-    assert result == "Usuario Registrado con exito"
+    crear_usuario_service = crear_usuario(session, my_usuario_mock)
+    result = crear_usuario_service.execute()
+    assert result["description"] == "Usuario Registrado con exito"
 
 def test_crear_usuario_missing_requiredfield():
     my_usuario_mock = usuario_mock()
-    my_usuario_mock.nombre=""
+    my_usuario_mock.nombre=None
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_usuario_mock
@@ -61,7 +56,7 @@ def test_crear_usuario_missing_requiredfield():
 
 
     assert exc_info.value.code == 400
-    assert exc_info.value.description == "Parámetros requeridos"
+    assert exc_info.value.description == "No se encontró el nombre en la petición"
 
 
 def test_crear_usuario_invalid_formatfield():
@@ -79,8 +74,4 @@ def test_crear_usuario_invalid_formatfield():
 
 
     assert exc_info.value.code == 400
-    assert exc_info.value.description == "Parámeto(s) con formato inválido"
-
-
-
-
+    assert exc_info.value.description == "El correo no tiene un formato válido"
