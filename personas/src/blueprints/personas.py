@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from src.commands.obtener_maps_key import ObtenerMapsKey
 from src.commands.get_perfil_deportivo_por_usuario import GetPerfilDeportivoPorUsuario
 from src.commands.crear_usuario import CrearUsuario
 from src.commands.ingresar_usuario import IngresarUsuario
@@ -18,6 +19,14 @@ personas_blueprint = Blueprint('personas', __name__,url_prefix="/personas")
 @personas_blueprint.route('/health-check', methods = ['GET'])
 def health_check():
     return jsonify({"description":"UP"}),200     
+
+#####################################################################
+#                            Utilidades                             #
+#####################################################################
+
+@personas_blueprint.route('/maps', methods = ['GET'])
+def obtener_key_maps():
+    return ObtenerMapsKey().execute()
 
 #####################################################################
 #                             Usuarios                              #

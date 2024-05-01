@@ -12,9 +12,9 @@ jobs:
         runs-on: ubuntu-latest
         env:
             IMAGE_NAME: administracion
-            PROJECT_ID: sportapp-grupo2
-            LOCATION: us-east1
-            REPOSITORY: sport-app
+            PROJECT_ID: sportapp-proyecto2
+            LOCATION: us-central1
+            REPOSITORY: sportapp-repo
         steps:
         - name: Checkout Repo
           uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
           id: auth
           uses: google-github-actions/auth@v2
           with:
-            credentials_json: '${{ secrets.GCP_SA_STORAGE_KEY }}'
+            credentials_json: '${{ secrets.GCP_KEY }}'
         - name: 'Configurar Cloud SDK'
           uses: 'google-github-actions/setup-gcloud@v2'
           with:
@@ -32,7 +32,7 @@ jobs:
           with:
             path: administracion/credentials.json
             contents: |
-              ${{secrets.GCP_SA_STORAGE_KEY}}
+              ${{secrets.GCP_KEY}}
             write-mode: append
         - name: Construir la imagen de docker
           run: docker build -f administracion/Dockerfile -t $IMAGE_NAME:latest .
