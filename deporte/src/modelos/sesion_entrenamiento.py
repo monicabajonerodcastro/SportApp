@@ -19,6 +19,9 @@ class SesionEntrenamiento(Base):
     hora_inicio = Column(DateTime, nullable=False)
     hora_fin = Column(DateTime, nullable=True)
     estado = Column(String, nullable=False)
+    potencia = Column(String, nullable=True)
+    min_ritmo = Column(String, nullable=True)
+    max_ritmo = Column(String, nullable=True)
 
     def __init__(self, id_deportista):
         self.id = uuid.uuid4()
@@ -33,3 +36,6 @@ class SesionEntrenamientoSchema(Schema):
     hora_inicio = fields.DateTime()
     hora_fin = fields.DateTime()
     estado = fields.Str()
+    potencia = fields.Str()
+    min_ritmo = fields.Str()
+    max_ritmo = fields.Str()
