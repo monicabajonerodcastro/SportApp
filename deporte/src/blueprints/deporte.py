@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from src.comandos.registrar_sesion_entrenamiento import FinalizarSesionEntrenamiento, IniciarSesionEntrenamiento
 from src.comandos.remover_plan_deportista import RemoverPlanDeportista
 from src.comandos.obtener_plan_por_deportista import ObtenerPlanesDeportista
 from src.comandos.asignar_plan_deportista import AsignarPlanDeportista
@@ -80,7 +81,7 @@ def obtener_deporte_por_id(id_deporte):
     return ObtenerDeportePorId(session=db_session, id_deporte=id_deporte).execute()
 
 #####################################################################
-#                         Planes de entrenamiento                      #
+#                       Planes de entrenamiento                     #
 #####################################################################
 
 @deporte_blueprint.route("/planes-entrenamiento", methods = ['GET'])
@@ -107,3 +108,14 @@ def remover_plan_deportista(id_plan):
 def obtener_plan_deportista():
     return ObtenerPlanesDeportista(session=db_session, headers=request.headers).execute()
 
+#####################################################################
+#                       Sesion de entrenamiento                     #
+#####################################################################
+
+@deporte_blueprint.route('/sesion-entrenamiento/iniciar', methods = ['POST'])
+def iniciar_sesion_entrenamiento():
+    return IniciarSesionEntrenamiento(session=db_session, headers=request.headers).execute()
+
+@deporte_blueprint.route('/sesion-entrenamiento/<string:id_sesion_entrenamiento>/finalizar', methods = ['POST'])
+def finalizar_sesion_entrenamiento(id_sesion_entrenamiento):
+    return FinalizarSesionEntrenamiento(session=db_session, headers=request.headers, id_sesion_entrenamiento=id_sesion_entrenamiento).execute()
