@@ -19,6 +19,7 @@ class Usuario(Base):
 	rol =  Column(String, nullable=False)
 	#Relationships
 	perfil_deportivo = relationship("PerfilDeportivo")
+	direccion = relationship("Direccion")
 
 	
     

@@ -24,9 +24,12 @@ def crear_usuario(session, usuario_mock):
                         "numero_identificacion": usuario_mock.numero_identificacion,
                         "username": usuario_mock.username,
                         "password": usuario_mock.password,
-                        "suscripcion": usuario_mock.suscripcion}
+                        "suscripcion": usuario_mock.suscripcion,
+                        "direccion": direccion_mock()}
                      )
 
+def direccion_mock():
+    return {"id" : fake.uuid4(), "direccion": fake.address(), "ubicacionLatitud": fake.latitude(), "ubicacionLongitud": fake.longitude(), "nombre": fake.name()}
 
 def usuario_mock():
     return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")

@@ -1,3 +1,4 @@
+from src.models.direccion import Direccion
 from src.models.usuario import Usuario
 from src.commands.base_command import BaseCommannd
 from src.errors.errors import MissingRequiredField,InvalidFormatField
@@ -21,6 +22,9 @@ class CrearUsuario(BaseCommannd):
         username = self._validar_campo("username", json_request, "No se encontró el username en la petición")
         password = self._validar_campo("password", json_request, "No se encontró el password en la petición")
         suscripcion = self._validar_campo("suscripcion", json_request, "No se encontró la suscripcion en la petición")
+        direccion = self._validar_campo("direccion", json_request, "No se encontró la dirección en la petición")
+
+        self.direccion = direccion
       
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
@@ -39,6 +43,13 @@ class CrearUsuario(BaseCommannd):
    
     def execute(self):
         self.session.add(self.usuario)
+        self.session.commit()
+
+        usuario = self.session.query(Usuario).filter(Usuario.email == self.usuario.email).first()
+        direccion_obj = Direccion(id_direccion=self.direccion["id"], direccion=self.direccion["direccion"], ubicacion_latitud=self.direccion["ubicacionLatitud"],
+                                   ubicacion_longitud=self.direccion["ubicacionLongitud"], nombre=self.direccion["nombre"], id_usuario=usuario.id)
+
+        self.session.add(direccion_obj)
         self.session.commit()
         self.session.close()
         return {"description" : "Usuario Registrado con exito", "id": self.usuario.id}
