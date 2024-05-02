@@ -498,6 +498,49 @@
             }
           }
         }
+      },
+      "/deporte/indicadores": {
+        "get": {
+          "description": "Calcula los indicadores de FTP y Vo2Max",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Calculo por sesión de entrenamiento finalizada",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Indicadores"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -683,6 +726,23 @@
           "max_ritmo": {
             "type": "string",
             "example": "128"
+          }
+        }
+      },
+      "Indicadores":{
+        "type": "object",
+        "properties":{
+          "fecha": {
+            "type": "string",
+            "example": "05/02/2024 04:29:45 PM"
+          },
+          "ftp": {
+            "type": "number",
+            "example": 88.8
+          },
+          "vo2max": {
+            "type": "number",
+            "example": 16
           }
         }
       }

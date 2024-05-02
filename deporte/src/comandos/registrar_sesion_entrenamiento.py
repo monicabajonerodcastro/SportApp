@@ -1,5 +1,5 @@
 import datetime
-from src.errores.errores import MissingRequiredField, NotFoundError
+from src.errores.errores import MissingRequiredField, NotFoundError, BadRequestError
 from src.modelos.sesion_entrenamiento import EstadoSesionEntrenamiento, SesionEntrenamiento
 from src.comandos.base_command import BaseCommand
 from src.servicios import auth
@@ -9,6 +9,11 @@ def _validar_campo(campo, json, mensaje) -> None:
         return json[campo]
     raise MissingRequiredField(description=mensaje)
         
+def _validar_formato_numero(nombre, numero) -> None:
+    try:
+        float(numero)
+    except Exception:
+        raise BadRequestError(description="El campo ["+nombre+"] tiene un formato inválido" )
 
 class IniciarSesionEntrenamiento(BaseCommand):
     def __init__(self, session, headers) -> None:
@@ -34,6 +39,9 @@ class FinalizarSesionEntrenamiento(BaseCommand):
         self.potencia = _validar_campo("potencia", json_request, "No se encontró la potencia")
         self.min_ritmo = _validar_campo("min_ritmo", json_request, "No se encontró el ritmo cardiaco mínimo")
         self.max_ritmo = _validar_campo("max_ritmo", json_request, "No se encontró el ritmo cardiaco máximo")
+        _validar_formato_numero("potencia", self.potencia)
+        _validar_formato_numero("min_ritmo", self.min_ritmo)
+        _validar_formato_numero("max_ritmo", self.max_ritmo)
 
     def execute(self):
         nuevo_token = auth.validar_autenticacion(headers=self.headers)

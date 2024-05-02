@@ -2,7 +2,7 @@ import enum
 import uuid
 import datetime
 from marshmallow import Schema, fields
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, Numeric
 from src.modelos.database import Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy  import  Column
@@ -19,9 +19,9 @@ class SesionEntrenamiento(Base):
     hora_inicio = Column(DateTime, nullable=False)
     hora_fin = Column(DateTime, nullable=True)
     estado = Column(String, nullable=False)
-    potencia = Column(String, nullable=True)
-    min_ritmo = Column(String, nullable=True)
-    max_ritmo = Column(String, nullable=True)
+    potencia = Column(Numeric, nullable=True)
+    min_ritmo = Column(Numeric, nullable=True)
+    max_ritmo = Column(Numeric, nullable=True)
 
     def __init__(self, id_deportista):
         self.id = uuid.uuid4()
@@ -36,6 +36,6 @@ class SesionEntrenamientoSchema(Schema):
     hora_inicio = fields.DateTime()
     hora_fin = fields.DateTime()
     estado = fields.Str()
-    potencia = fields.Str()
-    min_ritmo = fields.Str()
-    max_ritmo = fields.Str()
+    potencia = fields.Number()
+    min_ritmo = fields.Number()
+    max_ritmo = fields.Number()

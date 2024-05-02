@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from src.comandos.calcular_indicadores import CalcularIndicadores
 from src.comandos.registrar_sesion_entrenamiento import FinalizarSesionEntrenamiento, IniciarSesionEntrenamiento
 from src.comandos.remover_plan_deportista import RemoverPlanDeportista
 from src.comandos.obtener_plan_por_deportista import ObtenerPlanesDeportista
@@ -119,3 +120,11 @@ def iniciar_sesion_entrenamiento():
 @deporte_blueprint.route('/sesion-entrenamiento/finalizar', methods = ['POST'])
 def finalizar_sesion_entrenamiento():
     return FinalizarSesionEntrenamiento(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
+
+#####################################################################
+#                             Indicadores                           #
+#####################################################################
+
+@deporte_blueprint.route("/indicadores", methods = ["GET"])
+def obtener_indicadores():
+    return CalcularIndicadores(session=db_session, headers=request.headers).execute()
