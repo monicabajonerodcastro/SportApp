@@ -14,6 +14,7 @@ class Evento(Base):
     id_deporte = Column(String, nullable=False)
     id_socio = Column(String, nullable=False)
     detalle = Column(String, nullable=False)
+    ubicacion = Column(String, nullable=False)
 
     def  __init__(self, id, nombre, fecha_inicio, fecha_fin, id_deporte, id_socio, detalle):
         self.id = id
