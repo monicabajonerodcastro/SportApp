@@ -116,6 +116,6 @@ def obtener_plan_deportista():
 def iniciar_sesion_entrenamiento():
     return IniciarSesionEntrenamiento(session=db_session, headers=request.headers).execute()
 
-@deporte_blueprint.route('/sesion-entrenamiento/<string:id_sesion_entrenamiento>/finalizar', methods = ['POST'])
-def finalizar_sesion_entrenamiento(id_sesion_entrenamiento):
-    return FinalizarSesionEntrenamiento(session=db_session, headers=request.headers, id_sesion_entrenamiento=id_sesion_entrenamiento).execute()
+@deporte_blueprint.route('/sesion-entrenamiento/finalizar', methods = ['POST'])
+def finalizar_sesion_entrenamiento():
+    return FinalizarSesionEntrenamiento(session=db_session, headers=request.headers, json_request=request.get_json()).execute()

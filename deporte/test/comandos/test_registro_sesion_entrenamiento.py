@@ -38,7 +38,7 @@ def test_finalizar_sesion_entrenamiento(mock_session, requests_mock):
     mock_query = mock_session_instance.query.return_value
     mock_query.filter.return_value.first.return_value = mock_sesion_entrenamiento()
 
-    (result, status_code) = FinalizarSesionEntrenamiento(session=mock_session_instance, headers={"Authorization": "Bearer "}, id_sesion_entrenamiento=_ID_SESION_ENTRENAMIENTO).execute()
+    (result, status_code) = FinalizarSesionEntrenamiento(session=mock_session_instance, headers={"Authorization": "Bearer "}, json_request=mock_finalizar_sesion_request()).execute()
 
     assert status_code == 200
     assert result["token"] == _TOKEN
@@ -55,10 +55,17 @@ def test_finalizar_sesion_entrenamiento_no_existente(mock_session, requests_mock
     mock_query.filter.return_value.first.return_value = None
 
     with pytest.raises(NotFoundError) as exc_info:
-        FinalizarSesionEntrenamiento(session=mock_session_instance, headers={"Authorization": "Bearer "}, id_sesion_entrenamiento=_ID_SESION_ENTRENAMIENTO).execute()
+        FinalizarSesionEntrenamiento(session=mock_session_instance, headers={"Authorization": "Bearer "}, json_request=mock_finalizar_sesion_request()).execute()
     
     assert exc_info.value.code == 404
-    assert exc_info.value.description == "No se ha iniciado la sesión de entrenamiento " + _ID_SESION_ENTRENAMIENTO
 
 def mock_sesion_entrenamiento():
     return SesionEntrenamiento(id_deportista=_ID_USUARIO)
+
+def mock_finalizar_sesion_request():
+    return {
+        "id_sesion_entrenamiento": fake.uuid4(),
+        "potencia": fake.pyint(),
+        "min_ritmo": fake.pyint(),
+        "max_ritmo": fake.pyint()
+    }

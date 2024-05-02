@@ -403,6 +403,101 @@
             }
           }
         }
+      },
+      "/deporte/sesion-entrenamiento/iniciar": {
+        "post": {
+          "description": "Inicia una sesión de entrenamiento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Sesión de entrenamiento iniciada exitosamente",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/SesionEntrenamiento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/deporte/sesion-entrenamiento/finalizar": {
+        "post": {
+          "description": "Finaliza una sesión de entrenamiento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos para finalizar la sesión de entrenamiento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SesionEntrenamientoRequest"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "Sesión de entrenamiento iniciada exitosamente",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/SesionEntrenamiento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El entreanmiento ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -548,6 +643,46 @@
             "type": "string",
             "format": "uuid",
             "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          }
+        }
+      },
+      "SesionEntrenamiento":{
+        "type": "object",
+        "properties":{
+          "id_sesion_entrenamiento": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "mensaje": {
+            "type": "string",
+            "example": "Sesión de entrenamiento iniciada/finalizada exitosamente"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ2Njk5NjAsImlhdCI6MTcxNDY2OD"
+          }
+        }
+      },
+      "SesionEntrenamientoRequest":{
+        "type": "object",
+        "properties":{
+          "id_sesion_entrenamiento": {
+            "type": "string",
+            "format": "uuid",
+            "example": "b5bde524-046d-4584-9a31-250c0de1e41a"
+          },
+          "potencia": {
+            "type": "string",
+            "example": "223.8"
+          },
+          "min_ritmo": {
+            "type": "string",
+            "example": "65"
+          },
+          "max_ritmo": {
+            "type": "string",
+            "example": "128"
           }
         }
       }
