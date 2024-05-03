@@ -26,7 +26,7 @@ def test_asignar_evento_deportista(mock_session, requests_mock):
     mock_query.filter.return_value.first.return_value = None
 
     (result, status_code) = AsignarEventoDeportista(session=mock_session_instance, headers={"Authorization": "Bearer "}, 
-                                                      evento=mock_evento()).execute()
+                                                      evento=mock_evento().__dict__).execute()
     assert mock_session_instance.query.called
     assert result.get("respuesta")
     assert status_code == 200
@@ -42,7 +42,7 @@ def test_asignar_evento_deportista_sin_autorizacion(mock_session):
 
     with pytest.raises(InvalidAuthenticationError):
          AsignarEventoDeportista(session=mock_session_instance, headers={}, 
-                                                      evento=mock_evento()).execute()
+                                                      evento=mock_evento().__dict__).execute()
     
     assert not mock_session_instance.query.called
 
@@ -57,7 +57,7 @@ def test_asignar_evento_deportista_ya_creado(mock_session, requests_mock):
 
     with pytest.raises(BadRequestError):
           AsignarEventoDeportista(session=mock_session_instance, headers={"Authorization": "Bearer "}, 
-                                                      evento=mock_evento()).execute()
+                                                      evento=mock_evento().__dict__).execute()
     
 
 def mock_evento():
