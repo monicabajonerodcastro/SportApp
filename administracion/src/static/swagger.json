@@ -780,6 +780,126 @@
             }
           }
         }
+      },
+      "/administracion/evento/: id_evento:": {
+        "get": {
+          "description": "Obtiene los usuarios inscritos a un evento específico",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de usuarios inscritos a un evento específico",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/EventoUsuario"
+                }
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+          }
+        }
+      },
+      "/administracion/evento/:id_evento:": {
+        "post": {
+          "description": "Inscribe el usuario actual a un evento específico",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Inscripción registrada con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/evento": {
+        "post": {
+          "description": "Guarda un evento en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos básicos del evento",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Evento"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Evento registrado con éxito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
       }
     },
     "definitions":{
@@ -1082,6 +1202,60 @@
           "detalle_entrenador":  {
             "type": "string",
             "example": "Experto en crossfit"
+          }
+        }
+      },
+      "Evento":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "nombre":  {
+            "type": "string",
+            "example": "Contrareloj"
+          },
+          "fecha_inicio":  {
+            "type": "Date",
+            "example": "2019-05-05 00:00"
+          },
+          "fecha_fin":  {
+            "type": "Date",
+            "example": "2019-05-05 05:00"
+          },
+          "id_deporte":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_socio":  {
+            "type": "string",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "detalle":  {
+            "type": "string",
+            "example": "250km"
+          }
+        }
+      },
+      "EventoUsuario":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_usuario": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
+          },
+          "id_evento": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01b926c6-9970-4925-9ad7-6382101c150f"
           }
         }
       }

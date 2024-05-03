@@ -1,5 +1,8 @@
 
 from flask import Blueprint, jsonify, request
+from src.comandos.obtener_usuarios_evento import ObtenerUsuariosEvento
+from src.comandos.inscribir_usuario_evento import InscribirUsuarioEvento
+from src.comandos.crear_evento import CrearEvento
 from src.comandos.asignar_servicio_deportista import AsignarServicioDeportista
 from src.comandos.obtener_servicios_por_evento import ObtenerServiciosPorEvento
 from src.comandos.asignar_servicio_evento import AsignarServicioEvento
@@ -183,6 +186,22 @@ def obtener_servicios_por_evento(id_evento):
     (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
 
     return ObtenerServiciosPorEvento(session=db_session, headers=request.headers, evento=evento_respuesta["respuesta"]).execute()
+
+@administracion_blueprint.route('/evento', methods = ['POST'])
+def crear_evento():
+    json_request = request.get_json()
+    result = CrearEvento(session=db_session, headers=request.headers, json_request=json_request).execute()  
+    print(result)
+    return jsonify({'description':result}), 200 
+
+@administracion_blueprint.route('/evento/<string:id_evento>', methods = ['POST'])
+def inscribir_usuario_evento(id_evento):
+    result = InscribirUsuarioEvento(session=db_session, headers=request.headers, id_evento=id_evento).execute()  
+    return jsonify({'description':result}), 200 
+
+@administracion_blueprint.route('/evento/<string:id_evento>', methods = ['GET'])
+def obtener_usuarios_evento(id_evento):
+    return ObtenerUsuariosEvento(session=db_session, headers=request.headers, id_evento=id_evento).execute()  
 
 #####################################################################
 #                        Servicio / Deportista                      #
