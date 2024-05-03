@@ -1,4 +1,5 @@
 
+from src.comandos.asignar_evento_deportista import AsignarEventoDeportista
 from flask import Blueprint, jsonify, request
 from src.comandos.asignar_servicio_deportista import AsignarServicioDeportista
 from src.comandos.obtener_servicios_por_evento import ObtenerServiciosPorEvento
@@ -193,3 +194,10 @@ def asignar_servicio_a_deportista(id_servicio):
     (servicio_respuesta, _) = ObtenerProductoServicioId(session=db_session, headers=request.headers, id_servicio=id_servicio).execute()
     return AsignarServicioDeportista(session=db_session, headers=request.headers,
                                      servicio=servicio_respuesta["respuesta"]).execute()
+
+
+@administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["POST"])
+def asignar_evento_a_deportista(id_evento):
+    (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
+    return AsignarEventoDeportista(session=db_session, headers=request.headers,
+                                     evento=evento_respuesta["respuesta"]).execute()
