@@ -1,3 +1,4 @@
+from src.models.direccion import Direccion, DireccionSchema
 from src.commands.base_command import BaseCommannd
 from src.models.usuario import Usuario, UsuarioJsonSchema
 from src.services.auth import validar_autenticacion
@@ -6,6 +7,7 @@ from src.errors.errors import NotFoundError, InvalidFormatField
 from uuid import UUID
 
 usuario_schema = UsuarioJsonSchema()
+direccion_schema = DireccionSchema()
 
 class GetUsuarioPorId(BaseCommannd):
     def __init__(self, session, headers, id_usuario):
@@ -31,7 +33,11 @@ class GetUsuarioPorId(BaseCommannd):
         if user is None:
             self.session.close()
             raise NotFoundError(description="El usuario no se encuentra registrado")
+        direccion = self.session.query(Direccion).filter(Direccion.id_usuario == user.id).first()
+        usuario_response = usuario_schema.dump(user)
+        direccion_response = direccion_schema.dump(direccion)
+        usuario_response["direccion"] = direccion_response
         self.session.close()
-        return usuario_schema.dump(user), 200
+        return usuario_response, 200
 
     

@@ -42,7 +42,6 @@ class CrearProductoServicio(BaseCommand):
             try:
                 response = http.get_request(f"{HOST_DEPORTE}/deporte/deportes/{id_deporte}")
             except Exception as e:
-                print(e)
                 raise InternalServerError(description="Ocurrio un error al obtener el deporte, intente más tarde")
             
             if  response.status_code < 200 or response.status_code > 209:

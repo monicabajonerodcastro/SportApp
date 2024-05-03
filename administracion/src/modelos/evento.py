@@ -17,6 +17,7 @@ class Evento(Base):
     detalle = Column(String, nullable=False)
     id_socio = Column(UUID(as_uuid=True), ForeignKey("socio.id"),primary_key=True, nullable=False)
     socio = relationship("Socio")
+    ubicacion = relationship("Ubicacion")
 
     def  __init__(self, id, nombre, fecha_inicio, fecha_fin, id_deporte, id_socio, detalle):
         self.id = id
