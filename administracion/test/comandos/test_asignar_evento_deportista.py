@@ -61,7 +61,7 @@ def test_asignar_evento_deportista_ya_creado(mock_session, requests_mock):
     
 
 def mock_evento():
-    evento = Evento(fake.uuid4(),fake.name(),datetime.datetime.strptime(fake.date(),'%Y-%m-%d'),datetime.datetime.strptime(fake.date(),'%Y-%m-%d'),fake.uuid4(), fake.uuid4(),fake.name()),
+    evento = Evento(fake.uuid4(),fake.name(),datetime.datetime.strptime(fake.date(),'%Y-%m-%d'),datetime.datetime.strptime(fake.date(),'%Y-%m-%d'),fake.uuid4(), fake.uuid4(),fake.name())
     return evento
 
 
