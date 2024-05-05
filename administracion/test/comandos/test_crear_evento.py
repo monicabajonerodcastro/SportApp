@@ -24,7 +24,14 @@ def crear_evento(session, evento_mock, headers):
                         "fecha_fin": evento_mock.fecha_fin,
                         "id_deporte": evento_mock.id_deporte,
                         "id_socio": evento_mock.id_socio,
-                        "detalle": evento_mock.detalle
+                        "detalle": evento_mock.detalle,
+                        "ubicacion": {
+                            "id": fake.uuid4(),
+                            "direccion": fake.name(),
+                            "ubicacionLatitud": fake.name(),
+                            "ubicacionLongitud": fake.name(),
+                            "nombre": fake.name()
+                        }
                         }                       
                      )
 

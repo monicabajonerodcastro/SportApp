@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from src.comandos.obtener_usuarios_evento import ObtenerUsuariosEvento
 from src.comandos.inscribir_usuario_evento import InscribirUsuarioEvento
 from src.comandos.crear_evento import CrearEvento
+from src.comandos.obtener_eventos import ObtenerEventos, ObtenerEventosCercanos, ObtenerEventosDeportista
 from src.comandos.asignar_servicio_deportista import AsignarServicioDeportista
 from src.comandos.obtener_servicios_por_evento import ObtenerServiciosPorEvento
 from src.comandos.asignar_servicio_evento import AsignarServicioEvento
@@ -192,7 +193,6 @@ def obtener_servicios_por_evento(id_evento):
 def crear_evento():
     json_request = request.get_json()
     result = CrearEvento(session=db_session, headers=request.headers, json_request=json_request).execute()  
-    print(result)
     return jsonify({'description':result}), 200 
 
 @administracion_blueprint.route('/evento/<string:id_evento>', methods = ['POST'])
@@ -215,8 +215,28 @@ def asignar_servicio_a_deportista(id_servicio):
                                      servicio=servicio_respuesta["respuesta"]).execute()
 
 
+#####################################################################
+#                              Eventos                              #
+#####################################################################
+@administracion_blueprint.route("/eventos", methods = ["GET"])
+def obtener_eventos():
+    return ObtenerEventos(session=db_session, headers=request.headers).execute()
+
+@administracion_blueprint.route("/eventos-deportista", methods = ["GET"])
+def obtener_eventos_deportista():
+    return ObtenerEventosDeportista(session=db_session, headers=request.headers).execute()
+
+@administracion_blueprint.route("/eventos-cercanos", methods = ["GET"])
+def obtener_eventos_cercanos():
+    return ObtenerEventosCercanos(session=db_session, headers=request.headers).execute()
+
+
 @administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["POST"])
 def asignar_evento_a_deportista(id_evento):
     (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
     return AsignarEventoDeportista(session=db_session, headers=request.headers,
                                      evento=evento_respuesta["respuesta"]).execute()
+
+@administracion_blueprint.route("/eventos/<string:id_evento>", methods = ["GET"])
+def obtener_evento_id(id_evento):
+    return ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()

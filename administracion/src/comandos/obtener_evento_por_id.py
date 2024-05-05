@@ -1,10 +1,11 @@
+from src.modelos.ubicacion import Ubicacion, UbicacionSchema
 from src.modelos.evento import Evento, EventoJsonSchema
 from src.comandos.base_command import BaseCommand
 from src.servicios import auth, util
 from src.errores.errores import NotFoundError, BadRequestError
 
-
 evento_schema = EventoJsonSchema()
+ubicacion_schema = UbicacionSchema()
 
 class ObtenerEventoId(BaseCommand):
     def __init__(self, session, headers, id_evento) -> None:
@@ -20,8 +21,10 @@ class ObtenerEventoId(BaseCommand):
             if evento is None:
                 self.session.close()
                 raise NotFoundError(description=f"No se encontró un evento con el id [{self.id_evento}]")
-
+            ubicacion = self.session.query(Ubicacion).filter(Ubicacion.id_evento == self.id_evento).first()
             respuesta = evento_schema.dump(evento)
+            respuesta_ubicacion = ubicacion_schema.dump(ubicacion)
+            respuesta["ubicacion"] = respuesta_ubicacion
             self.session.close()
             return {"respuesta": respuesta, "token" : token}, 200
         else:
