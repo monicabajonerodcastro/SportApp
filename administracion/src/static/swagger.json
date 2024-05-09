@@ -781,7 +781,7 @@
           }
         }
       },
-      "/administracion/evento/: id_evento:": {
+      "/administracion/evento/:id_evento": {
         "get": {
           "description": "Obtiene los usuarios inscritos a un evento específico",
           "parameters": [
@@ -816,9 +816,7 @@
               "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
             }
           }
-        }
-      },
-      "/administracion/evento/:id_evento:": {
+        },
         "post": {
           "description": "Inscribe el usuario actual a un evento específico",
           "parameters": [
@@ -897,6 +895,51 @@
             },
             "404": {
               "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/deportista/evento/:id_evento": {
+        "delete": {
+          "description": "Eliminar un evento de la agenda del deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "id_evento",
+              "description": "Id del evento a remover",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Evento eliminado correctamente de la agenda del deportista"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "No se encontró el evento en la agenda del deportista"
             }
           }
         }

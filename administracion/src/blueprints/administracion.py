@@ -1,4 +1,5 @@
 
+from src.comandos.eliminar_evento_deportista import EliminarEventoDeportista
 from src.comandos.asignar_evento_deportista import AsignarEventoDeportista
 from flask import Blueprint, jsonify, request
 from src.comandos.obtener_usuarios_evento import ObtenerUsuariosEvento
@@ -230,7 +231,6 @@ def obtener_eventos_deportista():
 def obtener_eventos_cercanos():
     return ObtenerEventosCercanos(session=db_session, headers=request.headers).execute()
 
-
 @administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["POST"])
 def asignar_evento_a_deportista(id_evento):
     (evento_respuesta, _) = ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
@@ -240,3 +240,8 @@ def asignar_evento_a_deportista(id_evento):
 @administracion_blueprint.route("/eventos/<string:id_evento>", methods = ["GET"])
 def obtener_evento_id(id_evento):
     return ObtenerEventoId(session=db_session, headers=request.headers, id_evento=id_evento).execute()
+
+
+@administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["DELETE"])
+def eliminar_evento_a_deportista(id_evento):
+    return EliminarEventoDeportista(session=db_session, headers=request.headers, id_evento=id_evento).execute()
