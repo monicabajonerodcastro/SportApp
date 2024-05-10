@@ -3,7 +3,7 @@ from src.errors.errors import InvalidAuthentication
 from src.services.secret import get_secret
 
 if os.environ["ENVIRONMENT"] == 'prod':
-    secret_encode = get_secret(os.environ["PROJECT_ID"], "secret_jwt")
+    secret_encode = "HPgBKB0wzo2NWbT"
 else:
     secret_encode = "HPgBKB0wzo2NWbT"
 
