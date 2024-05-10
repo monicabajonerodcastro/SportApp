@@ -28,7 +28,6 @@ class CrearPerfilDeportivo(BaseCommannd):
         peso_objetivo = self._validar_campo("peso_objetivo", json_request, "No se encontró el peso objetivo en la petición")
         tipo_sangre = self._validar_campo("tipo_sangre", json_request, "No se encontró el tipo de sangre en la petición")
         deporte = self._validar_campo("deporte", json_request, "No se encontró el deporte en la petición")
-        direccion = self._validar_campo("direccion", json_request, "No se encontró el direccion en la petición")
 
         alergias = json_request["alergias"] if "alergias" in json_request.keys() else ""
         preferencia_alimenticia = json_request["preferencia_alimenticia"] if "preferencia_alimenticia" in json_request.keys() else ""
@@ -68,7 +67,7 @@ class CrearPerfilDeportivo(BaseCommannd):
                                 vo2max = vo2max,
                                 ftp = ftp,
                                 tipo_sangre=tipo_sangre,
-                                deporte=deporte, direccion=direccion)
+                                deporte=deporte)
         
         self.session.add(self.perfil_deportivo)
         self.session.commit()
