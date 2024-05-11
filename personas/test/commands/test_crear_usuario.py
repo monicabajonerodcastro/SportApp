@@ -25,14 +25,17 @@ def crear_usuario(session, usuario_mock):
                         "username": usuario_mock.username,
                         "password": usuario_mock.password,
                         "suscripcion": usuario_mock.suscripcion,
-                        "direccion": direccion_mock()}
+                        "direccion": direccion_mock(),
+                        "strava_client_id": usuario_mock.strava_client_id,
+                        "strava_client_secret": usuario_mock.strava_client_secret
+                        }
                      )
 
 def direccion_mock():
     return {"id" : fake.uuid4(), "direccion": fake.address(), "ubicacionLatitud": fake.latitude(), "ubicacionLongitud": fake.longitude(), "nombre": fake.name()}
 
 def usuario_mock():
-    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA")
+    return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA","","")
 
 def test_crear_usuario():
     my_usuario_mock = usuario_mock()

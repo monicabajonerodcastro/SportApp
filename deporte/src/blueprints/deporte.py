@@ -1,4 +1,7 @@
+import datetime
 from flask import Blueprint, jsonify, request
+from src.errores.errores import InternalServerError
+from src.comandos.agregar_entrenamientos_strava import AgregarEntrenamientosStrava
 from src.comandos.calcular_indicadores import CalcularIndicadores
 from src.comandos.registrar_sesion_entrenamiento import FinalizarSesionEntrenamiento, IniciarSesionEntrenamiento
 from src.comandos.remover_plan_deportista import RemoverPlanDeportista
@@ -13,9 +16,10 @@ from src.comandos.crear_producto_alimenticio import CrearProductoAlimenticio
 from src.comandos.crear_rutina_alimenticia import CrearRutinaAlimenticia
 from src.modelos.database import db_session
 from src.comandos.crear_entrenamiento import CrearEntrenamiento
-from src.comandos.obtener_entrenamientos import ObtenerEntrenamientos
+from src.comandos.obtener_entrenamientos import ObtenerEntrenamientoPorId, ObtenerEntrenamientos
 from src.comandos.crear_plan_entrenamiento import CrearPlanEntrenamiento
 from src.comandos.obtener_planes_entrenamiento import ObtenerPlanesEntrenamiento
+from src.servicios import http
 
 deporte_blueprint = Blueprint('deporte', __name__, url_prefix="/deporte")
 
@@ -128,3 +132,44 @@ def finalizar_sesion_entrenamiento():
 @deporte_blueprint.route("/indicadores", methods = ["GET"])
 def obtener_indicadores():
     return CalcularIndicadores(session=db_session, headers=request.headers).execute()
+
+#####################################################################
+#                             Strava                           #
+#####################################################################
+
+@deporte_blueprint.route("/get-activities/<string:access_token>", methods = ["GET"])
+def obtener_actividades(access_token):
+    StravaUrlActivities= "https://www.strava.com/api/v3/athlete/activities"
+    response=http.get_request(url=StravaUrlActivities, headers={'Authorization': 'Bearer '+access_token})
+    if response.status_code < 200 or response.status_code > 209:
+        raise InternalServerError(description="Ocurrio un error al obtener las actividades de Strava")
+    response=response.json()
+    return response
+    
+@deporte_blueprint.route("/get_strava/<string:access_token>", methods = ["POST"])
+def agregar_entrenamientos_strava(access_token):
+    activities=obtener_actividades(access_token)
+    return AgregarEntrenamientosStrava(session=db_session, headers=request.headers, activities=activities).execute()
+
+
+@deporte_blueprint.route("/add_activity_strava", methods = ["POST"])
+def agregar_entrenamiento_strava():
+    
+    json_request=request.get_json()
+    
+    entrenamiento=ObtenerEntrenamientoPorId(session=db_session, id_entrenamiento=json_request["id_entrenamiento"]).execute()
+    body = {
+
+        "name": entrenamiento["nombre"],
+        "sport_type": "Walk",
+        "start_date_local":  datetime.datetime.utcnow().isoformat(),
+        "elapsed_time": 0,
+        "description": entrenamiento["detalle"]
+    }
+    
+    StravaUrlActivities= "https://www.strava.com/api/v3/activities"
+    response=http.post_request(url=StravaUrlActivities, headers={'Authorization': 'Bearer '+ json_request["access_token"]},data=body)
+     
+    response=response.json()
+    
+    return response

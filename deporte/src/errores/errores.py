@@ -31,3 +31,7 @@ class InvalidFormatField(ApiError):
 class SocioAlreadyRegistered(ApiError):
     code = 400
     description = "Socio de negocio ya existe" 
+class InternalServerError(ApiError):
+    def __init__(self, code = 503, description= "Ocurrió un error interno del servidor"):
+        self.code = code
+        self.description = description
