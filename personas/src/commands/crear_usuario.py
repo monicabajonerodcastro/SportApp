@@ -42,16 +42,18 @@ class CrearUsuario(BaseCommannd):
                                 password = password,
                                 suscripcion = suscripcion, rol="DEPORTISTA", strava_client_id=strava_client_id, strava_client_secret=strava_client_secret)
         
+        self.direccion_obj = Direccion(id_direccion=self.direccion["id"], direccion=self.direccion["direccion"], ubicacion_latitud=self.direccion["ubicacionLatitud"],
+                                   ubicacion_longitud=self.direccion["ubicacionLongitud"], nombre=self.direccion["nombre"], id_usuario="")
+        
    
     def execute(self):
         self.session.add(self.usuario)
         self.session.commit()
 
         usuario = self.session.query(Usuario).filter(Usuario.email == self.usuario.email).first()
-        direccion_obj = Direccion(id_direccion=self.direccion["id"], direccion=self.direccion["direccion"], ubicacion_latitud=self.direccion["ubicacionLatitud"],
-                                   ubicacion_longitud=self.direccion["ubicacionLongitud"], nombre=self.direccion["nombre"], id_usuario=usuario.id)
+        self.direccion_obj.id_usuario = usuario.id
 
-        self.session.add(direccion_obj)
+        self.session.add(self.direccion_obj)
         self.session.commit()
         self.session.close()
         return {"description" : "Usuario Registrado con exito", "id": self.usuario.id}

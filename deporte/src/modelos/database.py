@@ -5,7 +5,7 @@ from src.servicios.secret import get_secret
 import os
 
 if os.environ["ENVIRONMENT"] == 'prod':
-    db_password = "}Zv_2mjr5fRI*IYa"
+    db_password = get_secret(os.environ["PROJECT_ID"], "postgres_password")
 else:
     db_password = "postgresql"
 

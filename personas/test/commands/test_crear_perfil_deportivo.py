@@ -33,14 +33,13 @@ def crear_perfil_deportivo(session, perfildeportivo_mock):
                             "horas_semanal" : perfildeportivo_mock.horas_semanal ,
                             "peso_objetivo" :perfildeportivo_mock.peso_objetivo,
                             "tipo_sangre": perfildeportivo_mock.tipo_sangre,
-                            "deporte": perfildeportivo_mock.deporte,
-                            "direccion": perfildeportivo_mock.direccion
+                            "deporte": perfildeportivo_mock.deporte
   }
                      )
 
 
 def perfildeportivo_mock():
-    return PerfilDeportivo( fake.uuid4(),random.choice(['F', 'M', 'O']), fake.pyint(min_value=15), fake.pyint(), fake.pyint(max_value=250), fake.country(), fake.city(),fake.country(), fake.city(),fake.pyint(),fake.pyfloat(max_value=100,right_digits=2),fake.pyint(),fake.pyfloat(right_digits=2),"","","","","","",fake.name(),fake.name(), fake.word())
+    return PerfilDeportivo( fake.uuid4(),random.choice(['F', 'M', 'O']), fake.pyint(min_value=15), fake.pyint(), fake.pyint(max_value=250), fake.country(), fake.city(),fake.country(), fake.city(),fake.pyint(),fake.pyfloat(max_value=100,right_digits=2),fake.pyint(),fake.pyfloat(right_digits=2),"","","","","","",fake.name(),fake.name())
 
 def usuario_mock():
     return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA","","")
