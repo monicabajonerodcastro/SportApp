@@ -1,7 +1,9 @@
+import datetime
 import pytest
 from unittest.mock import patch
 from faker import Faker
 
+from src.models.inicio_sesion import InicioSesion
 from src.commands.ingresar_usuario import IngresarUsuario
 from src.models.usuario import Usuario
 from test.mock_session import MockSession
@@ -17,10 +19,14 @@ def mock_session():
 @patch('test.mock_session', autospec=True)
 def test_ingresar(mock_session):
     mock_usuario = usuario_mock()
+    mock_inicio_sesion = inicio_sesion_mock()
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
-    mock_query.filter.return_value.first.return_value = mock_usuario
+    mock_filter = mock_query.filter.return_value
+    mock_first = mock_filter.first
+
+    mock_first.side_effect = [mock_usuario, mock_inicio_sesion]
 
     json_request = {
         "email": fake.safe_email(),
@@ -65,5 +71,8 @@ def test_ingresar_con_correo_invalido(mock_session):
 
 def usuario_mock():
     return Usuario(fake.safe_email(), fake.name(), fake.last_name(), random.choice(['CC', 'TI', 'CE', 'PAS']), fake.pyint(min_value=1000), fake.user_name(), fake.password(), fake.uuid4(), "DEPORTISTA","","")
+
+def inicio_sesion_mock():
+    return InicioSesion("1", datetime.datetime.now())
 
 

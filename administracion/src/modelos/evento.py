@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
 from sqlalchemy.dialects.postgresql import UUID
-import uuid
+import uuid, datetime
 from sqlalchemy import Column, DateTime, ForeignKey, String
 from src.modelos.database import Base
 from sqlalchemy.orm import relationship
@@ -16,6 +16,7 @@ class Evento(Base):
     id_deporte = Column(String, nullable=False)
     detalle = Column(String, nullable=False)
     id_socio = Column(UUID(as_uuid=True), ForeignKey("socio.id"),primary_key=True, nullable=False)
+    fecha_creacion = Column(DateTime, nullable=False)
     socio = relationship("Socio")
     ubicacion = relationship("Ubicacion")
 
@@ -27,6 +28,8 @@ class Evento(Base):
         self.id_deporte = id_deporte
         self.id_socio = id_socio
         self.detalle = detalle
+        self.fecha_creacion = datetime.datetime.now()
+
 class EventoJsonSchema(Schema):
     id = fields.UUID(dump_only=True)
     nombre  = fields.Str()
@@ -35,3 +38,4 @@ class EventoJsonSchema(Schema):
     id_deporte = fields.Str()
     id_socio = fields.Str()
     detalle = fields.Str()
+    fecha_creacion = fields.Str()
