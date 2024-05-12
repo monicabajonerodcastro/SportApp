@@ -1,11 +1,14 @@
+import datetime
 from src.commands.base_command import BaseCommannd
 from src.models.usuario import Usuario, UsuarioJsonSchema
+from src.models.inicio_sesion import InicioSesion, InicioSesionSchema
 from src.errors.errors import MissingRequiredField,InvalidFormatField
 from src.services import servicio_token
 from sqlalchemy import and_
 import re
 
 usuario_schema = UsuarioJsonSchema()
+inicio_sesion_schema = InicioSesionSchema()
 
 class IngresarUsuario(BaseCommannd):
     def __init__(self, session, json_request):
@@ -29,9 +32,19 @@ class IngresarUsuario(BaseCommannd):
         if user is None:
             self.session.close()
             return {"description": "Usuario y/o contraseña inválidos"}, 400
+        
+        inicio_sesion = self.session.query(InicioSesion).filter(InicioSesion.id_usuario == user.id).first()
+        if inicio_sesion is None:
+            inicio_sesion = InicioSesion(user.id, datetime.datetime.now())
+
         user_response = {}
         user_response["token"] = servicio_token.generar_token(usuario=str(user.id))
         user_response["rol"] = user.rol
+        user_response["ultima_conexion"] = inicio_sesion.ultima_conexion.timestamp()
+
+        inicio_sesion.ultima_conexion = datetime.datetime.now()
+        self.session.add(inicio_sesion)
+        self.session.commit()
         self.session.close()
         return user_response, 200 
 

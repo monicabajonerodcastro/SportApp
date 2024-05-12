@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request
 from src.comandos.obtener_usuarios_evento import ObtenerUsuariosEvento
 from src.comandos.inscribir_usuario_evento import InscribirUsuarioEvento
 from src.comandos.crear_evento import CrearEvento
-from src.comandos.obtener_eventos import ObtenerEventos, ObtenerEventosCercanos, ObtenerEventosDeportista
+from src.comandos.obtener_eventos import ObtenerEventos, ObtenerEventosCercanos, ObtenerEventosDeportista, ObtenerNuevosEventos
 from src.comandos.asignar_servicio_deportista import AsignarServicioDeportista
 from src.comandos.obtener_servicios_por_evento import ObtenerServiciosPorEvento
 from src.comandos.asignar_servicio_evento import AsignarServicioEvento
@@ -230,6 +230,10 @@ def obtener_eventos_deportista():
 @administracion_blueprint.route("/eventos-cercanos", methods = ["GET"])
 def obtener_eventos_cercanos():
     return ObtenerEventosCercanos(session=db_session, headers=request.headers).execute()
+
+@administracion_blueprint.route("/eventos-nuevos/<string:ultima_conexion>", methods = ["GET"])
+def obtener_nuevos_eventos(ultima_conexion):
+    return ObtenerNuevosEventos(session=db_session, headers=request.headers, fecha_ultima_conexion=float(ultima_conexion)).execute()
 
 @administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["POST"])
 def asignar_evento_a_deportista(id_evento):

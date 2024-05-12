@@ -899,6 +899,186 @@
           }
         }
       },
+      "/administracion/eventos": {
+        "get": {
+          "description": "Retorna la lista de eventos en el sistema",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de eventos registrados",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Evento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/eventos-deportista": {
+        "get": {
+          "description": "Retorna la lista de eventos asignados al deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de eventos asignados al deportista",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Evento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/eventos-cercanos": {
+        "get": {
+          "description": "Retorna la lista de eventos cercanos a la ubicación del deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de eventos cercanos a la ubicacion del deportista",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Evento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
+      "/administracion/eventos-nuevos/:fecha_hora_ultima_conexion": {
+        "get": {
+          "description": "Retorna la lista de eventos cercanos que se han creado recientemente",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "fecha_hora_ultima_conexion",
+              "description": "Timestamp con la fecha y hora de la última conexión del usuario",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "1715466571.859258"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de eventos cercanos que se han creado recientemente",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Evento"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados / El usuario ya se encuentra registrado"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "Campos requeridos incompletos "
+            }
+          }
+        }
+      },
       "/administracion/deportista/evento/:id_evento": {
         "delete": {
           "description": "Eliminar un evento de la agenda del deportista",
