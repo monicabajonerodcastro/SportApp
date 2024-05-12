@@ -31,7 +31,7 @@ class ActualizarEvento(BaseCommand):
        
     def execute(self):
         
-        #auth.validar_autenticacion(headers=self.headers)
+        auth.validar_autenticacion(headers=self.headers)
         self.session.commit()
         self.session.close()
         return "Evento actualizado con exito"
