@@ -50,7 +50,7 @@ def test_actualizar_evento(mock_session,requests_mock):
 @patch('test.mock_session', autospec=True)
 def test_actualizar_evento_missing_requiredfield(mock_session,requests_mock):
     my_evento_mock = evento_mock()
-    my_evento_mock.id_socio=""
+    my_evento_mock.id=""
     session = MagicMock()
     query = MagicMock()
     query.filter.return_value.first.return_value = my_evento_mock
