@@ -1,6 +1,6 @@
 
+from src.comandos.actualizar_evento import ActualizarEvento
 from src.comandos.asignar_evento_deportista import AsignarEventoDeportista
-from flask import Blueprint, jsonify, request
 from src.comandos.obtener_usuarios_evento import ObtenerUsuariosEvento
 from src.comandos.inscribir_usuario_evento import InscribirUsuarioEvento
 from src.comandos.crear_evento import CrearEvento
@@ -203,6 +203,13 @@ def inscribir_usuario_evento(id_evento):
 @administracion_blueprint.route('/evento/<string:id_evento>', methods = ['GET'])
 def obtener_usuarios_evento(id_evento):
     return ObtenerUsuariosEvento(session=db_session, headers=request.headers, id_evento=id_evento).execute()  
+
+
+@administracion_blueprint.route('/evento', methods = ['PUT'])
+def actualizar_evento():
+    json_request = request.get_json()
+    result = ActualizarEvento(session=db_session, headers=request.headers, json_request=json_request).execute()  
+    return jsonify({'description':result}),200  
 
 #####################################################################
 #                        Servicio / Deportista                      #

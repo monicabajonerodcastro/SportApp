@@ -900,6 +900,42 @@
             }
           }
         }
+      },
+      "/administracion/deportista/evento/:id_evento": {
+        "post": {
+          "description": "Asigna un evento a la agenda del deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+            
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio asignado correctamente al deportista"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+            
+          }
+        }
       }
     },
     "definitions":{
