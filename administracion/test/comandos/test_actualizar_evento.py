@@ -22,7 +22,7 @@ def actualizar_evento(session, evento_mock, headers):
     return ActualizarEvento(session,headers,
                         {"id": evento_mock.id,
                         "fecha_inicio": evento_mock.fecha_inicio,
-                        "fecha_fin": evento_mock.fecha_fin,
+                        "fecha_fin": evento_mock.fecha_fin
                                                
                         }                       
                      )
