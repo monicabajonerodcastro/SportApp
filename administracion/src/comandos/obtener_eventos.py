@@ -107,8 +107,16 @@ class ObtenerEventosDeportista(BaseCommand):
         token = auth.validar_autenticacion(headers=self.headers)
 
         eventos_deportista = self.session.query(EventoDeportista).filter(EventoDeportista.id_deportista == usuario_id).all()
-        respuesta = [evento_deportista_schema.dump(evento_dep) for evento_dep in eventos_deportista]
-        return {"respuesta": respuesta, "token": token}, 200
+        respuesta_eventos_deportista = []
+        for evento in eventos_deportista:
+            detalle_evento = self.session.query(Evento).filter(Evento.id == evento.id_evento).first()
+            evento_dump = evento_schema.dump(detalle_evento)
+
+            ubicacion = self.session.query(Ubicacion).filter(Ubicacion.id_evento == evento.id_evento).first()
+            respuesta_ubicacion = ubicacion_schema.dump(ubicacion)
+            evento_dump["ubicacion"] = respuesta_ubicacion
+            respuesta_eventos_deportista.append(evento_dump)
+        return {"respuesta": respuesta_eventos_deportista, "token": token}, 200
     
 
 class ObtenerNuevosEventos(BaseCommand):
