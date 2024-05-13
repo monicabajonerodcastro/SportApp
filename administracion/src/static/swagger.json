@@ -1123,6 +1123,95 @@
             }
           }
         }
+      },
+      "/administracion/deportista/evento/:id_evento": {
+        "post": {
+          "description": "Asigna un evento a la agenda del deportista",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "name": "idEvento",
+              "description": "Evento el cual se desea inscribir en la agenda del deportista",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "example": "5a0b032f-41d7-4478-bcf9-14d1bfb26e20"
+            }
+            
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Servicio asignado correctamente al deportista"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+            
+          }
+        }
+      },
+      "/administracion/evento ": {
+        "put": {
+          "description": "Actualizar un evento",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+                "in": "body",
+                "name": "body",
+                "description": "Datos básicos del evento. Los datos que se envian son id, fecha_inicio y fecha_fin",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Evento"
+                }
+            }
+            
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Evento actualizado con exito"
+            },
+            "400": {
+              "description": "Bad Request: Ocurrió un error con los datos enviados"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            }
+            
+          }
+        }
       }
     },
     "definitions":{
