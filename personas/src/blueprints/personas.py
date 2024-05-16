@@ -5,7 +5,7 @@ from src.commands.crear_usuario import CrearUsuario
 from src.commands.ingresar_usuario import IngresarUsuario
 from src.commands.get_usuario import GetUsuario
 from src.commands.crear_perfil_deportivo import CrearPerfilDeportivo
-from src.commands.get_usuario_por_id import GetUsuarioPorId
+from src.commands.get_usuario_por_id import GetDireccionPorId, GetUsuarioPorId
 from src.commands.validar_token import ValidarToken
 from src.models.database import db_session
 from src.errors.errors import MissingRequiredField
@@ -49,6 +49,10 @@ def crear_usuario():
 @personas_blueprint.route('/<string:id_persona>', methods=["GET"])
 def obtener_usuario_por_id(id_persona):
     return GetUsuarioPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
+
+@personas_blueprint.route('/persona/direccion', methods=["GET"])
+def obtener_direccion_por_id():
+    return GetDireccionPorId(session=db_session, headers=request.headers).execute()
 
 #####################################################################
 #                         Perfil Deportivo                          #

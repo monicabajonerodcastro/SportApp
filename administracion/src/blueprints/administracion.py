@@ -236,11 +236,15 @@ def obtener_eventos_deportista():
 
 @administracion_blueprint.route("/eventos-cercanos", methods = ["GET"])
 def obtener_eventos_cercanos():
-    return ObtenerEventosCercanos(session=db_session, headers=request.headers).execute()
+    usuario_latitud = request.args.get("latitud")
+    usuario_longitud = request.args.get("longitud")
+    return ObtenerEventosCercanos(session=db_session, headers=request.headers, latitud=usuario_latitud, longitud=usuario_longitud).execute()
 
 @administracion_blueprint.route("/eventos-nuevos/<string:ultima_conexion>", methods = ["GET"])
 def obtener_nuevos_eventos(ultima_conexion):
-    return ObtenerNuevosEventos(session=db_session, headers=request.headers, fecha_ultima_conexion=float(ultima_conexion)).execute()
+    usuario_latitud = request.args.get("latitud")
+    usuario_longitud = request.args.get("longitud")
+    return ObtenerNuevosEventos(session=db_session, headers=request.headers, fecha_ultima_conexion=float(ultima_conexion), latitud=usuario_latitud, longitud=usuario_longitud).execute()
 
 @administracion_blueprint.route("/deportista/evento/<string:id_evento>", methods = ["POST"])
 def asignar_evento_a_deportista(id_evento):

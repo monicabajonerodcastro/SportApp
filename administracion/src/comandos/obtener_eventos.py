@@ -1,6 +1,6 @@
 import datetime, os, math
 from src.modelos.evento_deportista import EventoDeportista, EventoDeportistaJsonSchema
-from src.errores.errores import InternalServerError
+from src.errores.errores import MissingRequiredField
 from src.modelos.ubicacion import Ubicacion, UbicacionSchema
 from src.modelos.evento import Evento, EventoJsonSchema
 from src.comandos.base_command import BaseCommand
@@ -35,18 +35,8 @@ def _haversine(lat1, lon1, lat2, lon2):
     distance = R * c
     return distance
 
-def _filtrar_eventos_cercanos(session, headers, eventos, usuario_id):
+def _filtrar_eventos_cercanos(session, eventos, usuario_latitud, usuario_longitud):
     respuesta_eventos = []
-
-    url_personas = f"{HOST_PERSONAS}/personas/{usuario_id}"
-    response = http.get_request(url_personas, headers)
-    if response.status_code < 200 or response.status_code > 209:
-        raise InternalServerError(description="Ocurrio un error al obtener la direccion del usuario, intente más tarde")
-    
-    usuario_info = response.json()
-    direccion = usuario_info["direccion"]
-    usuario_latitud = direccion["ubicacion_latitud"]
-    usuario_longitud = direccion["ubicacion_longitud"]
 
     for evento in eventos:
         ubicacion = session.query(Ubicacion).filter(Ubicacion.id_evento == evento.id).first()
@@ -83,16 +73,21 @@ class ObtenerEventos(BaseCommand):
     
 
 class ObtenerEventosCercanos(BaseCommand):
-    def __init__(self, session, headers) -> None:
+    def __init__(self, session, headers, latitud, longitud) -> None:
         self.session = session
         self.headers = headers
+        self.latitud = latitud
+        self.longitud = longitud
 
     def execute(self):
+        if self.latitud == None or self.latitud == "":
+            raise MissingRequiredField(description="La latitud es requerida")
+        if self.longitud == None or self.longitud == "":
+            raise MissingRequiredField(description="La longitud es requerida")
         
-        usuario_id = auth.validar_autenticacion(headers=self.headers, retornar_usuario=True)
         token = auth.validar_autenticacion(headers=self.headers)
         eventos = _query_eventos_futuros(session=self.session)
-        respuesta_eventos = _filtrar_eventos_cercanos(self.session, self.headers, eventos, usuario_id)
+        respuesta_eventos = _filtrar_eventos_cercanos(self.session, eventos, self.latitud, self.longitud)
         self.session.close()
         return {"respuesta": respuesta_eventos, "token" : token}, 200
 
@@ -120,18 +115,24 @@ class ObtenerEventosDeportista(BaseCommand):
     
 
 class ObtenerNuevosEventos(BaseCommand):
-    def __init__(self, session, headers, fecha_ultima_conexion) -> None:
+    def __init__(self, session, headers, fecha_ultima_conexion, latitud, longitud) -> None:
         self.session = session
         self.headers = headers
         self.fecha_ultima_conexion = fecha_ultima_conexion
+        self.latitud = latitud
+        self.longitud = longitud
     
     def execute(self):
-        usuario_id = auth.validar_autenticacion(headers=self.headers, retornar_usuario=True)
+        if self.latitud == None or self.latitud == "":
+            raise MissingRequiredField(description="La latitud es requerida")
+        if self.longitud == None or self.longitud == "":
+            raise MissingRequiredField(description="La longitud es requerida")
+        
         token = auth.validar_autenticacion(headers=self.headers)
 
         fecha_datetime = datetime.datetime.fromtimestamp(self.fecha_ultima_conexion)
         eventos = self.session.query(Evento).filter(Evento.fecha_creacion >= fecha_datetime).all()
-        respuesta_eventos = _filtrar_eventos_cercanos(self.session, self.headers, eventos, usuario_id) 
+        respuesta_eventos = _filtrar_eventos_cercanos(self.session, eventos, self.latitud, self.longitud) 
 
         self.session.close()
         return {"respuesta": respuesta_eventos, "token" : token}, 200

@@ -995,6 +995,22 @@
               "in": "header",
               "required": true,
               "type": "Bearer"
+            },
+            {
+              "name": "latitud",
+              "description": "Latitud de la dirección del deportista",
+              "in": "query",
+              "required": true,
+              "type": "string",
+              "example": "4.8673208"
+            },
+            {
+              "name": "longitud",
+              "description": "Longitud de la dirección del deportista",
+              "in": "query",
+              "required": true,
+              "type": "string",
+              "example": "-74.06192709999999"
             }
           ],
           "consumes": [
@@ -1046,6 +1062,22 @@
               "required": true,
               "type": "string",
               "example": "1715466571.859258"
+            },
+            {
+              "name": "latitud",
+              "description": "Latitud de la dirección del deportista",
+              "in": "query",
+              "required": true,
+              "type": "string",
+              "example": "4.8673208"
+            },
+            {
+              "name": "longitud",
+              "description": "Longitud de la dirección del deportista",
+              "in": "query",
+              "required": true,
+              "type": "string",
+              "example": "-74.06192709999999"
             }
           ],
           "consumes": [
@@ -1122,9 +1154,7 @@
               "description": "No se encontró el evento en la agenda del deportista"
             }
           }
-        }
-      },
-      "/administracion/deportista/evento/:id_evento": {
+        },
         "post": {
           "description": "Asigna un evento a la agenda del deportista",
           "parameters": [
@@ -1164,7 +1194,6 @@
             "403": {
               "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
             }
-            
           }
         }
       },
