@@ -50,9 +50,9 @@ def crear_usuario():
 def obtener_usuario_por_id(id_persona):
     return GetUsuarioPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
 
-@personas_blueprint.route('/direccion/<string:id_persona>', methods=["GET"])
-def obtener_direccion_por_id(id_persona):
-    return GetDireccionPorId(session=db_session, headers=request.headers, id_usuario=id_persona).execute()
+@personas_blueprint.route('/persona/direccion', methods=["GET"])
+def obtener_direccion_por_id():
+    return GetDireccionPorId(session=db_session, headers=request.headers).execute()
 
 #####################################################################
 #                         Perfil Deportivo                          #

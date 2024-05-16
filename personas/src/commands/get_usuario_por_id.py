@@ -1,7 +1,7 @@
 from src.models.direccion import Direccion, DireccionSchema
 from src.commands.base_command import BaseCommannd
 from src.models.usuario import Usuario, UsuarioJsonSchema
-from src.services.auth import validar_autenticacion
+from src.services.auth import obtener_usuario_id, validar_autenticacion
 from src.errors.errors import NotFoundError, InvalidFormatField
 
 from uuid import UUID
@@ -10,14 +10,14 @@ usuario_schema = UsuarioJsonSchema()
 direccion_schema = DireccionSchema()
 
 class GetDireccionPorId(BaseCommannd):
-    def __init__(self, session, headers, id_usuario) -> None:
+    def __init__(self, session, headers) -> None:
         self.session = session
         self.headers = headers
-        self.id_usuario = id_usuario
 
     def execute(self):
         validar_autenticacion(self.headers)
-        direccion = self.session.query(Direccion).filter(Direccion.id_usuario == self.id_usuario).first()
+        usuario_id = obtener_usuario_id(self.headers)
+        direccion = self.session.query(Direccion).filter(Direccion.id_usuario == usuario_id).first()
         direccion_response = direccion_schema.dump(direccion)
         self.session.close()
         return direccion_response, 200

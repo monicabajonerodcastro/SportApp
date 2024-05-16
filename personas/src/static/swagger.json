@@ -159,6 +159,43 @@
           }
         }
       },
+      "/personas/persona/direccion": {
+        "get": {
+          "description": "Obtiene una dirección por token",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Direccion del usuario",
+              "schema": {
+                "$ref": "#/definitions/Direccion"
+              }
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "El usuario no se encuentra registrado"
+            }
+          }
+        }
+      },
       "/personas/perfildeportivo": {
         "post": {
           "description": "Asociar un perfil deportivo a un deportista",
@@ -415,6 +452,41 @@
             "type": "string",
             "format": "uuid",
             "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
+          }
+        }
+      },
+      "Direccion":{
+        "type": "object",
+        "properties":{
+          "direccion": {
+            "type": "string",
+            "example":"Calle 3 # 45-98"
+          },
+          "id":{
+            "type": "string",
+            "format": "uuid",
+            "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
+          },
+          "id_direccion":{
+            "type": "string",
+            "example":"ChIJP7nUxjx5QI4RPzY-wNH8vt8"
+          },
+          "id_usuario":{
+            "type": "string",
+            "format": "uuid",
+            "example":"4fa97001-0419-4120-ae83-a2ec4785a575"
+          },
+          "nombre":{
+            "type": "string",
+            "example":"Coliseo Cubierto"
+          },
+          "ubicacion_latitud":{
+            "type": "string",
+            "example":"4.8673208"
+          },
+          "ubicacion_longitud":{
+            "type": "string",
+            "example":"-74.06192709999999"
           }
         }
       }

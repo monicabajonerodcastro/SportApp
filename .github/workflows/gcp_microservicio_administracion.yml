@@ -2,7 +2,7 @@
 name: Despliegue del microservicio administración
 on: 
     push:
-        branches: [develop, feature/direccion]
+        branches: [develop]
         paths: 
           - administracion/**
           - .github/workflows/gcp_microservicio_administracion.yml

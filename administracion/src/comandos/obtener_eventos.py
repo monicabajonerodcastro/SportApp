@@ -73,16 +73,21 @@ class ObtenerEventos(BaseCommand):
     
 
 class ObtenerEventosCercanos(BaseCommand):
-    def __init__(self, session, headers) -> None:
+    def __init__(self, session, headers, latitud, longitud) -> None:
         self.session = session
         self.headers = headers
+        self.latitud = latitud
+        self.longitud = longitud
 
     def execute(self):
+        if self.latitud == None or self.latitud == "":
+            raise MissingRequiredField(description="La latitud es requerida")
+        if self.longitud == None or self.longitud == "":
+            raise MissingRequiredField(description="La longitud es requerida")
         
-        usuario_id = auth.validar_autenticacion(headers=self.headers, retornar_usuario=True)
         token = auth.validar_autenticacion(headers=self.headers)
         eventos = _query_eventos_futuros(session=self.session)
-        respuesta_eventos = _filtrar_eventos_cercanos(self.session, self.headers, eventos, usuario_id)
+        respuesta_eventos = _filtrar_eventos_cercanos(self.session, eventos, self.latitud, self.longitud)
         self.session.close()
         return {"respuesta": respuesta_eventos, "token" : token}, 200
 

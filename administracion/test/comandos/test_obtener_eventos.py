@@ -63,7 +63,7 @@ def test_obtener_eventos_cercanos(mock_session, requests_mock, mocker):
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": _ID_USUARIO})
     requests_mock.get('http://host-personas-test/personas/'+_ID_USUARIO, json={"direccion": {"ubicacion_latitud": 1, "ubicacion_longitud": 1}})
     
-    service = ObtenerEventosCercanos(session=mock_session_instance, headers={"Authorization": "Bearer "})
+    service = ObtenerEventosCercanos(session=mock_session_instance, headers={"Authorization": "Bearer "}, latitud=1, longitud=1)
     (_, status_code) = service.execute()
     assert mock_session_instance.query.called
     assert status_code == 200
@@ -82,7 +82,7 @@ def test_obtener_eventos_cercanos_sin_autorizacion(mock_session, requests_mock, 
     requests_mock.get('http://host-personas-test/personas/'+_ID_USUARIO, json={"direccion": {"ubicacion_latitud": 1, "ubicacion_longitud": 1}})
     
     with pytest.raises(InvalidAuthenticationError):
-        ObtenerEventosCercanos(session=mock_session_instance, headers={}).execute()
+        ObtenerEventosCercanos(session=mock_session_instance, headers={}, latitud=1, longitud=1).execute()
 
     assert not mock_session_instance.query.called
 
@@ -136,7 +136,7 @@ def test_obtener_eventos_nuevos(mock_session, requests_mock, mocker):
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": _ID_USUARIO})
     requests_mock.get('http://host-personas-test/personas/'+_ID_USUARIO, json={"direccion": {"ubicacion_latitud": 1, "ubicacion_longitud": 1}})
     
-    service = ObtenerNuevosEventos(session=mock_session_instance, headers={"Authorization": "Bearer "}, fecha_ultima_conexion=1)
+    service = ObtenerNuevosEventos(session=mock_session_instance, headers={"Authorization": "Bearer "}, latitud=1, longitud=1, fecha_ultima_conexion=1)
     (_, status_code) = service.execute()
     assert mock_session_instance.query.called
     assert status_code == 200
@@ -155,6 +155,6 @@ def test_obtener_eventos_nuevos_sin_autorizacion(mock_session, requests_mock, mo
     requests_mock.get('http://host-personas-test/personas/'+_ID_USUARIO, json={"direccion": {"ubicacion_latitud": 1, "ubicacion_longitud": 1}})
     
     with pytest.raises(InvalidAuthenticationError):
-        ObtenerNuevosEventos(session=mock_session_instance, headers={}, fecha_ultima_conexion=1).execute()
+        ObtenerNuevosEventos(session=mock_session_instance, headers={}, fecha_ultima_conexion=1, latitud=1, longitud=1).execute()
 
     assert not mock_session_instance.query.called
