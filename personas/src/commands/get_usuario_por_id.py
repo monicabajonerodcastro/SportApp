@@ -9,6 +9,19 @@ from uuid import UUID
 usuario_schema = UsuarioJsonSchema()
 direccion_schema = DireccionSchema()
 
+class GetDireccionPorId(BaseCommannd):
+    def __init__(self, session, headers, id_usuario) -> None:
+        self.session = session
+        self.headers = headers
+        self.id_usuario = id_usuario
+
+    def execute(self):
+        validar_autenticacion(self.headers)
+        direccion = self.session.query(Direccion).filter(Direccion.id_usuario == self.id_usuario).first()
+        direccion_response = direccion_schema.dump(direccion)
+        self.session.close()
+        return direccion_response, 200
+
 class GetUsuarioPorId(BaseCommannd):
     def __init__(self, session, headers, id_usuario):
 
