@@ -1,4 +1,6 @@
 import datetime
+from src.modelos.producto_alimenticio import ProductoAlimenticio, ProductoAlimenticioSchema
+from src.modelos.producto_rutina import ProductoRutina
 from src.modelos.rutina_alimenticia import RutinaAlimenticia
 from src.errores.errores import MissingRequiredField, NotFoundError, BadRequestError
 from src.modelos.sesion_entrenamiento import EstadoSesionEntrenamiento, SesionEntrenamiento
@@ -9,6 +11,8 @@ _RUTINA_1 =  "Alta Potencia - Alto Ritmo"
 _RUTINA_2 =  "Alta Potencia - Bajo Ritmo"
 _RUTINA_3 =  "Baja Potencia - Alto Ritmo"
 _RUTINA_4 =  "Baja Potencia - Bajo Ritmo"
+
+producto_schema = ProductoAlimenticioSchema ()
 
 def _validar_campo(campo, json, mensaje) -> None:
     if campo in json and json[campo] != "" and json[campo] != None:
@@ -23,10 +27,11 @@ def _validar_formato_numero(nombre, numero) -> None:
 
 def _validar_rutina_existe(self, nombre) -> str:
     rutina = self.session.query(RutinaAlimenticia).filter(RutinaAlimenticia.nombre == nombre).first()
-    if rutina is None:
-        return "En el momento no se encuentra una rutina alimenticia recomendada"
+    if rutina is None:     
+        raise NotFoundError(description="En el momento no se encuentra una rutina alimenticia recomendada para los parámetros recibidos")
     else:
-        return rutina.descripcion
+        productos = self.session.query(ProductoAlimenticio).join(ProductoRutina).filter(ProductoRutina.rutina_alimenticia == rutina.id).all()    
+        return {"id": rutina.id, "nombre": rutina.nombre, "descripcion": rutina.descripcion, "productos": [producto_schema.dump(producto) for producto in productos]}  
     
 class ObtenerRutinaAlimenticia(BaseCommand):
     def __init__(self, session, headers, json_request) -> None:
