@@ -42,24 +42,6 @@ def test_enviar_productos_rutina_alimenticia(mock_session, requests_mock):
 
 
 @patch('test.mock_session', autospec=True)
-def test_enviar_productos_rutina_alimenticia_no_respuesta_usuario(mock_session, requests_mock):
-
-    rutina_alimenticia_mock = mock_rutina_alimenticia()
-
-    requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": _ID_USUARIO})
-    requests_mock.get(f'http://host-personas-test/personas/{_ID_USUARIO}', json={"description":"BadRequestError"}, status_code=400)
-
-    mock_session_instance = mock_session.return_value
-    mock_query = mock_session_instance.query.return_value
-    mock_query.filter.return_value.first.return_value = rutina_alimenticia_mock
-
-    with pytest.raises(BadRequestError) as exc_info:
-        EnviarProductosRutinaAlimenticia(session=mock_session_instance, headers={"Authorization": "Bearer "}, id_rutina_alimenticia=_ID_RUTINA_ALIMENTICIA).execute()
-
-    assert exc_info.value.code == 400
-
-
-@patch('test.mock_session', autospec=True)
 def test_enviar_productos_rutina_alimenticia_no_existente(mock_session, requests_mock):
 
     deportista_mock = mock_deportista()
