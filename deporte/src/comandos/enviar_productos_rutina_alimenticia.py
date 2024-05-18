@@ -32,10 +32,10 @@ class EnviarProductosRutinaAlimenticia(BaseCommand):
         return deportista_response.json()
     
     def _obtener_perfil_deportivo_deportista(self):
-        perfil_deportivo_response =  http.get_request(url=f"{HOST_PERSONAS}/personas/perfildeportivo/{self.id_deportista}", headers=self.headers)
-        if perfil_deportivo_response.status_code < 200 or perfil_deportivo_response.status_code > 209:
-            raise BadRequestError(perfil_deportivo_response.status_code, perfil_deportivo_response.json()["description"]) 
-        return perfil_deportivo_response.json()
+        direccion_response =  http.get_request(url=f"{HOST_PERSONAS}/personas/persona/direccion", headers=self.headers)
+        if direccion_response.status_code < 200 or direccion_response.status_code > 209:
+            raise BadRequestError(direccion_response.status_code, direccion_response.text) 
+        return direccion_response.json()
     
     def _validar_rutina_alimenticia(self):
         rutina_alimenticia: RutinaAlimenticia = self.session.query(RutinaAlimenticia).filter(RutinaAlimenticia.id == self.id_rutina_alimenticia).first()
