@@ -73,7 +73,7 @@ def asociar_producto_a_rutina(id_rutina_alimenticia):
 def enviar_productos_alimenticios(id_rutina_alimenticia):
     return EnviarProductosRutinaAlimenticia(session=db_session, headers=request.headers, id_rutina_alimenticia=id_rutina_alimenticia).execute()
 
-@deporte_blueprint.route('/sesion-entrenamiento/rutina-alimenticia', methods = ['GET'])
+@deporte_blueprint.route('/sesion-entrenamiento/rutina-alimenticia', methods = ['POST'])
 def obtener_rutina_alimenticia():
     return ObtenerRutinaAlimenticia(session=db_session, headers=request.headers, json_request=request.get_json()).execute()
 
