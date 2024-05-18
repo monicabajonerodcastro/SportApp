@@ -25,7 +25,7 @@ def test_enviar_productos_rutina_alimenticia(mock_session, requests_mock):
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": _ID_USUARIO})
     requests_mock.get(f'http://host-personas-test/personas/{_ID_USUARIO}', json=deportista_mock)
-    requests_mock.get(f'http://host-personas-test/personas/perfildeportivo/{_ID_USUARIO}', json=perfil_deportivo_mock())
+    requests_mock.get('http://host-personas-test/personas/persona/direccion', json=direccion_mock())
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
@@ -66,7 +66,7 @@ def test_enviar_productos_rutina_alimenticia_no_existente(mock_session, requests
 
     requests_mock.post('http://host-personas-test/personas/validar-token', json={"token": _TOKEN, "id_usuario": _ID_USUARIO})
     requests_mock.get(f'http://host-personas-test/personas/{_ID_USUARIO}', json=deportista_mock)
-    requests_mock.get(f'http://host-personas-test/personas/perfildeportivo/{_ID_USUARIO}', json=perfil_deportivo_mock())
+    requests_mock.get('http://host-personas-test/personas/persona/direccion', json=direccion_mock())
 
     mock_session_instance = mock_session.return_value
     mock_query = mock_session_instance.query.return_value
@@ -94,5 +94,14 @@ def perfil_deportivo_mock():
     "tipo_sangre":fake.word(),"url_historia_clinica": fake.url(), "vo2max": fake.pyint()
 }
 
-
+def direccion_mock():
+    return {
+        "direccion": "Laureles - Estadio, Medellin, Medellín, Laureles, Medellin, Antioquia, Colombia",
+        "id": "7448cc04-6ac5-48a1-9de4-68529f371677",
+        "id_direccion": "ChIJM_bPTgcpRI4RQ3TBut_5hpk",
+        "id_usuario": "f2920f9b-f071-44ed-9035-c0f07ec68c3f",
+        "nombre": "La Macarena",
+        "ubicacion_latitud": "6.2495185",
+        "ubicacion_longitud": "-75.5805318"
+    }
 
