@@ -293,7 +293,7 @@
         }
       },
       "/deporte/sesion-entrenamiento/rutina-alimenticia": {
-        "get": {
+        "post": {
           "description": "Obtiene una rutina alimenticia recomendada de acuerdo a los parámetros de ritmo cardíaco y potencia",
           "parameters": [
             {
