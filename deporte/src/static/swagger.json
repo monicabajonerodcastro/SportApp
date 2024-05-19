@@ -292,6 +292,55 @@
           }
         }
       },
+      "/deporte/sesion-entrenamiento/rutina-alimenticia": {
+        "get": {
+          "description": "Obtiene una rutina alimenticia recomendada de acuerdo a los parámetros de ritmo cardíaco y potencia",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "description": "Token de autorización",
+              "in": "header",
+              "required": true,
+              "type": "Bearer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos del realizado",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/DatosEntrenamiento"
+              }
+            }
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Rutina recomendada",
+              "schema": {
+                  "$ref": "#/definitions/RutinaRecomendada"
+              }
+            },
+            "400": {
+              "description": "No se encontró un parámetro requerido"
+            },
+            "401": {
+              "description": "Token inválido / Token expirado"
+            },
+            "403": {
+              "description": "No se encontró el header de autorización / El header de autorización no tiene un formato correcto"
+            },
+            "404": {
+              "description": "En el momento no se encuentra una rutina alimenticia recomendada para los parámetros recibidos"
+            }
+          }
+        }
+      },
       "/deporte/deportes": {
         "get": {
           "description": "Obtiene la lista de deportes ofrecidos en el sistema",
@@ -745,6 +794,63 @@
             "example": 16
           }
         }
-      }
+      },
+      "DatosEntrenamiento":{
+        "type": "object",
+        "properties":{
+          "potencia": {
+            "type": "number",
+            "example": 200
+          },
+          "min_ritmo": {
+            "type": "number",
+            "example": 90
+          },
+          "max_ritmo": {
+            "type": "number",
+            "example": 160
+          }
+        }
+      },
+      "RutinaRecomendada":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "type": "string",
+            "example": "8ebb2fc0-44f2-4cd1-a5eb-dbda884cf5f1"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Alta Potencia - Alto Ritmo"
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Rutina para alta potencia y alto ritmo cardíaco"
+          },
+          "productos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ProductoAlimenticioRutina"
+            }
+          }
+        }
+      },
+      "ProductoAlimenticioRutina": {
+        "type": "object",
+            "properties":{
+              "id": {
+                "type": "string",
+                "example": "9abfcba5-ed5d-498e-ad00-781906b5756c"
+              },
+              "nombre": {
+                "type": "string",
+                "example": "Huevos"
+              },
+              "valor": {
+                "type": "number",
+                "example": 32000
+              }
+            }
+          }
     }
   }
