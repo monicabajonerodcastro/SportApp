@@ -23,19 +23,6 @@ class EnviarProductosRutinaAlimenticia(BaseCommand):
         self.session = session
         self.headers = headers
         self.id_rutina_alimenticia = id_rutina_alimenticia
-
-    def _obtener_informacion_deportista(self):
-        self.id_deportista = auth.validar_autenticacion(headers=self.headers, retornar_usuario=True)
-        deportista_response =  http.get_request(url=f"{HOST_PERSONAS}/personas/{self.id_deportista}", headers=self.headers)
-        if deportista_response.status_code < 200 or deportista_response.status_code > 209:
-            raise BadRequestError(deportista_response.status_code, deportista_response.json()["description"]) 
-        return deportista_response.json()
-    
-    def _obtener_perfil_deportivo_deportista(self):
-        direccion_response =  http.get_request(url=f"{HOST_PERSONAS}/personas/persona/direccion", headers=self.headers)
-        if direccion_response.status_code < 200 or direccion_response.status_code > 209:
-            raise BadRequestError(direccion_response.status_code, direccion_response.text) 
-        return direccion_response.json()
     
     def _validar_rutina_alimenticia(self):
         rutina_alimenticia: RutinaAlimenticia = self.session.query(RutinaAlimenticia).filter(RutinaAlimenticia.id == self.id_rutina_alimenticia).first()
@@ -43,16 +30,14 @@ class EnviarProductosRutinaAlimenticia(BaseCommand):
             raise NotFoundError(description=f"No existe la rutina alimenticia con id [{self.id_rutina_alimenticia}]")
 
     def execute(self):
-        deportista = self._obtener_informacion_deportista()
-        perfil_deportivo = self._obtener_perfil_deportivo_deportista()
         self._validar_rutina_alimenticia()
         
         fecha_hoy = datetime.datetime.now()
         fecha_mas_uno = fecha_hoy + datetime.timedelta(days=1)
         fecha_mas_cinco = fecha_mas_uno + datetime.timedelta(days=5)
 
-        envio_productos_rutina = EnvioProductosRutina(id_rutina=self.id_rutina_alimenticia, id_deportista=deportista["id"], direccion=perfil_deportivo["direccion"],
-                                                      nombre_deportista=deportista["nombre"] + " " + deportista["apellido"], fecha_creacion=fecha_hoy, 
+        envio_productos_rutina = EnvioProductosRutina(id_rutina=self.id_rutina_alimenticia, id_deportista="", direccion="",
+                                                      nombre_deportista="", fecha_creacion=fecha_hoy, 
                                                       fecha_envio=fecha_mas_uno, fecha_entrega=fecha_mas_cinco, estado = EstadoEnvio.CREADO.value)
         self.session.add(envio_productos_rutina)
         self.session.commit()
