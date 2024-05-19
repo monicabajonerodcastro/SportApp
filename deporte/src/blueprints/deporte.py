@@ -1,6 +1,6 @@
 import datetime
 from flask import Blueprint, jsonify, request
-from deporte.src.comandos.obtener_rutina_alimenticia import ObtenerRutinaAlimenticia
+from src.comandos.obtener_rutina_alimenticia import ObtenerRutinaAlimenticia
 from src.errores.errores import InternalServerError
 from src.comandos.agregar_entrenamientos_strava import AgregarEntrenamientosStrava
 from src.comandos.calcular_indicadores import CalcularIndicadores
