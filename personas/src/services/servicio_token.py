@@ -10,7 +10,7 @@ else:
 
 def generar_token(usuario):
     payload = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=30),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=600),
         'iat': datetime.datetime.utcnow(),
         'sub': usuario
     }
